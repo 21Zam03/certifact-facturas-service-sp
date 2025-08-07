@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.InvoiceMapper">
+
+    <select id="findAll" resultType="com.certicom.certifact_facturas_service_sp.entity.ComprobanteEntity">
+        SELECT * FROM payment_voucher
+        LIMIT 20
+    </select>
+
+    <select id="findAllSearchForPages"
+            parameterType="com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherFilterDto"
+            resultType="com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherInterDto">
+        SELECT
+        p.fecha_emision as fechaEmision,
+        p.tipo_comprobante as tipoComprobante,
+        p.serie,
+        p.numero,
+        p.tip_comprob_afectado as tipoComprobanteAfectado,
+        p.serie_afectado as serieAfectado,
+        p.numero_afectado as numeroAfectado,
+        p.num_doc_ident_receptor as numDocIdentReceptor,
+        p.denominacion_receptor as denominacionReceptor,
+        p.codigo_moneda as codigoMoneda,
+        ROUND(p.monto_imp_total_venta, 2) as montoImporteTotalVenta,
+        p.estado,
+        p.fecha_registro as fechaRegistro,
+        p.ruc_emisor as rucEmisor,
+        p.estado_sunat as estadoSunat,
+        p.identificador_documento as identificadorBaja,
+        p.email_receptor as emailReceptor,
+        p.id_payment_voucher as idPaymentVoucher,
+        (t.serie || '-' || t.numero) as sernumguia,
+        p.identificador_documento as identificadorDocumento,
+        p.uuid,
+        p.mensaje_respuesta as mensajeRespuesta,
+        p.pagado
+        FROM payment_voucher p
+        LEFT JOIN guia_remision t ON t.id_payment_voucher = p.id_payment_voucher
+        WHERE 1 = 1
+        <if test="filtro.filtroRuc != null">
+            AND p.ruc_emisor = #{filtro.filtroRuc}
+        </if>
+        <if test="filtro.filtroDesde != null and filtro.filtroHasta != null">
+            AND p.fecha_emision_date BETWEEN #{filtro.filtroDesde} AND #{filtro.filtroHasta}
+        </if>
+        <if test="filtro.filtroTipoComprobante != null">
+            AND p.tipo_comprobante LIKE #{filtro.filtroTipoComprobante}
+        </if>
+        <if test="filtro.filtroRuc != null">
+            AND p.num_doc_ident_receptor LIKE #{filtro.filtroRuc}
+        </if>
+        <if test="filtro.filtroSerie != null">
+            AND p.serie LIKE #{filtro.filtroSerie}
+        </if>
+        <if test="filtro.filtroNumero != null and filtro.filtroNumero != 0">
+            AND p.numero = #{filtro.filtroNumero}
+        </if>
+        <if test="filtro.estadoSunat != null">
+            AND p.estado_sunat LIKE #{filtro.estadoSunat}
+        </if>
+        ORDER BY p.fecha_emision_date DESC, p.numero DESC
+        OFFSET #{filtro.offset} LIMIT #{filtro.perPage}
+    </select>
+</mapper>
+

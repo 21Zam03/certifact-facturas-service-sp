@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.UsuarioMapper">
+    <select id="obtenerUsuarioPorId"
+            parameterType="java.lang.Long"
+            resultType="com.certicom.certifact_facturas_service_sp.dto.model.UsuarioInterDto">
+        SELECT
+            id_user AS idUsuario,
+            oficina_id AS idOficina,
+            de_login AS nombreUsuario,
+            password AS contrasena,
+            full_name AS nombreCompleto,
+            dni AS dni,
+            estado AS estado,
+            enabled AS activo
+        FROM users
+        WHERE id_user = #{id}
+    </select>
+</mapper>
