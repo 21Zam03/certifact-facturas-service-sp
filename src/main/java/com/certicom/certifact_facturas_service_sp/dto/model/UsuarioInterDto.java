@@ -17,5 +17,6 @@ public class UsuarioInterDto {
     private String dni;
     private String estado;
     private Boolean activo;
+    private String ruc;
 
 }

@@ -8,15 +8,17 @@
             parameterType="java.lang.Long"
             resultType="com.certicom.certifact_facturas_service_sp.dto.model.UsuarioInterDto">
         SELECT
-            id_user AS idUsuario,
-            oficina_id AS idOficina,
-            de_login AS nombreUsuario,
-            password AS contrasena,
-            full_name AS nombreCompleto,
-            dni AS dni,
-            estado AS estado,
-            enabled AS activo
-        FROM users
+            u.id_user AS idUsuario,
+            u.oficina_id AS idOficina,
+            u.de_login AS nombreUsuario,
+            u.password AS contrasena,
+            u.full_name AS nombreCompleto,
+            u.dni AS dni,
+            u.estado AS estado,
+            u.enabled AS activo,
+            c.ruc AS ruc
+        FROM users u
+        INNER JOIN company c ON u.cod_company = c.cod_company
         WHERE id_user = #{id}
     </select>
 </mapper>

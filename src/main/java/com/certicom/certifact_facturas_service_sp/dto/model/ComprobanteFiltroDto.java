@@ -2,25 +2,25 @@ package com.certicom.certifact_facturas_service_sp.dto.model;
 
 import lombok.*;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PaymentVoucherFilterDto {
+public class ComprobanteFiltroDto {
 
-    private String filtroDesde;
-    private String filtroHasta;
+    private String rucEmisor;
+    private Date filtroDesde;
+    private Date filtroHasta;
     private String filtroTipoComprobante;
     private String filtroRuc;
     private String filtroSerie;
     private Integer filtroNumero;
-    private Integer pageNumber;
-    private Integer perPage;
-    private Integer estadoSunat;
+    private Integer idOficina;
+    private String estadoSunat;
+    private Integer numPagina;
+    private Integer porPagina;
     private Integer offset;
-
-    private Long idUsuario;
 
 }

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PaymentVoucherInterDto {
+public class ComprobanteInterDto {
 
     private String fechaEmision;
     private String tipoComprobante;

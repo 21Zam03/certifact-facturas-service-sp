@@ -2,7 +2,7 @@ package com.certicom.certifact_facturas_service_sp.config;
 
 import com.certicom.certifact_facturas_service_sp.dto.response.ErrorResponse;
 import com.certicom.certifact_facturas_service_sp.exceptions.ExcepcionNegocio;
-import com.certicom.certifact_facturas_service_sp.exceptions.InternalException;
+import com.certicom.certifact_facturas_service_sp.exceptions.ExcepcionInterno;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,8 +18,8 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse("BUSINESS_ERROR", ex.getMessage()));
     }
 
-    @ExceptionHandler(InternalException.class)
-    public ResponseEntity<ErrorResponse> handleInternalException(InternalException ex) {
+    @ExceptionHandler(ExcepcionInterno.class)
+    public ResponseEntity<ErrorResponse> handleInternalException(ExcepcionInterno ex) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse("INTERNAL_ERROR", ex.getMessage()));

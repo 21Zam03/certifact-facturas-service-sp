@@ -17,7 +17,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public UsuarioInterDto obtenerUsuario(Long idUsuario) {
-        log.info("UsuarioServiceImpl - obtenerUsuario - [idUsuario= {}]", idUsuario);
+        //log.info("UsuarioServiceImpl - obtenerUsuario - [idUsuario= {}]", idUsuario);
         UsuarioInterDto usuario = null;
         if (idUsuario != null) {
             try {
@@ -28,7 +28,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         } else {
             throw new ExcepcionNegocio("idUsuario is null");
         }
-        log.info("UsuarioServiceImpl - usuario={}", usuario == null ? "null" : usuario.toString());
+        //log.info("UsuarioServiceImpl - usuario={}", usuario == null ? "null" : usuario.toString());
         return usuario;
     }
 

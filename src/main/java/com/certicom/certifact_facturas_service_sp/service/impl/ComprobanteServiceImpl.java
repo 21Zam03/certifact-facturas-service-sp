@@ -1,11 +1,13 @@
 package com.certicom.certifact_facturas_service_sp.service.impl;
 
-import com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherFilterDto;
-import com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherInterDto;
+import com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteFiltroDto;
+import com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteInterDto;
 import com.certicom.certifact_facturas_service_sp.entity.ComprobanteEntity;
 import com.certicom.certifact_facturas_service_sp.mapper.InvoiceMapper;
 import com.certicom.certifact_facturas_service_sp.service.ComprobanteService;
+import com.certicom.certifact_facturas_service_sp.util.UtilDate;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -13,34 +15,75 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ComprobanteServiceImpl implements ComprobanteService {
 
     private final InvoiceMapper invoiceMapper;
 
     @Override
-    public List<PaymentVoucherInterDto> searchInvoiceByFilter(
-            Long idUsuario, String filtroDesde, String filtroHasta,
+    public List<ComprobanteInterDto> listarComprobantesConFiltro(
+            String rucEmisor, String filtroDesde, String filtroHasta,
             String filtroTipoComprobante, String filtroRuc, String filtroSerie, Integer filtroNumero,
-            Integer pageNumber, Integer perPage, Integer estadoSunat
+            Integer idOficina, String estadoSunat, Integer pageNumber, Integer perPage
     ) {
-        PaymentVoucherFilterDto filtro = PaymentVoucherFilterDto.builder()
-                .idUsuario(idUsuario)
-                .filtroDesde(filtroDesde)
-                .filtroHasta(filtroHasta)
-                .filtroTipoComprobante(filtroTipoComprobante)
-                .filtroRuc(filtroRuc)
-                .filtroSerie(filtroSerie)
+
+        ComprobanteFiltroDto filtro = ComprobanteFiltroDto.builder()
+                .rucEmisor(rucEmisor)
+                .filtroDesde(UtilDate.stringToDate(filtroDesde, "dd-MM-yyyy"))
+                .filtroHasta(UtilDate.stringToDate(filtroHasta, "dd-MM-yyyy"))
+                .filtroTipoComprobante(filtroTipoComprobante.trim().isEmpty() ? null : filtroTipoComprobante)
+                .filtroRuc("%"+filtroRuc+"%")
+                .filtroSerie("%"+filtroSerie+"%")
                 .filtroNumero(filtroNumero)
-                .pageNumber(pageNumber)
-                .perPage(perPage)
-                .estadoSunat(estadoSunat)
+                .idOficina(idOficina)
+                .estadoSunat("%"+estadoSunat+"%")
+                .numPagina(pageNumber)
+                .porPagina(perPage)
                 .build();
-        return invoiceMapper.findAllSearchForPages(filtro);
+        return invoiceMapper.listarComprobantesConFiltro(filtro);
     }
 
     @Override
-    public List<ComprobanteEntity> getAllPaymentVouchers() {
-        return Collections.emptyList();
+    public Integer contarComprobantes(
+            String rucEmisor, String filtroDesde, String filtroHasta,
+            String filtroTipoComprobante, String filtroRuc, String filtroSerie, Integer filtroNumero,
+            Integer idOficina, String estadoSunat, Integer pageNumber, Integer perPage
+    ) {
+        ComprobanteFiltroDto filtro = ComprobanteFiltroDto.builder()
+                .rucEmisor(rucEmisor)
+                .filtroDesde(UtilDate.stringToDate(filtroDesde, "dd-MM-yyyy"))
+                .filtroHasta(UtilDate.stringToDate(filtroHasta, "dd-MM-yyyy"))
+                .filtroTipoComprobante(filtroTipoComprobante.trim().isEmpty() ? null : filtroTipoComprobante)
+                .filtroRuc("%"+filtroRuc+"%")
+                .filtroSerie("%"+filtroSerie+"%")
+                .filtroNumero(filtroNumero)
+                .idOficina(idOficina)
+                .estadoSunat("%"+estadoSunat+"%")
+                .numPagina(pageNumber)
+                .porPagina(perPage)
+                .build();
+        return invoiceMapper.contarComprobantesConFiltro(filtro);
+    }
+
+    @Override
+    public List<ComprobanteInterDto> obtenerTotalSolesGeneral(
+            String rucEmisor, String filtroDesde, String filtroHasta, String filtroTipoComprobante, String filtroRuc, String filtroSerie,
+            Integer filtroNumero, Integer idOficina, String estadoSunat, Integer pageNumber, Integer perPage
+    ) {
+        ComprobanteFiltroDto filtro = ComprobanteFiltroDto.builder()
+                .rucEmisor(rucEmisor)
+                .filtroDesde(UtilDate.stringToDate(filtroDesde, "dd-MM-yyyy"))
+                .filtroHasta(UtilDate.stringToDate(filtroHasta, "dd-MM-yyyy"))
+                .filtroTipoComprobante(filtroTipoComprobante.trim().isEmpty() ? null : filtroTipoComprobante)
+                .filtroRuc("%"+filtroRuc+"%")
+                .filtroSerie("%"+filtroSerie+"%")
+                .filtroNumero(filtroNumero)
+                .idOficina(idOficina)
+                .estadoSunat("%"+estadoSunat+"%")
+                .numPagina(pageNumber)
+                .porPagina(perPage)
+                .build();
+        return invoiceMapper.obtenerTotalSolesGeneralConFiltro(filtro);
     }
 
 }
