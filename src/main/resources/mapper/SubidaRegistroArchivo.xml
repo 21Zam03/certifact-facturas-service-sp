@@ -3,7 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.UsuarioMapper">
-    <select id="">
-    </select>
+<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.SubidaRegistroArchivoMapper">
+    <insert id="registrarSubidaArchivo"
+            parameterType="com.certicom.certifact_facturas_service_sp.dto.model.SubidaRegistroArchivoDto"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO register_file_upload (bucket, nombre_generado, nombre_archivo, cod_company)
+        VALUES (#{bucket}, #{nombreGenerado}, #{nombreArchivo}, #{codCompany})
+    </insert>
 </mapper>
