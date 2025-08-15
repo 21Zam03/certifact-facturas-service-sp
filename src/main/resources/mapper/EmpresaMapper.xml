@@ -9,4 +9,32 @@
         FROM company c
         WHERE c.ruc = #{ruc}
     </select>
+    <select id="obtenerEmpresaPorRuc"
+            parameterType="string"
+            resultType="com.certicom.certifact_facturas_service_sp.dto.model.EmpresaDto">
+        SELECT
+            c.razon_social AS razon,
+            c.nombre_comercial AS nombreComer,
+            c.ubl_version AS ublVersion,
+            c.ose_id AS oseId,
+            c.bucket,
+            c.envio_automatico_sunat AS envioAutomaticoSunat,
+            c.envio_automatico_guia AS envioAutomaticoGuia,
+            c.envio_automatico_reteperse AS envioAutomaticoReteperse,
+            c.envio_directo AS envioDirecto,
+            c.allow_save_oficina_id AS allowSaveOficina,
+            c.ruc,
+            c.cod_company AS id,
+            c.direccion,
+            c.simultaneo,
+            c.rubro_horeal AS rubroHoreal,
+            c.telefono,
+            c.email,
+            COALESCE(c.cant_comprobante_dinamico,0) AS cantComproDina,
+            c.format,
+            c.view_code AS viewCode,
+            c.id_register_file_send AS idRegisterFileSend
+        FROM company c
+        WHERE c.ruc = #{ruc}
+    </select>
 </mapper>

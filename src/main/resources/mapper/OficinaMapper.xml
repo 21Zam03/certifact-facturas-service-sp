@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.OficinaMapper">
+    <select id="obtenerOficinaPorEmpresaIdYSerieYTipoComprobante"
+            parameterType="map"
+            resultType="com.certicom.certifact_facturas_service_sp.dto.model.OficinaDto">
+        SELECT bo.id
+        FROM branch_offices bo
+        INNER JOIN series s ON s.oficina_id = bo.id
+        WHERE bo.cod_company = #{codCompany}
+        AND s.serie = #{serie}
+        AND s.tipo_documento = #{tipoComprobante}
+        LIMIT 1
+    </select>
+</mapper>

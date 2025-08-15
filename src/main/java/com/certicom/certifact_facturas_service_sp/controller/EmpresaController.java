@@ -1,14 +1,12 @@
 package com.certicom.certifact_facturas_service_sp.controller;
 
+import com.certicom.certifact_facturas_service_sp.dto.model.EmpresaDto;
 import com.certicom.certifact_facturas_service_sp.service.EmpresaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/data/company")
@@ -21,6 +19,11 @@ public class EmpresaController {
     @GetMapping("estado")
     private ResponseEntity<String> obtenerEstadoEmpresaPorRuc(@RequestParam String rucEmisor) {
         return new ResponseEntity<>(empresaService.obtenerEstadoEmpresaPorRuc(rucEmisor), HttpStatus.OK);
+    }
+
+    @GetMapping("/{ruc}")
+    private ResponseEntity<EmpresaDto> obtenerEmpresaPorRuc(@PathVariable String ruc) {
+        return new ResponseEntity<>(empresaService.obtenerEmpresaRuc(ruc), HttpStatus.OK);
     }
 
 }
