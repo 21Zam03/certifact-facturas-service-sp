@@ -11,9 +11,11 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SubidaRegistroArchivoDto {
 
+    private Integer id;
     private String bucket;
     private String nombreOriginal;
     private String nombreGenerado;
     private Integer codCompany;
+    private String estado;
 
 }

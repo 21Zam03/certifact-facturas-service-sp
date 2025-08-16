@@ -6,8 +6,16 @@
 <mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.SubidaRegistroArchivoMapper">
     <insert id="registrarSubidaArchivo"
             parameterType="com.certicom.certifact_facturas_service_sp.dto.model.SubidaRegistroArchivoDto"
-            useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO register_file_upload (bucket, nombre_generado, nombre_archivo, cod_company)
-        VALUES (#{bucket}, #{nombreGenerado}, #{nombreArchivo}, #{codCompany})
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id_register_file_send">
+        INSERT INTO register_file_upload (id_register_file_send, bucket, nombre_generado, nombre_archivo, cod_company, estado)
+        VALUES (nextval('file_upload_seq'), #{bucket}, #{nombreGenerado}, #{nombreOriginal}, #{codCompany}, #{estado})
     </insert>
+    <select id="obtenerSubidaArchivoPorId"
+            parameterType="java.lang.Integer"
+            resultType="com.certicom.certifact_facturas_service_sp.entity.SubidaRegistroArchivoEntity">
+        SELECT
+        *
+        FROM register_file_upload
+        WHERE id_register_file_send = #{id}
+    </select>
 </mapper>
