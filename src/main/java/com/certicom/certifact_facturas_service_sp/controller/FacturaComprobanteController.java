@@ -1,7 +1,9 @@
 package com.certicom.certifact_facturas_service_sp.controller;
 
-import com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteInterDto;
-import com.certicom.certifact_facturas_service_sp.service.ComprobanteService;
+import com.certicom.certifact_facturas_service_sp.dto.model.*;
+import com.certicom.certifact_facturas_service_sp.entity.ComprobanteEntity;
+import com.certicom.certifact_facturas_service_sp.entity.SubidaRegistroArchivoEntity;
+import com.certicom.certifact_facturas_service_sp.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -11,12 +13,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/data/payment-voucher-i")
+@RequestMapping(FacturaComprobanteController.API_PATH)
 @RequiredArgsConstructor
 @Slf4j
-public class ComprobanteController {
+public class FacturaComprobanteController {
+
+    public static final String API_PATH = "/api/invoice-sp";
 
     private final ComprobanteService comprobanteService;
+    private final EmpresaService empresaService;
+    private final OficinaService oficinaService;
+    private final SubidaRegistroArchivoService subidaRegistroArchivoService;
+    private final UsuarioService usuarioService;
+
+    /*COMPROBANTE, PAYMENT VOUCHER*/
 
     @GetMapping
     public ResponseEntity<?> listarComprobantesConFiltro(
@@ -35,7 +45,7 @@ public class ComprobanteController {
         log.info("ComprobanteController - listarComprobantesConFiltro - [rucEmisor={}, filtroDesde={}, filtroHasta={}, filtroTipoComprobante={}, " +
                 "filtroRuc={}, filtroSerie={}, filtroNumero={}, idOficina={}, estadoSunat={}, pageNumber={}, perPage={}]", rucEmisor, filtroDesde, filtroHasta,
                 filtroTipoComprobante, filtroRuc, filtroSerie, filtroNumero, idOficina, estadoSunat, pageNumber, perPage);
-        List<ComprobanteInterDto> data = comprobanteService.listarComprobantesConFiltro(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc,
+        List<ComprobanteDto> data = comprobanteService.listarComprobantesConFiltro(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc,
                 filtroSerie, filtroNumero, idOficina, estadoSunat, pageNumber, perPage);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -73,9 +83,55 @@ public class ComprobanteController {
             @RequestParam(name = "pageNumber", required = true) Integer pageNumber,
             @RequestParam(name = "perPage", required = true) Integer perPage
     ) {
-        List<ComprobanteInterDto> data = comprobanteService.obtenerTotalSolesGeneral(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc, filtroSerie, filtroNumero,
+        List<ComprobanteDto> data = comprobanteService.obtenerTotalSolesGeneral(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc, filtroSerie, filtroNumero,
                 idOficina, estadoSunat, pageNumber, perPage);
         return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<ComprobanteEntity> registrarComprobante(@RequestBody ComprobanteDto comprobanteDto) {
+        log.info("COMPROBANTE: {}", comprobanteDto);
+        //return new ResponseEntity<>(comprobanteService.registrarComprobante(comprobanteDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ComprobanteEntity(), HttpStatus.CREATED);
+    }
+
+    /*USUARIO, USER*/
+
+    @GetMapping("/user/{idUsuario}")
+    public ResponseEntity<?> obtenerUsuario(@PathVariable Long idUsuario) {
+        //log.info("UserController - obtenerUsuario - [idUsuario={}]", idUsuario);
+        UsuarioInterDto usuario = usuarioService.obtenerUsuario(idUsuario);
+        //log.info("UserController - obtenerUsuario - [usuario={}]", usuario.toString());
+        return  new ResponseEntity<>(usuario, HttpStatus.OK);
+    }
+
+
+    /*EMPRESA, COMPANY*/
+
+    @GetMapping("/company/state")
+    private ResponseEntity<String> obtenerEstadoEmpresaPorRuc(@RequestParam String rucEmisor) {
+        return new ResponseEntity<>(empresaService.obtenerEstadoEmpresaPorRuc(rucEmisor), HttpStatus.OK);
+    }
+
+    @GetMapping("/company/{ruc}")
+    private ResponseEntity<EmpresaDto> obtenerEmpresaPorRuc(@PathVariable String ruc) {
+        return new ResponseEntity<>(empresaService.obtenerEmpresaRuc(ruc), HttpStatus.OK);
+    }
+
+    /*OFICINA, OFFICE*/
+
+    @GetMapping("/office")
+    private ResponseEntity<OficinaDto> obtenerOficina(
+            @RequestParam Integer empresaId, @RequestParam String serie, @RequestParam String tipoComprobante
+    ) {
+        return new ResponseEntity<>(oficinaService.obtenerOficinaPorEmpresaIdYSerieYTipoComprobante(empresaId, serie, tipoComprobante), HttpStatus.OK);
+    }
+
+    /*ARCHIVO, FILE */
+
+    @PostMapping("/file")
+    private ResponseEntity<SubidaRegistroArchivoEntity> registrarArchivo(@RequestBody SubidaRegistroArchivoDto subidaRegistroArchivoDto) {
+        return new ResponseEntity<>(subidaRegistroArchivoService.regitrarSubidaArchivo(subidaRegistroArchivoDto), HttpStatus.CREATED);
     }
 
 }
