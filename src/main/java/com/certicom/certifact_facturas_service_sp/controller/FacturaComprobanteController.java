@@ -91,8 +91,8 @@ public class FacturaComprobanteController {
     @PostMapping
     public ResponseEntity<ComprobanteEntity> registrarComprobante(@RequestBody ComprobanteDto comprobanteDto) {
         log.info("COMPROBANTE: {}", comprobanteDto);
-        //return new ResponseEntity<>(comprobanteService.registrarComprobante(comprobanteDto), HttpStatus.CREATED);
-        return new ResponseEntity<>(new ComprobanteEntity(), HttpStatus.CREATED);
+        return new ResponseEntity<>(comprobanteService.registrarComprobante(comprobanteDto), HttpStatus.CREATED);
+        //return new ResponseEntity<>(new ComprobanteEntity(), HttpStatus.CREATED);
     }
 
     /*USUARIO, USER*/

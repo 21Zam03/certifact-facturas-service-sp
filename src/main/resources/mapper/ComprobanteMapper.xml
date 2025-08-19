@@ -134,20 +134,12 @@
             parameterType="com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteDto"
             useGeneratedKeys="true" keyProperty="id" keyColumn="id_payment_voucher">
         INSERT INTO payment_voucher
-            (codigo_moneda, denominacion_receptor, estado, estado_anterior, estado_item, fecha_emision, fecha_emision_date,
-            fecha_modificacion, fecha_registro, fecha_vencimiento, hora_emision, identificador_documento, monto_decuento_global, monto_imp_total_venta,
-             monto_sum_otros_carg, monto_total_anticipos, motivo_nota, num_doc_ident_receptor, numero, numero_afectado, ruc_emisor, serie, serie_afectado,
-             serie_numero_referencia, serie_numero_guia, sumatoria_igv, sumatoria_isc, sumatoria_otros_trib, tipo_comprobante, tip_comprob_afectado, tipo_doc_ident_receptor,
-             tipo_operacion, total_descuento, total_oper_exonerada, total_oper_exportada, total_oper_gratuita, total_oper_gravada, total_opera_inafecta, user_name, user_name_modify,
-             direccion_receptor, estado_sunat, mensaje_respuesta, email_receptor, detraccion, motivo_anulacion, uuuid, orden_compra, codigo_respuesta_sunat, porcentaje_detraccion,
-             boleta_anulada_sin_emitir, ubl_version, sum_ivap, sum_trib_grat, total_base_isc, total_base_otros_trib, total_oper_ivap, codigo_hash, codigo_medio_pago, cuenta_financiera_beneficiario,
-             codigo_bien_detraccion, monto_detraccion, oficina_id, estado_anticipo, hidro_matricula, hidro_lugar_descarga, hidro_embarcacion, hidro_descripcion_tipo, hidro_fecha_descarga,
-             hidro_cantidad, afectacion_igv, cod_prod_sunat, cod_producto, cod_tipo_afectacion_igv, cod_tip_sistema_isc, cod_unid_medida, codigo_dscto, descripcion_producto, descuento,
-             detalle_viaje_detraccion, direccion_origen_detraccion, monto_base_exone, monto_base_export, monto_base_grat, monto_base_icbper, monto_base_igv, monto_base_inafec, monto_base_isc,
-             monto_base_ivap, monto_base_otros, monto_icbper, monto_ivap, monto_otros_trib, monto_tri_vta_grat, porcent_igv, porcent_isc, porcent_ivap, porcent_otr_trib, porcent_vta_grat,
-             precio_venta_unit, sistema_isc, ubigeo_destino_detraccion, ubigeo_origen_detraccion, valor_carga_efectiva, valor_carga_util, valor_servicio_transporte, valor_referencial_unit,
-             valor_unit, valor_venta, monto_cuota, monto_pendiente, n_cuota, numero_cuota, tipo_transaccion, cantidad_cuotas, pago_cuenta, monto_retencion, porcentaje_retencion, retencion, pagado)
-        VALUES #{bucket}, #{nombreGenerado}, #{nombreOriginal}, #{codCompany}, #{estado})
+            (ruc_emisor, tipo_comprobante, serie, numero, fecha_emision, codigo_moneda, fecha_vencimiento, tip_doc_ident_receptor, num_doc_ident_receptor,
+            denominacion_receptor, direccion_receptor, email_receptor, total_oper_gravada, sumatoria_igv, monto_imp_total_venta, tipo_operacion, fecha_registro,
+        )
+        VALUES (#{rucEmisor}, #{tipoComprobante}, #{serie}, #{numero}, #{fechaEmision}, #{codigoMoneda}, #{fechaVencimiento}, #{tipoDocumentoReceptor},
+        #{numeroDocumentoReceptor}, #{denominacionReceptor}, #{direccionReceptor}, #{emailReceptor}, #{totalValorVentaGravada}, #{totalIgv}, #{importeTotalVenta},
+        #{codigoTipoOperacion})
     </insert>
 </mapper>
 
