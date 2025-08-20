@@ -2,6 +2,7 @@ package com.certicom.certifact_facturas_service_sp.controller;
 
 import com.certicom.certifact_facturas_service_sp.dto.model.*;
 import com.certicom.certifact_facturas_service_sp.entity.ComprobanteEntity;
+import com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity;
 import com.certicom.certifact_facturas_service_sp.entity.SubidaRegistroArchivoEntity;
 import com.certicom.certifact_facturas_service_sp.service.*;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class FacturaComprobanteController {
 
     public static final String API_PATH = "/api/invoice-sp";
 
-    private final ComprobanteService comprobanteService;
+    private final PaymentVoucherService paymentVoucherService;
     private final EmpresaService empresaService;
     private final OficinaService oficinaService;
     private final SubidaRegistroArchivoService subidaRegistroArchivoService;
@@ -45,7 +46,7 @@ public class FacturaComprobanteController {
         log.info("ComprobanteController - listarComprobantesConFiltro - [rucEmisor={}, filtroDesde={}, filtroHasta={}, filtroTipoComprobante={}, " +
                 "filtroRuc={}, filtroSerie={}, filtroNumero={}, idOficina={}, estadoSunat={}, pageNumber={}, perPage={}]", rucEmisor, filtroDesde, filtroHasta,
                 filtroTipoComprobante, filtroRuc, filtroSerie, filtroNumero, idOficina, estadoSunat, pageNumber, perPage);
-        List<ComprobanteDto> data = comprobanteService.listarComprobantesConFiltro(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc,
+        List<ComprobanteDto> data = paymentVoucherService.listarComprobantesConFiltro(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc,
                 filtroSerie, filtroNumero, idOficina, estadoSunat, pageNumber, perPage);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -64,7 +65,7 @@ public class FacturaComprobanteController {
             @RequestParam(name = "pageNumber", required = true) Integer pageNumber,
             @RequestParam(name = "perPage", required = true) Integer perPage
     ) {
-       Integer cantidad = comprobanteService.contarComprobantes(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc, filtroSerie, filtroNumero,
+       Integer cantidad = paymentVoucherService.contarComprobantes(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc, filtroSerie, filtroNumero,
                idOficina, estadoSunat, pageNumber, perPage);
        return new ResponseEntity<>(cantidad, HttpStatus.OK);
     }
@@ -83,16 +84,21 @@ public class FacturaComprobanteController {
             @RequestParam(name = "pageNumber", required = true) Integer pageNumber,
             @RequestParam(name = "perPage", required = true) Integer perPage
     ) {
-        List<ComprobanteDto> data = comprobanteService.obtenerTotalSolesGeneral(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc, filtroSerie, filtroNumero,
+        List<ComprobanteDto> data = paymentVoucherService.obtenerTotalSolesGeneral(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc, filtroSerie, filtroNumero,
                 idOficina, estadoSunat, pageNumber, perPage);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<ComprobanteEntity> registrarComprobante(@RequestBody ComprobanteDto comprobanteDto) {
-        log.info("COMPROBANTE: {}", comprobanteDto);
-        return new ResponseEntity<>(comprobanteService.registrarComprobante(comprobanteDto), HttpStatus.CREATED);
+    public ResponseEntity<PaymentVoucherEntity> registrarComprobante(@RequestBody PaymentVoucherEntity paymentVoucherEntity) {
+        log.info("COMPROBANTE: {}", paymentVoucherEntity);
+        return new ResponseEntity<>(paymentVoucherService.registrarComprobante(paymentVoucherEntity), HttpStatus.CREATED);
         //return new ResponseEntity<>(new ComprobanteEntity(), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PaymentVoucherEntity> findPaymentVoucherById(@PathVariable(name = "id") Long idPaymentVoucher) {
+        return new ResponseEntity<>(paymentVoucherService.findPaymentVoucherById(idPaymentVoucher), HttpStatus.OK);
     }
 
     /*USUARIO, USER*/

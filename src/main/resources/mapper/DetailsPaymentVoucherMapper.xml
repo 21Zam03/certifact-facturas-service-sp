@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.DetailsPaymentVoucherMapper">
+    <insert id="registrarDetailsPaymentVoucher" parameterType="com.certicom.certifact_facturas_service_sp.entity.DetailsPaymentVoucherEntity">
+        INSERT INTO details_payment_voucher
+            (id_details_payment, afectacion_igv, cantidad, cod_producto, cod_prod_sunat, cod_tip_afectacion_igv,
+                cod_tip_sistema_isc, cod_unid_medida, descripcion_producto, descuento, estado, numero_item, precio_venta_unit,
+                sistema_isc, valor_referencial_unit, valor_unit, valor_venta, id_payment_voucher, codigo_dscto, cod_producto_gs1,
+                monto_base_exone, monto_base_export, monto_base_grat, monto_base_igv, monto_base_inafec, monto_base_isc,
+                monto_base_ivap, monto_otros_trib, porcent_igv, porcent_isc, porcent_ivap, porcent_otr_trib, porcent_vta_grat,
+                monto_trib_vta_grat, detalle_viaje_detraccion, direccion_destino_detraccion, direccion_origen_detraccion, ubigeo_destino_detraccion,
+                ubigeo_origen_detraccion, valor_carga_efectiva, valor_carga_util, valor_servicio_transporte, hidro_cantidad, hidro_descripcion_tipo,
+                hidro_embarcacion, hidro_fecha_descarga, hidro_lugar_descarga, hidro_matricula, monto_base_icbper, monto_icbper,instrucciones_especiales,
+                marca, unidad_manejo, adicional)
+        VALUES (nextval('detail_payment_voucher_seq'), #{afectacionIGV}, #{cantidad}, #{codigoProducto}, #{codigoProductoSunat},
+                #{codigoTipoAfectacionIGV}, #{codigoTipoSistemaISC}, #{codigoUnidadMedida}, #{descripcion}, #{descuento}, #{estado}, #{numeroItem},
+                #{precioVentaUnitario}, #{sistemaISC}, #{valorReferencialUnitario}, #{valorUnitario}, #{valorVenta}, #{idPaymentVoucher}, #{codigoDescuento},
+                #{codigoProductoGS1}, #{montoBaseExonerado}, #{montoBaseExportacion}, #{montoBaseGratuito}, #{montoBaseIgv}, #{montoBaseInafecto}, #{montoBaseIsc},
+                #{montoBaseIvap}, #{montoBaseOtrosTributos}, #{porcentajeIgv}, #{porcentajeIsc}, #{porcentajeIvap}, #{porcentajeOtrosTributos}, #{porcentajeTributoVentaGratuita},
+                #{tributoVentaGratuita}, #{detalleViajeDetraccion}, #{direccionDestinoDetraccion}, #{direccionOrigenDetraccion}, #{ubigeoDestinoDetraccion}, #{ubigeoOrigenDetraccion},
+                #{valorCargaEfectiva}, #{valorCargaUtil}, #{valorServicioTransporte}, #{hidroCantidad}, #{hidroDescripcionTipo}, #{hidroEmbarcacion}, #{hidroFechaDescarga},
+                #{hidroLugarDescarga}, #{hidroMatricula}, #{montoBaseIcbper}, #{montoIcbper}, #{instruccionesEspeciales}, #{marca}, #{unidadManejo}, #{adicional})
+    </insert>
+</mapper>

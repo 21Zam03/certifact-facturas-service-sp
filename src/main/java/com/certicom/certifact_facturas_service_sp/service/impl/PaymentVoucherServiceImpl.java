@@ -2,31 +2,31 @@ package com.certicom.certifact_facturas_service_sp.service.impl;
 
 import com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteFiltroDto;
 import com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteDto;
-import com.certicom.certifact_facturas_service_sp.dto.others.Anticipo;
-import com.certicom.certifact_facturas_service_sp.dto.others.CampoAdicional;
-import com.certicom.certifact_facturas_service_sp.dto.others.CampoAdicionalComprobante;
-import com.certicom.certifact_facturas_service_sp.dto.others.ComprobanteArchivo;
-import com.certicom.certifact_facturas_service_sp.entity.ComprobanteEntity;
+import com.certicom.certifact_facturas_service_sp.entity.*;
 import com.certicom.certifact_facturas_service_sp.mapper.*;
-import com.certicom.certifact_facturas_service_sp.service.ComprobanteService;
+import com.certicom.certifact_facturas_service_sp.service.PaymentVoucherService;
 import com.certicom.certifact_facturas_service_sp.util.UtilDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ComprobanteServiceImpl implements ComprobanteService {
+public class PaymentVoucherServiceImpl implements PaymentVoucherService {
 
-    private final ComprobanteMapper comprobanteMapper;
+    private final PaymentVoucherMapper paymentVoucherMapper;
     private final ComprobanteArchivoMapper comprobanteArchivoMapper;
     private final AnticipoMapper anticipoMapper;
     private final CampoAdicionalMapper campoAdicionalMapper;
-    private final CampoAdicionalComprobanteMapper campoAdicionalComprobanteMapper;
+    private final AdditionalFieldMapper additionalFieldMapper;
+    private final CuotasPaymentVoucherMapper cuotasPaymentVoucherMapper;
+    private final DetailsPaymentVoucherMapper detailsPaymentVoucherMapper;
 
     @Override
     public List<ComprobanteDto> listarComprobantesConFiltro(
@@ -48,7 +48,7 @@ public class ComprobanteServiceImpl implements ComprobanteService {
                 .numPagina(pageNumber)
                 .porPagina(perPage)
                 .build();
-        return comprobanteMapper.listarComprobantesConFiltro(filtro);
+        return paymentVoucherMapper.listarComprobantesConFiltro(filtro);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class ComprobanteServiceImpl implements ComprobanteService {
                 .numPagina(pageNumber)
                 .porPagina(perPage)
                 .build();
-        return comprobanteMapper.contarComprobantesConFiltro(filtro);
+        return paymentVoucherMapper.contarComprobantesConFiltro(filtro);
     }
 
     @Override
@@ -91,72 +91,81 @@ public class ComprobanteServiceImpl implements ComprobanteService {
                 .numPagina(pageNumber)
                 .porPagina(perPage)
                 .build();
-        return comprobanteMapper.obtenerTotalSolesGeneralConFiltro(filtro);
+        return paymentVoucherMapper.obtenerTotalSolesGeneralConFiltro(filtro);
     }
 
     @Transactional
     @Override
-    public ComprobanteEntity registrarComprobante(ComprobanteDto comprobanteDto) {
-        int result = comprobanteMapper.registrarComprobante(comprobanteDto);
+    public PaymentVoucherEntity registrarComprobante(PaymentVoucherEntity paymentVoucherEntity) {
+        paymentVoucherEntity.setFechaRegistro(new Timestamp(System.currentTimeMillis()));
+        paymentVoucherEntity.setFechaEmisionDate(new Date());
+        paymentVoucherEntity.setOficinaId(paymentVoucherEntity.getOficinaId());
+
+        int result = paymentVoucherMapper.registrarComprobante(paymentVoucherEntity);
         if(result == 0){
             throw new RuntimeException("No se pudo registrar el comprobante");
         }
         log.info("Resultado: {}", result);
-        /*
-        for (int i =0; i<comprobanteDto.getComprobanteArchivoList().size();i++) {
-            ComprobanteArchivo comprobanteArchivo = ComprobanteArchivo.builder()
-                    .tipoArchivo(comprobanteDto.getComprobanteArchivoList().get(i).getTipoArchivo())
-                    .estadoArchivo(comprobanteDto.getComprobanteArchivoList().get(i).getEstadoArchivo())
-                    .orden(comprobanteDto.getComprobanteArchivoList().get(i).getOrden())
-                    .idPaymentVoucher(comprobanteDto.getId())
-                    .subidaRegistroArchivoId(comprobanteDto.getComprobanteArchivoList().get(i).getSubidaRegistroArchivoId())
-                    .build();
-            result = comprobanteArchivoMapper.registrarComprobanteArchivo(comprobanteArchivo);
+        log.info("ID: {}", paymentVoucherEntity.getIdPaymentVoucher());
+
+        for (int i =0; i<paymentVoucherEntity.getComprobanteArchivoEntityList().size();i++) {
+            paymentVoucherEntity.getComprobanteArchivoEntityList().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
+            result = comprobanteArchivoMapper.registrarComprobanteArchivo(paymentVoucherEntity.getComprobanteArchivoEntityList().get(i));
             if(result == 0){
                 throw new RuntimeException("No se pudo registrar el comprobante archivo");
             }
         }
 
-        if (comprobanteDto.getAnticipos() != null && !comprobanteDto.getAnticipos().isEmpty()) {
-            for (int i = 0; i < comprobanteDto.getAnticipos().size(); i++) {
-                Anticipo anticipo = Anticipo.builder()
-                        .idPaymentVoucher(comprobanteDto.getId())
-                        .serieAnticipo(comprobanteDto.getAnticipos().get(i).getSerieAnticipo())
-                        .numeroAnticipo(comprobanteDto.getAnticipos().get(i).getNumeroAnticipo())
-                        .tipoDocumentoAnticipo(comprobanteDto.getAnticipos().get(i).getTipoDocumentoAnticipo())
-                        .montoAnticipado(comprobanteDto.getAnticipos().get(i).getMontoAnticipado())
-                        .build();
-                result = anticipoMapper.registrarAnticipo(anticipo);
+        if (paymentVoucherEntity.getAnticipoEntityList() != null && !paymentVoucherEntity.getAnticipoEntityList().isEmpty()) {
+            for (int i = 0; i < paymentVoucherEntity.getAnticipoEntityList().size(); i++) {
+                paymentVoucherEntity.getAnticipoEntityList().get(i).setIdpaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
+                result = anticipoMapper.registrarAnticipo(paymentVoucherEntity.getAnticipoEntityList().get(i));
                 if(result == 0){
                     throw new RuntimeException("No se pudo registrar el anticipo");
                 }
             }
         }
 
-        if(comprobanteDto.getCamposAdicionales() != null && !comprobanteDto.getCamposAdicionales().isEmpty()) {
-            for (int i = 0; i < comprobanteDto.getCamposAdicionales().size(); i++) {
-                Long campoAdicionalId = campoAdicionalMapper.obtenerCampoAdicionalIdPorNombre(comprobanteDto.getCamposAdicionales().get(i).getNombreCampo());
-                if (campoAdicionalId == null) {
-                    throw new RuntimeException("Error al obtener el campo adicional");
-                }
-                CampoAdicionalComprobante campoAdicionalComprobante = CampoAdicionalComprobante.builder()
-                        .valorCampo(comprobanteDto.getCamposAdicionales().get(i).getValorCampo())
-                        .idComprobante(comprobanteDto.getId())
-                        .idCampoAdicional(campoAdicionalId)
-                        .build();
-                result = campoAdicionalComprobanteMapper.registrarCampoAdicionalComprobante(campoAdicionalComprobante);
+        if(paymentVoucherEntity.getComprobanteCampoAdicionalEntityList() != null && !paymentVoucherEntity.getComprobanteCampoAdicionalEntityList().isEmpty()) {
+            for (int i = 0; i < paymentVoucherEntity.getComprobanteCampoAdicionalEntityList().size(); i++) {
+                paymentVoucherEntity.getComprobanteCampoAdicionalEntityList().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
+                result = additionalFieldMapper.registrarCampoAdicionalComprobante(paymentVoucherEntity.getComprobanteCampoAdicionalEntityList().get(i));
                 if(result == 0){
                     throw new RuntimeException("No se pudo registrar el campo adicional");
                 }
             }
         }
-        ComprobanteEntity comprobante = comprobanteMapper.obtenerComprobantePorId(comprobanteDto.getId());
-        if(comprobante == null){
-            throw new RuntimeException("Error al obtener comprobante");
+
+        if (paymentVoucherEntity.getCuotasEntityList() != null && !paymentVoucherEntity.getCuotasEntityList().isEmpty()) {
+            for (int i=0; i<paymentVoucherEntity.getCuotasEntityList().size(); i++) {
+                paymentVoucherEntity.getCuotasEntityList().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
+                result = cuotasPaymentVoucherMapper.registrarCuotaPaymentVoucher(paymentVoucherEntity.getCuotasEntityList().get(i));
+                if(result == 0){
+                    throw new RuntimeException("No se pudo registrar el campo adicional");
+                }
+            }
         }
 
-        * */
-        return new ComprobanteEntity();
+        if(paymentVoucherEntity.getComprobanteDetalleEntityList() != null && !paymentVoucherEntity.getComprobanteDetalleEntityList().isEmpty()) {
+            for (int i = 0; i < paymentVoucherEntity.getComprobanteDetalleEntityList().size(); i++) {
+                paymentVoucherEntity.getComprobanteDetalleEntityList().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
+                result = detailsPaymentVoucherMapper.registrarDetailsPaymentVoucher(paymentVoucherEntity.getComprobanteDetalleEntityList().get(i));
+                if(result == 0){
+                    throw new RuntimeException("No se pudo registrar el campo adicional");
+                }
+            }
+        }
+
+        PaymentVoucherEntity entity = paymentVoucherMapper.getPaymentVoucherById(paymentVoucherEntity.getIdPaymentVoucher());
+        if(entity == null){
+            throw new RuntimeException("Error al obtener comprobante");
+        }
+        return entity;
+    }
+
+    @Override
+    public PaymentVoucherEntity findPaymentVoucherById(Long id) {
+        return paymentVoucherMapper.getPaymentVoucherById(id);
     }
 
 }

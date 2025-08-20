@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.ComprobanteMapper">
+<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.PaymentVoucherMapper">
 
     <select id="listarComprobantesConFiltro"
             parameterType="com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteFiltroDto"
@@ -92,6 +92,7 @@
             </if>
         </where>
     </select>
+
     <select id="obtenerTotalSolesGeneralConFiltro"
             parameterType="com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteFiltroDto"
             resultType="com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteDto">
@@ -130,16 +131,25 @@
         AND p.estado != '05'
         GROUP BY p.codigo_moneda
     </select>
+
     <insert id="registrarComprobante"
             parameterType="com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteDto"
-            useGeneratedKeys="true" keyProperty="id" keyColumn="id_payment_voucher">
+            useGeneratedKeys="true" keyProperty="idPaymentVoucher" keyColumn="id_payment_voucher">
         INSERT INTO payment_voucher
-            (ruc_emisor, tipo_comprobante, serie, numero, fecha_emision, codigo_moneda, fecha_vencimiento, tip_doc_ident_receptor, num_doc_ident_receptor,
-            denominacion_receptor, direccion_receptor, email_receptor, total_oper_gravada, sumatoria_igv, monto_imp_total_venta, tipo_operacion, fecha_registro,
-        )
-        VALUES (#{rucEmisor}, #{tipoComprobante}, #{serie}, #{numero}, #{fechaEmision}, #{codigoMoneda}, #{fechaVencimiento}, #{tipoDocumentoReceptor},
-        #{numeroDocumentoReceptor}, #{denominacionReceptor}, #{direccionReceptor}, #{emailReceptor}, #{totalValorVentaGravada}, #{totalIgv}, #{importeTotalVenta},
-        #{codigoTipoOperacion})
+            (id_payment_voucher, ruc_emisor, tipo_comprobante, serie, numero, fecha_emision, codigo_moneda, fecha_vencimiento, tip_doc_ident_receptor, num_doc_ident_receptor,
+            denominacion_receptor, direccion_receptor, email_receptor, total_oper_gravada, sumatoria_igv, monto_imp_total_venta, tipo_operacion, fecha_emision_date, fecha_registro,
+             identificador_documento, codigo_hash, detraccion, estado, estado_anterior, estado_sunat, hora_emision, mensaje_respuesta, ubl_version, user_name, user_name_modify, uuid,
+             oficina_id, tipo_transaccion, monto_pendiente)
+        VALUES (nextval('comprobante_pago_seq'), #{rucEmisor}, #{tipoComprobante}, #{serie}, #{numero}, #{fechaEmision}, #{codigoMoneda}, #{fechaVencimiento}, #{tipoDocIdentReceptor},
+        #{numDocIdentReceptor}, #{denominacionReceptor}, #{direccionReceptor}, #{emailReceptor}, #{totalValorVentaOperacionGravada}, #{sumatoriaIGV}, #{montoImporteTotalVenta},
+        #{tipoOperacion}, #{fechaEmisionDate}, #{fechaRegistro, javaType=java.sql.Timestamp, jdbcType=TIMESTAMP}, #{identificadorDocumento}, #{codigoHash}, #{detraccion}, #{estado},
+        #{estadoAnterior}, #{estadoSunat}, #{horaEmision}, #{mensajeRespuesta}, #{ublVersion}, #{userName}, #{userNameModify}, #{uuid}, #{oficinaId}, #{tipoTransaccion}, #{montoPendiente})
     </insert>
+
+    <select id="getPaymentVoucherById" parameterType="long" resultType="com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity">
+        select p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash from payment_voucher p
+        where p.id_payment_voucher = #{id}
+    </select>
+
 </mapper>
 
