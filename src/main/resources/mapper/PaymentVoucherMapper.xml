@@ -7,7 +7,7 @@
 
     <select id="listarComprobantesConFiltro"
             parameterType="com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteFiltroDto"
-            resultType="com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteDto">
+            resultType="com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherDto">
         SELECT
         p.fecha_emision AS fechaEmision,
         p.tipo_comprobante AS tipoComprobante,
@@ -95,7 +95,7 @@
 
     <select id="obtenerTotalSolesGeneralConFiltro"
             parameterType="com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteFiltroDto"
-            resultType="com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteDto">
+            resultType="com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherDto">
         SELECT p.codigo_moneda AS codigoMoneda,
         COALESCE(
         SUM(
@@ -133,7 +133,7 @@
     </select>
 
     <insert id="registrarComprobante"
-            parameterType="com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteDto"
+            parameterType="com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherDto"
             useGeneratedKeys="true" keyProperty="idPaymentVoucher" keyColumn="id_payment_voucher">
         INSERT INTO payment_voucher
             (id_payment_voucher, ruc_emisor, tipo_comprobante, serie, numero, fecha_emision, codigo_moneda, fecha_vencimiento, tip_doc_ident_receptor, num_doc_ident_receptor,

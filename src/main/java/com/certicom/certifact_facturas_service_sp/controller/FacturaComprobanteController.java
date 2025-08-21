@@ -1,9 +1,9 @@
 package com.certicom.certifact_facturas_service_sp.controller;
 
 import com.certicom.certifact_facturas_service_sp.dto.model.*;
-import com.certicom.certifact_facturas_service_sp.entity.ComprobanteEntity;
 import com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity;
 import com.certicom.certifact_facturas_service_sp.entity.SubidaRegistroArchivoEntity;
+import com.certicom.certifact_facturas_service_sp.entity.TmpVoucherSendBillEntity;
 import com.certicom.certifact_facturas_service_sp.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +26,7 @@ public class FacturaComprobanteController {
     private final OficinaService oficinaService;
     private final SubidaRegistroArchivoService subidaRegistroArchivoService;
     private final UsuarioService usuarioService;
+    private final TmpVoucherSendBillService tmpVoucherSendBillService;
 
     /*COMPROBANTE, PAYMENT VOUCHER*/
 
@@ -46,7 +47,7 @@ public class FacturaComprobanteController {
         log.info("ComprobanteController - listarComprobantesConFiltro - [rucEmisor={}, filtroDesde={}, filtroHasta={}, filtroTipoComprobante={}, " +
                 "filtroRuc={}, filtroSerie={}, filtroNumero={}, idOficina={}, estadoSunat={}, pageNumber={}, perPage={}]", rucEmisor, filtroDesde, filtroHasta,
                 filtroTipoComprobante, filtroRuc, filtroSerie, filtroNumero, idOficina, estadoSunat, pageNumber, perPage);
-        List<ComprobanteDto> data = paymentVoucherService.listarComprobantesConFiltro(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc,
+        List<PaymentVoucherDto> data = paymentVoucherService.listarComprobantesConFiltro(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc,
                 filtroSerie, filtroNumero, idOficina, estadoSunat, pageNumber, perPage);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -84,7 +85,7 @@ public class FacturaComprobanteController {
             @RequestParam(name = "pageNumber", required = true) Integer pageNumber,
             @RequestParam(name = "perPage", required = true) Integer perPage
     ) {
-        List<ComprobanteDto> data = paymentVoucherService.obtenerTotalSolesGeneral(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc, filtroSerie, filtroNumero,
+        List<PaymentVoucherDto> data = paymentVoucherService.obtenerTotalSolesGeneral(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc, filtroSerie, filtroNumero,
                 idOficina, estadoSunat, pageNumber, perPage);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -138,6 +139,16 @@ public class FacturaComprobanteController {
     @PostMapping("/file")
     private ResponseEntity<SubidaRegistroArchivoEntity> registrarArchivo(@RequestBody SubidaRegistroArchivoDto subidaRegistroArchivoDto) {
         return new ResponseEntity<>(subidaRegistroArchivoService.regitrarSubidaArchivo(subidaRegistroArchivoDto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/tmpVoucher/{id}")
+    private ResponseEntity<TmpVoucherSendBillEntity> findTmpVoucherByIdPaymentVoucher(@PathVariable Long id) {
+        return new ResponseEntity<>(tmpVoucherSendBillService.findTmpVoucherByIdPaymentVoucher(id),HttpStatus.OK);
+    }
+
+    @PostMapping("/tmpVoucher")
+    private ResponseEntity<?> saveTmpVoucher(@RequestBody TmpVoucherSendBillEntity tmpVoucherSendBillEntity) {
+        return new ResponseEntity<>(tmpVoucherSendBillService.saveTmpVoucher(tmpVoucherSendBillEntity),HttpStatus.OK);
     }
 
 }

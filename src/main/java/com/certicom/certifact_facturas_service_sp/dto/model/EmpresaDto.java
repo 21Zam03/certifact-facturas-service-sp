@@ -30,7 +30,7 @@ public class EmpresaDto {
     private Boolean envioDirecto;
     private String direccion;
     private Boolean simultaneo;
-    private Boolean saveOficina;
+    private Boolean allowSaveOficina;
     private Integer cantComproDina;
     private BigDecimal idRegisterFileSend;
     private Integer format;

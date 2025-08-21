@@ -8,5 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface UsuarioMapper {
 
     UsuarioInterDto obtenerUsuarioPorId(@PathVariable("idUsuario") Long idUsuario);
+    UsuarioInterDto findUserByUsername(@PathVariable("username") String username);
 
 }

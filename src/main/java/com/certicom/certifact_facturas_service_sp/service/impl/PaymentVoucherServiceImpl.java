@@ -1,7 +1,7 @@
 package com.certicom.certifact_facturas_service_sp.service.impl;
 
 import com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteFiltroDto;
-import com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteDto;
+import com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherDto;
 import com.certicom.certifact_facturas_service_sp.entity.*;
 import com.certicom.certifact_facturas_service_sp.mapper.*;
 import com.certicom.certifact_facturas_service_sp.service.PaymentVoucherService;
@@ -29,7 +29,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     private final DetailsPaymentVoucherMapper detailsPaymentVoucherMapper;
 
     @Override
-    public List<ComprobanteDto> listarComprobantesConFiltro(
+    public List<PaymentVoucherDto> listarComprobantesConFiltro(
             String rucEmisor, String filtroDesde, String filtroHasta,
             String filtroTipoComprobante, String filtroRuc, String filtroSerie, Integer filtroNumero,
             Integer idOficina, String estadoSunat, Integer pageNumber, Integer perPage
@@ -74,7 +74,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     }
 
     @Override
-    public List<ComprobanteDto> obtenerTotalSolesGeneral(
+    public List<PaymentVoucherDto> obtenerTotalSolesGeneral(
             String rucEmisor, String filtroDesde, String filtroHasta, String filtroTipoComprobante, String filtroRuc, String filtroSerie,
             Integer filtroNumero, Integer idOficina, String estadoSunat, Integer pageNumber, Integer perPage
     ) {
@@ -99,7 +99,6 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     public PaymentVoucherEntity registrarComprobante(PaymentVoucherEntity paymentVoucherEntity) {
         paymentVoucherEntity.setFechaRegistro(new Timestamp(System.currentTimeMillis()));
         paymentVoucherEntity.setFechaEmisionDate(new Date());
-        paymentVoucherEntity.setOficinaId(paymentVoucherEntity.getOficinaId());
 
         int result = paymentVoucherMapper.registrarComprobante(paymentVoucherEntity);
         if(result == 0){
@@ -108,8 +107,12 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         log.info("Resultado: {}", result);
         log.info("ID: {}", paymentVoucherEntity.getIdPaymentVoucher());
 
+        //Proximamente registrar archivos desde aqui y no desde la capa de ng
+
         for (int i =0; i<paymentVoucherEntity.getComprobanteArchivoEntityList().size();i++) {
             paymentVoucherEntity.getComprobanteArchivoEntityList().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
+            //Por ahora dejarlo asi, pero se tiene que integrar el metodo de inserccion de archivos a la base de datos en este mismo metodo [registrarComprobante]
+            //paymentVoucherEntity.getComprobanteArchivoEntityList().get(i).setIdRegisterFileSend();
             result = comprobanteArchivoMapper.registrarComprobanteArchivo(paymentVoucherEntity.getComprobanteArchivoEntityList().get(i));
             if(result == 0){
                 throw new RuntimeException("No se pudo registrar el comprobante archivo");

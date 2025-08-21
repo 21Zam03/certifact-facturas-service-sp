@@ -1,14 +1,13 @@
 package com.certicom.certifact_facturas_service_sp.service;
 
-import com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteDto;
-import com.certicom.certifact_facturas_service_sp.entity.ComprobanteEntity;
+import com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherDto;
 import com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity;
 
 import java.util.List;
 
 public interface PaymentVoucherService {
 
-    List<ComprobanteDto> listarComprobantesConFiltro(
+    List<PaymentVoucherDto> listarComprobantesConFiltro(
             String rucEmisor, String filtroDesde, String filtroHasta,
             String filtroTipoComprobante, String filtroRuc, String filtroSerie, Integer filtroNumero,
             Integer idOficina, String estadoSunat, Integer pageNumber, Integer perPage
@@ -20,7 +19,7 @@ public interface PaymentVoucherService {
             Integer idOficina, String estadoSunat, Integer pageNumber, Integer perPage
     );
 
-    List<ComprobanteDto> obtenerTotalSolesGeneral(
+    List<PaymentVoucherDto> obtenerTotalSolesGeneral(
             String rucEmisor, String filtroDesde, String filtroHasta,
             String filtroTipoComprobante, String filtroRuc, String filtroSerie, Integer filtroNumero,
             Integer idOficina, String estadoSunat, Integer pageNumber, Integer perPage

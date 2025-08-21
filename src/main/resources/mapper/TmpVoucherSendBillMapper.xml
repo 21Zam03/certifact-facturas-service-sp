@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.TmpVoucherSendBillMapper">
+    <select id="findTmpVoucherByIdPaymentVoucher"
+            parameterType="java.lang.Long"
+            resultType="com.certicom.certifact_facturas_service_sp.entity.TmpVoucherSendBillEntity">
+        SELECT
+            t.id_tmp_send_bill as idTmpSendBill,
+            t.id_payment_voucher as idPaymentVoucher,
+            t.estado as estado,
+            t.name_document as nombreDocumento,
+            t.uuid_saved as uuidSaved,
+            t.tipo_comprobante as tipoComprobante
+        FROM
+            tmp_voucher_send_bill t
+        WHERE
+            id_payment_voucher = #{id}
+    </select>
+    <insert id="saveTmpVoucher" parameterType="com.certicom.certifact_facturas_service_sp.entity.TmpVoucherSendBillEntity">
+        INSERT INTO
+            tmp_voucher_send_bill (id_tmp_send_bill, id_payment_voucher, estado, name_document, uuid_saved, tipo_comprobante)
+        VALUES (nextval('tmp_send_bill_seq'), #{idPaymentVoucher}, #{estado}, #{nombreDocumento}, #{uuidSaved}, #{tipoComprobante})
+    </insert>
+</mapper>
