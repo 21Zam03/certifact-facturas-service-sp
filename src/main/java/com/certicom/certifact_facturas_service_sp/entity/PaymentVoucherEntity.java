@@ -102,7 +102,7 @@ public class PaymentVoucherEntity {
     private Integer oficinaId;
 
     private BranchOfficeEntity branchOfficeEntity;
-    private List<PaymentVoucherFileEntity> comprobanteArchivoEntityList;
+    private List<PaymentVoucherFileEntity> paymentVoucherFileEntityList;
     private List<DetailsPaymentVoucherEntity> comprobanteDetalleEntityList;
     private List<AnticipoEntity> anticipoEntityList;
     private List<CuotasPaymentVoucherEntity> cuotasEntityList;

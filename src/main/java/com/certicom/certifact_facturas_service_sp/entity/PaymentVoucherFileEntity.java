@@ -16,6 +16,6 @@ public class PaymentVoucherFileEntity {
     private String estadoArchivo;
     private Long idPaymentVoucher;
     private Long idRegisterFileSend;
-    private String orden;
+    private Integer orden;
 
 }

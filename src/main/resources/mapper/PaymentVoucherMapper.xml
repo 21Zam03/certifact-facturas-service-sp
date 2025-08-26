@@ -150,6 +150,77 @@
         select p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash from payment_voucher p
         where p.id_payment_voucher = #{id}
     </select>
-
+    <select id="findFirst1ByTipoComprobanteAndSerieAndRucEmisorOrderByNumeroDesc" parameterType="map" resultType="Integer">
+        SELECT p.numero FROM payment_voucher p
+        WHERE p.tipo_comprobante = #{tipo} AND p.serie = #{serie} AND p.ruc_emisor = #{ruc}
+        ORDER BY p.numero DESC LIMIT 1
+    </select>
+    <select id="getPaymentVoucherByIdentificadorDocumento" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity">
+        SELECT p.fecha_emision, p.fecha_registro, p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash FROM payment_voucher p
+        WHERE p.identificador_documento = #{idDocument}
+    </select>
+    <insert id="updateStatePaymentVoucher1" parameterType="map">
+        UPDATE payment_voucher p
+            SET p.estado = #{codigo}
+                p.mensaje_respuesta = #{message}
+                p.codigo_respuesta_sunat = #{codes}
+            WHERE p.id_payment_voucher = #{id}
+    </insert>
+    <update id="updateStatePaymentVoucher2" parameterType="map">
+        UPDATE payment_voucher p
+            SET p.estado = #{codigo}
+                p.estadoSunat = #{esunat}
+                p.mensaje_respuesta = #{message}
+                p.codigo_respuesta_sunat = #{codes}
+            WHERE p.id_payment_voucher = #{id}
+    </update>
+    <select id="findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity">
+        SELECT p.id_paymente_voucher
+            FROM payment_voucher
+        WHERE p.ruc_emisor = #{ruc} AND
+              p.tipo_comprobante = #{tipo} AND
+              p.serie = #{serie} AND
+              p.numero = #{numero}
+    </select>
+    <select id="findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento"
+            parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity">
+        SELECT
+            id_payment_voucher       AS idPaymentVoucher,
+            ruc_emisor               AS rucEmisor,
+            tipo_comprobante         AS tipoComprobante,
+            serie                    AS serie,
+            numero                   AS numero,
+            fecha_emision            AS fechaEmision,
+            codigo_moneda            AS codigoMoneda,
+            fecha_vencimiento        AS fechaVencimiento,
+            tip_doc_ident_receptor   AS tipDocIdentReceptor,
+            num_doc_ident_receptor   AS numDocIdentReceptor,
+            denominacion_receptor    AS denominacionReceptor,
+            direccion_receptor       AS direccionReceptor,
+            email_receptor           AS emailReceptor,
+            total_oper_gravada       AS totalOperGravada,
+            sumatoria_igv            AS sumatoriaIgv,
+            monto_imp_total_venta    AS montoImpTotalVenta,
+            tipo_operacion           AS tipoOperacion,
+            fecha_emision_date       AS fechaEmisionDate,
+            fecha_registro           AS fechaRegistro,
+            identificador_documento  AS identificadorDocumento,
+            codigo_hash              AS codigoHash,
+            detraccion               AS detraccion,
+            estado                   AS estado,
+            estado_anterior          AS estadoAnterior,
+            estado_sunat             AS estadoSunat,
+            hora_emision             AS horaEmision,
+            mensaje_respuesta        AS mensajeRespuesta,
+            ubl_version              AS ublVersion,
+            user_name                AS userName,
+            user_name_modify         AS userNameModify,
+            uuid                     AS uuid,
+            oficina_id               AS oficinaId,
+            tipo_transaccion         AS tipoTransaccion,
+            monto_pendiente          AS montoPendiente
+        FROM payment_voucher
+        WHERE ruc_emisor = #{ruc} AND tipo_comprobante = #{tipo} AND serie = #{serie} AND numero = #{numero}
+    </select>
 </mapper>
 

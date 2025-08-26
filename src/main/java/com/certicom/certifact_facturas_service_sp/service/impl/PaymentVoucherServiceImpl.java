@@ -1,5 +1,6 @@
 package com.certicom.certifact_facturas_service_sp.service.impl;
 
+import com.certicom.certifact_facturas_service_sp.converter.PaymentVoucherConverter;
 import com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteFiltroDto;
 import com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherDto;
 import com.certicom.certifact_facturas_service_sp.entity.*;
@@ -109,11 +110,11 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
 
         //Proximamente registrar archivos desde aqui y no desde la capa de ng
 
-        for (int i =0; i<paymentVoucherEntity.getComprobanteArchivoEntityList().size();i++) {
-            paymentVoucherEntity.getComprobanteArchivoEntityList().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
+        for (int i =0; i<paymentVoucherEntity.getPaymentVoucherFileEntityList().size();i++) {
+            paymentVoucherEntity.getPaymentVoucherFileEntityList().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
             //Por ahora dejarlo asi, pero se tiene que integrar el metodo de inserccion de archivos a la base de datos en este mismo metodo [registrarComprobante]
             //paymentVoucherEntity.getComprobanteArchivoEntityList().get(i).setIdRegisterFileSend();
-            result = comprobanteArchivoMapper.registrarComprobanteArchivo(paymentVoucherEntity.getComprobanteArchivoEntityList().get(i));
+            result = comprobanteArchivoMapper.registrarComprobanteArchivo(paymentVoucherEntity.getPaymentVoucherFileEntityList().get(i));
             if(result == 0){
                 throw new RuntimeException("No se pudo registrar el comprobante archivo");
             }
@@ -169,6 +170,47 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     @Override
     public PaymentVoucherEntity findPaymentVoucherById(Long id) {
         return paymentVoucherMapper.getPaymentVoucherById(id);
+    }
+
+    @Override
+    public Integer findFirst1ByTipoComprobanteAndSerieAndRucEmisorOrderByNumeroDesc(String tipoComprobante, String serie, String ruc) {
+        return paymentVoucherMapper.findFirst1ByTipoComprobanteAndSerieAndRucEmisorOrderByNumeroDesc(tipoComprobante, serie, ruc);
+    }
+
+    @Override
+    public PaymentVoucherEntity getPaymentVoucherByIdentificadorDocumento(String identificadorDocumento) {
+        return paymentVoucherMapper.getPaymentVoucherByIdentificadorDocumento(identificadorDocumento);
+    }
+
+    @Override
+    public int updateStatePaymentVoucher(Long idPaymentVoucher, String codigo, String messageResponse, String codesResponse) {
+        return paymentVoucherMapper.updateStatePaymentVoucher1(idPaymentVoucher, codigo, messageResponse, codesResponse);
+    }
+
+    @Override
+    public int updateStatePaymentVoucher(Long idPaymentVoucher, String codigo, String estadoEnSunat, String messageResponse, String codesResponse) {
+        return paymentVoucherMapper.updateStatePaymentVoucher2(idPaymentVoucher, codigo, estadoEnSunat, messageResponse, codesResponse);
+    }
+
+    @Override
+    public PaymentVoucherEntity findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(String rucEmisor, String tipoComprobante, String serie, Integer numero) {
+        return paymentVoucherMapper.findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(rucEmisor, tipoComprobante, serie, numero);
+    }
+
+    @Override
+    public PaymentVoucherDto findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento(
+            String finalRucEmisor, String tipoComprobante, String serieDocumento, Integer numeroDocumento) {
+        try {
+            PaymentVoucherEntity paymentVoucherEntity = paymentVoucherMapper.findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento(
+                    finalRucEmisor, tipoComprobante, serieDocumento, numeroDocumento
+            );
+            if(paymentVoucherEntity != null) {
+                return PaymentVoucherConverter.entityToDto(paymentVoucherEntity);
+            }
+        } catch (Exception e) {
+            log.info("ERROR: {}", e.getMessage());
+        }
+        return null;
     }
 
 }

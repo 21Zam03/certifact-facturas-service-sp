@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(FacturaComprobanteController.API_PATH)
+@RequestMapping(PaymentVoucherController.API_PATH)
 @RequiredArgsConstructor
 @Slf4j
-public class FacturaComprobanteController {
+public class PaymentVoucherController {
 
     public static final String API_PATH = "/api/invoice-sp";
 
@@ -30,7 +30,7 @@ public class FacturaComprobanteController {
 
     /*COMPROBANTE, PAYMENT VOUCHER*/
 
-    @GetMapping
+    @GetMapping("/payment-voucher")
     public ResponseEntity<?> listarComprobantesConFiltro(
             @RequestParam(name = "rucEmisor", required = true) String rucEmisor,
             @RequestParam(name = "filtroDesde", required = true) String filtroDesde,
@@ -52,7 +52,7 @@ public class FacturaComprobanteController {
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-    @GetMapping("/count-total")
+    @GetMapping("/payment-voucher/count-total")
     public ResponseEntity<?> contarComprobantes(
             @RequestParam(name = "rucEmisor", required = true) String rucEmisor,
             @RequestParam(name = "filtroDesde", required = true) String filtroDesde,
@@ -71,7 +71,7 @@ public class FacturaComprobanteController {
        return new ResponseEntity<>(cantidad, HttpStatus.OK);
     }
 
-    @GetMapping("/cash-total")
+    @GetMapping("/payment-voucher/cash-total")
     public ResponseEntity<?> obtenerTotalSolesGeneral(
             @RequestParam(name = "rucEmisor", required = true) String rucEmisor,
             @RequestParam(name = "filtroDesde", required = true) String filtroDesde,
@@ -90,16 +90,67 @@ public class FacturaComprobanteController {
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<PaymentVoucherEntity> registrarComprobante(@RequestBody PaymentVoucherEntity paymentVoucherEntity) {
+    @PutMapping("/payment-voucher/state-1")
+    public ResponseEntity<Integer> updateStatePaymentVoucher(
+            @RequestParam Long idPaymentVoucher, @RequestParam String codigo, @RequestParam String messageResponse,
+            @RequestParam String codesResponse
+    ) {
+        return new ResponseEntity<>(paymentVoucherService.updateStatePaymentVoucher(idPaymentVoucher, codigo, messageResponse, codesResponse), HttpStatus.OK);
+    }
+
+    @PutMapping("/payment-voucher/state-2")
+    public ResponseEntity<?> updateStatePaymentVoucher(
+            @RequestParam Long idPaymentVoucher, @RequestParam String codigo, @RequestParam String estadoEnSunat,
+            @RequestParam String messageResponse, @RequestParam String codesResponse
+    ) {
+        return new ResponseEntity<>(paymentVoucherService.updateStatePaymentVoucher(idPaymentVoucher, codigo, estadoEnSunat, messageResponse, codesResponse), HttpStatus.OK);
+    }
+
+    @GetMapping("/payment-voucher/id-document")
+    public ResponseEntity<PaymentVoucherEntity> getPaymentVoucherByIdentificadorDocumento(@RequestParam String identificadorDocumento) {
+        return new ResponseEntity<>(paymentVoucherService.getPaymentVoucherByIdentificadorDocumento(identificadorDocumento), HttpStatus.OK);
+    }
+
+    @GetMapping("/payment-voucher/number")
+    public ResponseEntity<Integer> obtenerSiguienteNumeracionPorTipoComprobanteYSerieYRucEmisor(
+            @RequestParam String tipoComprobante, @RequestParam String serie, @RequestParam String ruc
+    ) {
+        return new ResponseEntity<>(
+                paymentVoucherService.findFirst1ByTipoComprobanteAndSerieAndRucEmisorOrderByNumeroDesc(tipoComprobante, serie, ruc),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/payment-voucher")
+    public ResponseEntity<PaymentVoucherEntity> savePaymentVoucher(@RequestBody PaymentVoucherEntity paymentVoucherEntity) {
         log.info("COMPROBANTE: {}", paymentVoucherEntity);
         return new ResponseEntity<>(paymentVoucherService.registrarComprobante(paymentVoucherEntity), HttpStatus.CREATED);
         //return new ResponseEntity<>(new ComprobanteEntity(), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/payment-voucher/parameters")
+    public ResponseEntity<PaymentVoucherEntity> findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
+            @RequestParam String rucEmisor, @RequestParam String tipoComprobante,
+            @RequestParam String serie, @RequestParam Integer numero) {
+        return new ResponseEntity<>(
+                paymentVoucherService.findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
+                        rucEmisor, tipoComprobante, serie, numero
+                ), HttpStatus.OK);
+    }
+
+    @GetMapping("/payment-voucher{id}")
     public ResponseEntity<PaymentVoucherEntity> findPaymentVoucherById(@PathVariable(name = "id") Long idPaymentVoucher) {
         return new ResponseEntity<>(paymentVoucherService.findPaymentVoucherById(idPaymentVoucher), HttpStatus.OK);
+    }
+
+    @GetMapping("/payment-voucher/parameters-dto")
+    public ResponseEntity<PaymentVoucherDto> findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento
+            (@RequestParam String finalRucEmisor, @RequestParam String tipoComprobante,
+             @RequestParam String serieDocumento, @RequestParam Integer numeroDocumento) {
+        return new ResponseEntity<>(
+                paymentVoucherService.findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento(finalRucEmisor, tipoComprobante, serieDocumento, numeroDocumento),
+                HttpStatus.OK
+        );
     }
 
     /*USUARIO, USER*/
@@ -136,7 +187,7 @@ public class FacturaComprobanteController {
 
     /*ARCHIVO, FILE */
 
-    @PostMapping("/file")
+    @PostMapping("/register-file-upload")
     private ResponseEntity<SubidaRegistroArchivoEntity> registrarArchivo(@RequestBody SubidaRegistroArchivoDto subidaRegistroArchivoDto) {
         return new ResponseEntity<>(subidaRegistroArchivoService.regitrarSubidaArchivo(subidaRegistroArchivoDto), HttpStatus.CREATED);
     }

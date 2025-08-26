@@ -94,5 +94,5 @@ public class PaymentVoucherDto {
     private String fechaRegistro;
 
     private List<ComprobanteArchivo> comprobanteArchivoList;
-
+    private String estadoSunat;
 }
