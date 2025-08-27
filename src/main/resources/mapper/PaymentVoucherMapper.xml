@@ -199,21 +199,21 @@
         WHERE p.identificador_documento = #{idDocument}
     </select>
     <insert id="updateStatePaymentVoucher1" parameterType="map">
-        UPDATE payment_voucher p
-            SET p.estado = #{codigo}
-                p.mensaje_respuesta = #{message}
-                p.codigo_respuesta_sunat = #{codes}
-            WHERE p.id_payment_voucher = #{id}
+        UPDATE payment_voucher
+            SET estado = #{codigo},
+                mensaje_respuesta = #{message},
+                codigo_respuesta_sunat = #{codes},
+            WHERE id_payment_voucher = #{id}
     </insert>
     <update id="updateStatePaymentVoucher2" parameterType="map">
-        UPDATE payment_voucher p
-            SET p.estado = #{codigo}
-                p.estadoSunat = #{esunat}
-                p.mensaje_respuesta = #{message}
-                p.codigo_respuesta_sunat = #{codes}
-            WHERE p.id_payment_voucher = #{id}
+        UPDATE payment_voucher
+            SET estado = #{codigo},
+                estado_sunat = #{esunat},
+                mensaje_respuesta = #{message},
+                codigo_respuesta_sunat = #{codes}
+            WHERE id_payment_voucher = #{id}
     </update>
-    <select id="findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity">
+    <select id="findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherDto">
         SELECT p.id_payment_voucher, p.estado_sunat, p.estado
             FROM payment_voucher p
         WHERE p.ruc_emisor = #{ruc} AND

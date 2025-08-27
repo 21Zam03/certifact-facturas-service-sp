@@ -17,7 +17,7 @@ public class DetailPaymentController {
     public static final String API_PATH = "/api/detail-payment-voucher";
     private final DetailPaymentService detailPaymentService;
 
-    @DeleteMapping("/api/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Integer> deleteDetailPaymentVoucherById(@PathVariable("id") Long detailPaymentVoucherId) {
         return new ResponseEntity<>(detailPaymentService.deleteDetailPaymentVoucherById(detailPaymentVoucherId), HttpStatus.OK);
     }

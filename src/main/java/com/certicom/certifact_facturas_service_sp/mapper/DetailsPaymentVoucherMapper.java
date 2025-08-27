@@ -13,7 +13,7 @@ import java.util.List;
 public interface DetailsPaymentVoucherMapper {
 
     int registrarDetailsPaymentVoucher(ComprobanteItem detailsPaymentVoucher);
-    List<DetailsPaymentVoucherEntity> getListById();
-    public int deleteDetailPaymentVoucherById(@Param("id") Long detailPaymentVoucherId);
+    int deleteDetailPaymentVoucherById(@Param("id") Long detailPaymentVoucherId);
+    List<ComprobanteItem> findByIdPaymentVoucher(@Param("id") Long idPaymentVoucher);
 
 }

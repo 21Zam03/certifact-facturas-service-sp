@@ -36,7 +36,7 @@ public interface PaymentVoucherMapper {
             @Param("id") Long idPaymentVoucher, @Param("codigo") String codigo, @Param("esunat") String estadoEnSunat,
             @Param("message") String messageResponse, @Param("codes") String codesResponse);
 
-    PaymentVoucherEntity findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
+    PaymentVoucherDto findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
             @Param("ruc") String rucEmisor, @Param("tipo") String tipoComprobante, @Param("serie") String serie, @Param("numero") Integer numero
     );
 

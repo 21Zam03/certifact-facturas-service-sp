@@ -33,4 +33,14 @@
         DELETE FROM tmp_voucher_send_bill
         WHERE id_tmp_send_bill = #{id}
     </delete>
+    <update id="updateTmpVoucher" parameterType="map">
+        UPDATE tmp_voucher_send_bill
+            SET
+                id_payment_voucher = #{idPaymentVoucher},
+                estado             = #{estado},
+                name_document      = #{nombreDocumento},
+                uuid_saved         = #{uuidSaved},
+                tipo_comprobante   = #{tipoComprobante}
+            WHERE id_tmp_send_bill = #{idTmpSendBill}
+    </update>
 </mapper>

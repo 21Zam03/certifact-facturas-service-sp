@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@RequestMapping(AditionalFieldController.API_PATH)
 @RequiredArgsConstructor
 public class AditionalFieldController {
 
-    private final static String API_PATH = "/api/aditional-field-payment-voucher";
+    public final static String API_PATH = "/api/aditional-field-payment-voucher";
 
     private final AditionalFieldService aditionalFieldService;
 

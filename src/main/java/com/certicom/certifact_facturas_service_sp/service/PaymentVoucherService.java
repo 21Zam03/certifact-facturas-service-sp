@@ -38,7 +38,7 @@ public interface PaymentVoucherService {
 
     int updateStatePaymentVoucher(Long idPaymentVoucher, String codigo, String estadoEnSunat, String messageResponse, String codesResponse);
 
-    PaymentVoucherEntity findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
+    PaymentVoucherDto findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
             String rucEmisor, String tipoComprobante, String serie, Integer numero
     );
 

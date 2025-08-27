@@ -3,6 +3,7 @@ package com.certicom.certifact_facturas_service_sp.service.impl;
 import com.certicom.certifact_facturas_service_sp.converter.PaymentVoucherConverter;
 import com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteFiltroDto;
 import com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherDto;
+import com.certicom.certifact_facturas_service_sp.dto.others.ComprobanteItem;
 import com.certicom.certifact_facturas_service_sp.entity.*;
 import com.certicom.certifact_facturas_service_sp.mapper.*;
 import com.certicom.certifact_facturas_service_sp.service.PaymentVoucherService;
@@ -208,8 +209,13 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     }
 
     @Override
-    public PaymentVoucherEntity findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(String rucEmisor, String tipoComprobante, String serie, Integer numero) {
-        return paymentVoucherMapper.findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(rucEmisor, tipoComprobante, serie, numero);
+    public PaymentVoucherDto findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(String rucEmisor, String tipoComprobante, String serie, Integer numero) {
+        PaymentVoucherDto paymentVoucherDto = paymentVoucherMapper.
+                findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(rucEmisor, tipoComprobante, serie, numero);
+        List<ComprobanteItem> items = detailsPaymentVoucherMapper.findByIdPaymentVoucher(paymentVoucherDto.getIdPaymentVoucher());
+        System.out.println("ITEMS: "+items);
+        paymentVoucherDto.setItems(items);
+        return paymentVoucherDto;
     }
 
     @Override

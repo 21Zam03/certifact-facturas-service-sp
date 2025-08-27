@@ -27,4 +27,10 @@
     <delete id="deleteDetailPaymentVoucherById" parameterType="Long">
         DELETE FROM details_payment_voucher WHERE id_details_payment = #{id}
     </delete>
+    <select id="findByIdPaymentVoucher" resultType="com.certicom.certifact_facturas_service_sp.dto.others.ComprobanteItem">
+        SELECT
+            id_details_payment AS idComprobanteDetalle,
+            afectacion_igv AS IGV
+        FROM details_payment_voucher WHERE id_payment_voucher = #{id}
+    </select>
 </mapper>

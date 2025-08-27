@@ -12,5 +12,6 @@ public interface TmpVoucherSendBillMapper {
     int saveTmpVoucher(TmpVoucherSendBillEntity tmpVoucherSendBillEntity);
     public int updateStatusVoucherTmp(@Param("id") Long identificador, @Param("estado") String estado);
     public int deleteTmpVoucherById(@Param("id") Long id);
+    int updateTmpVoucher(TmpVoucherSendBillEntity tmpVoucherSendBillEntity);
 
 }

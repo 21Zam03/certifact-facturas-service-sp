@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.AdditionalFieldMapper">
-    <insert id="registrarCampoAdicionalComprobante" parameterType="com.certicom.certifact_facturas_service_sp.entity.AditionalFieldEntity">
+    <insert id="registrarCampoAdicionalComprobante" parameterType="com.certicom.certifact_facturas_service_sp.dto.others.CampoAdicional">
         INSERT INTO aditional_field_payment_voucher (id, nombre_campo, valor_campo, id_payment_voucher, type_field_id)
         VALUES (nextval('aditional_field_payment_voucher_seq'), #{nombreCampo}, #{valorCampo}, #{typeFieldId}, #{idPaymentVoucher})
     </insert>

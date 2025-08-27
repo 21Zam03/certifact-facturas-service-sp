@@ -29,7 +29,11 @@ public class TmpVoucherSendBillServiceImpl implements TmpVoucherSendBillService 
     public int saveTmpVoucher(TmpVoucherSendBillEntity tmpVoucherSendBillEntity) {
         int result = 0;
         try {
-            result = tmpVoucherSendBillMapper.saveTmpVoucher(tmpVoucherSendBillEntity);
+            if(tmpVoucherSendBillEntity.getIdTmpSendBill() != null) {
+                result = tmpVoucherSendBillMapper.updateTmpVoucher(tmpVoucherSendBillEntity);
+            } else {
+                result = tmpVoucherSendBillMapper.saveTmpVoucher(tmpVoucherSendBillEntity);
+            }
         } catch (Exception e) {
             log.error("ERROR en TmpVoucherSendBillServiceImpl[saveTmpVoucher]: {}", e.getMessage());
         }

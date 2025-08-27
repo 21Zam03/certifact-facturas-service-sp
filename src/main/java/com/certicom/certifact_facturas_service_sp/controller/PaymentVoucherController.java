@@ -125,7 +125,7 @@ public class PaymentVoucherController {
     }
 
     @GetMapping("/payment-voucher/parameters")
-    public ResponseEntity<PaymentVoucherEntity> findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
+    public ResponseEntity<PaymentVoucherDto> findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
             @RequestParam String rucEmisor, @RequestParam String tipoComprobante,
             @RequestParam String serie, @RequestParam Integer numero) {
         return new ResponseEntity<>(
