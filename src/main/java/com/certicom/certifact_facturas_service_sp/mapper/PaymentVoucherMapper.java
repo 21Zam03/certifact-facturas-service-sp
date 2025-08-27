@@ -18,7 +18,9 @@ public interface PaymentVoucherMapper {
 
     List<PaymentVoucherDto> obtenerTotalSolesGeneralConFiltro(@Param("filtro") ComprobanteFiltroDto comprobanteFiltroDto);
 
-    int registrarComprobante(PaymentVoucherEntity paymentVoucherEntity);
+    int registrarComprobante(PaymentVoucherDto paymentVoucherDto);
+
+    int updatePaymentVoucher(PaymentVoucherDto paymentVoucherDto);
 
     PaymentVoucherEntity getPaymentVoucherById(@Param("id") Long idPaymentVoucher);
 

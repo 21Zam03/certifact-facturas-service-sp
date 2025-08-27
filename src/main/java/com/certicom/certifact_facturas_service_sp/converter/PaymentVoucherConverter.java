@@ -15,6 +15,7 @@ public class PaymentVoucherConverter {
 
     public static PaymentVoucherDto entityToDto(PaymentVoucherEntity paymentVoucherEntity) {
         return PaymentVoucherDto.builder()
+                .idPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher())
                 .rucEmisor(paymentVoucherEntity.getRucEmisor())
                 .tipoComprobante(paymentVoucherEntity.getTipoComprobante())
                 .serie(paymentVoucherEntity.getSerie())

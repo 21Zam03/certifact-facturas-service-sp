@@ -13,8 +13,10 @@ import java.math.BigDecimal;
 @Builder
 public class ComprobanteCuota {
 
+    private Long idCuotas;
     private Integer numero;
     private BigDecimal monto;
     private String fecha;
+    private Long idPaymentVoucher;
 
 }

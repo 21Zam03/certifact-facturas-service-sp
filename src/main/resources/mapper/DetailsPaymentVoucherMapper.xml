@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.DetailsPaymentVoucherMapper">
-    <insert id="registrarDetailsPaymentVoucher" parameterType="com.certicom.certifact_facturas_service_sp.entity.DetailsPaymentVoucherEntity">
+    <insert id="registrarDetailsPaymentVoucher" parameterType="com.certicom.certifact_facturas_service_sp.dto.others.ComprobanteItem">
         INSERT INTO details_payment_voucher
             (id_details_payment, afectacion_igv, cantidad, cod_producto, cod_prod_sunat, cod_tip_afectacion_igv,
                 cod_tip_sistema_isc, cod_unid_medida, descripcion_producto, descuento, estado, numero_item, precio_venta_unit,
@@ -15,13 +15,16 @@
                 ubigeo_origen_detraccion, valor_carga_efectiva, valor_carga_util, valor_servicio_transporte, hidro_cantidad, hidro_descripcion_tipo,
                 hidro_embarcacion, hidro_fecha_descarga, hidro_lugar_descarga, hidro_matricula, monto_base_icbper, monto_icbper,instrucciones_especiales,
                 marca, unidad_manejo, adicional)
-        VALUES (nextval('detail_payment_voucher_seq'), #{afectacionIGV}, #{cantidad}, #{codigoProducto}, #{codigoProductoSunat},
-                #{codigoTipoAfectacionIGV}, #{codigoTipoSistemaISC}, #{codigoUnidadMedida}, #{descripcion}, #{descuento}, #{estado}, #{numeroItem},
-                #{precioVentaUnitario}, #{sistemaISC}, #{valorReferencialUnitario}, #{valorUnitario}, #{valorVenta}, #{idPaymentVoucher}, #{codigoDescuento},
+        VALUES (nextval('detail_payment_voucher_seq'), #{igv}, #{cantidad}, #{codigoProducto}, #{codigoProductoSunat},
+                #{codigoTipoAfectacionIGV}, #{codigoTipoCalculoISC}, #{codigoUnidadMedida}, #{descripcion}, #{descuento}, #{estado}, #{numeroItem},
+                #{precioVentaUnitario}, #{codigoTipoCalculoISC}, #{valorReferencialUnitario}, #{valorUnitario}, #{valorVenta}, #{idPaymentVoucher}, #{codigoDescuento},
                 #{codigoProductoGS1}, #{montoBaseExonerado}, #{montoBaseExportacion}, #{montoBaseGratuito}, #{montoBaseIgv}, #{montoBaseInafecto}, #{montoBaseIsc},
                 #{montoBaseIvap}, #{montoBaseOtrosTributos}, #{porcentajeIgv}, #{porcentajeIsc}, #{porcentajeIvap}, #{porcentajeOtrosTributos}, #{porcentajeTributoVentaGratuita},
-                #{tributoVentaGratuita}, #{detalleViajeDetraccion}, #{direccionDestinoDetraccion}, #{direccionOrigenDetraccion}, #{ubigeoDestinoDetraccion}, #{ubigeoOrigenDetraccion},
+                #{impuestoVentaGratuita}, #{detalleViajeDetraccion}, #{direccionDestinoDetraccion}, #{direccionOrigenDetraccion}, #{ubigeoDestinoDetraccion}, #{ubigeoOrigenDetraccion},
                 #{valorCargaEfectiva}, #{valorCargaUtil}, #{valorServicioTransporte}, #{hidroCantidad}, #{hidroDescripcionTipo}, #{hidroEmbarcacion}, #{hidroFechaDescarga},
                 #{hidroLugarDescarga}, #{hidroMatricula}, #{montoBaseIcbper}, #{montoIcbper}, #{instruccionesEspeciales}, #{marca}, #{unidadManejo}, #{adicional})
     </insert>
+    <delete id="deleteDetailPaymentVoucherById" parameterType="Long">
+        DELETE FROM details_payment_voucher WHERE id_details_payment = #{id}
+    </delete>
 </mapper>

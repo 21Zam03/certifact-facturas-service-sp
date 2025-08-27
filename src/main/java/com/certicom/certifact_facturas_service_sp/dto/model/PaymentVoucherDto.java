@@ -1,12 +1,15 @@
 package com.certicom.certifact_facturas_service_sp.dto.model;
 
 import com.certicom.certifact_facturas_service_sp.dto.others.*;
+import com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherFileEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -15,7 +18,7 @@ import java.util.List;
 @Builder
 public class PaymentVoucherDto {
 
-    private Long id;
+    private Long idPaymentVoucher;
 
     private String tipoComprobante;
     private String serie;
@@ -91,8 +94,21 @@ public class PaymentVoucherDto {
 
     private BranchOffice branchOffice;
     private String idpay;
-    private String fechaRegistro;
 
-    private List<ComprobanteArchivo> comprobanteArchivoList;
+    private String estado;
+    private String estadoAnterior;
+    private Integer estadoItem;
     private String estadoSunat;
+    private String mensajeRespuesta;
+    private Timestamp fechaRegistro;
+    private String userName;
+    private Timestamp fechaModificacion;
+    private String userNameModificacion;
+    private String codigoTipoDocumentoRelacionado;
+    private String serieNumeroDocumentoRelacionado;
+    private String Uuid;
+    private Date fechaEmisionDate;
+
+    private List<PaymentVoucherFileDto> paymentVoucherFileEntityList;
+
 }

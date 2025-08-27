@@ -26,7 +26,7 @@ public interface PaymentVoucherService {
             Integer idOficina, String estadoSunat, Integer pageNumber, Integer perPage
     );
 
-    PaymentVoucherEntity registrarComprobante(PaymentVoucherEntity paymentVoucherEntity);
+    PaymentVoucherEntity registrarComprobante(PaymentVoucherDto paymentVoucherEntity);
 
     PaymentVoucherEntity findPaymentVoucherById(Long id);
 

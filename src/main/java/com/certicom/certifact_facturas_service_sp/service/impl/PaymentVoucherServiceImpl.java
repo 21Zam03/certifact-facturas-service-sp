@@ -28,6 +28,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     private final AdditionalFieldMapper additionalFieldMapper;
     private final CuotasPaymentVoucherMapper cuotasPaymentVoucherMapper;
     private final DetailsPaymentVoucherMapper detailsPaymentVoucherMapper;
+    private final GuiaPaymentVoucherMapper guiaPaymentVoucherMapper;
 
     @Override
     public List<PaymentVoucherDto> listarComprobantesConFiltro(
@@ -97,11 +98,15 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
 
     @Transactional
     @Override
-    public PaymentVoucherEntity registrarComprobante(PaymentVoucherEntity paymentVoucherEntity) {
-        paymentVoucherEntity.setFechaRegistro(new Timestamp(System.currentTimeMillis()));
-        paymentVoucherEntity.setFechaEmisionDate(new Date());
-
-        int result = paymentVoucherMapper.registrarComprobante(paymentVoucherEntity);
+    public PaymentVoucherEntity registrarComprobante(PaymentVoucherDto paymentVoucherEntity) {
+        //paymentVoucherEntity.setFechaRegistro(new Timestamp(System.currentTimeMillis()));
+        //paymentVoucherEntity.setFechaEmisionDate(new Date());
+        int result;
+        if(paymentVoucherEntity.getIdPaymentVoucher()!=null) {
+            result = paymentVoucherMapper.updatePaymentVoucher(paymentVoucherEntity);
+        } else {
+            result = paymentVoucherMapper.registrarComprobante(paymentVoucherEntity);
+        }
         if(result == 0){
             throw new RuntimeException("No se pudo registrar el comprobante");
         }
@@ -120,42 +125,52 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
             }
         }
 
-        if (paymentVoucherEntity.getAnticipoEntityList() != null && !paymentVoucherEntity.getAnticipoEntityList().isEmpty()) {
-            for (int i = 0; i < paymentVoucherEntity.getAnticipoEntityList().size(); i++) {
-                paymentVoucherEntity.getAnticipoEntityList().get(i).setIdpaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
-                result = anticipoMapper.registrarAnticipo(paymentVoucherEntity.getAnticipoEntityList().get(i));
+        if (paymentVoucherEntity.getAnticipos() != null && !paymentVoucherEntity.getAnticipos().isEmpty()) {
+            for (int i = 0; i < paymentVoucherEntity.getAnticipos().size(); i++) {
+                paymentVoucherEntity.getAnticipos().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
+                result = anticipoMapper.registrarAnticipo(paymentVoucherEntity.getAnticipos().get(i));
                 if(result == 0){
                     throw new RuntimeException("No se pudo registrar el anticipo");
                 }
             }
         }
 
-        if(paymentVoucherEntity.getComprobanteCampoAdicionalEntityList() != null && !paymentVoucherEntity.getComprobanteCampoAdicionalEntityList().isEmpty()) {
-            for (int i = 0; i < paymentVoucherEntity.getComprobanteCampoAdicionalEntityList().size(); i++) {
-                paymentVoucherEntity.getComprobanteCampoAdicionalEntityList().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
-                result = additionalFieldMapper.registrarCampoAdicionalComprobante(paymentVoucherEntity.getComprobanteCampoAdicionalEntityList().get(i));
+        if(paymentVoucherEntity.getCamposAdicionales()!= null && !paymentVoucherEntity.getCamposAdicionales().isEmpty()) {
+            for (int i = 0; i < paymentVoucherEntity.getCamposAdicionales().size(); i++) {
+                paymentVoucherEntity.getCamposAdicionales().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
+                result = additionalFieldMapper.registrarCampoAdicionalComprobante(paymentVoucherEntity.getCamposAdicionales().get(i));
                 if(result == 0){
                     throw new RuntimeException("No se pudo registrar el campo adicional");
                 }
             }
         }
 
-        if (paymentVoucherEntity.getCuotasEntityList() != null && !paymentVoucherEntity.getCuotasEntityList().isEmpty()) {
-            for (int i=0; i<paymentVoucherEntity.getCuotasEntityList().size(); i++) {
-                paymentVoucherEntity.getCuotasEntityList().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
-                result = cuotasPaymentVoucherMapper.registrarCuotaPaymentVoucher(paymentVoucherEntity.getCuotasEntityList().get(i));
+        if (paymentVoucherEntity.getCuotas() != null && !paymentVoucherEntity.getCuotas().isEmpty()) {
+            for (int i=0; i<paymentVoucherEntity.getCuotas().size(); i++) {
+                paymentVoucherEntity.getCuotas().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
+                result = cuotasPaymentVoucherMapper.registrarCuotaPaymentVoucher(paymentVoucherEntity.getCuotas().get(i));
                 if(result == 0){
-                    throw new RuntimeException("No se pudo registrar el campo adicional");
+                    throw new RuntimeException("No se pudo registrar la cuota");
                 }
             }
         }
 
-        if(paymentVoucherEntity.getComprobanteDetalleEntityList() != null && !paymentVoucherEntity.getComprobanteDetalleEntityList().isEmpty()) {
-            for (int i = 0; i < paymentVoucherEntity.getComprobanteDetalleEntityList().size(); i++) {
-                paymentVoucherEntity.getComprobanteDetalleEntityList().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
-                result = detailsPaymentVoucherMapper.registrarDetailsPaymentVoucher(paymentVoucherEntity.getComprobanteDetalleEntityList().get(i));
+        if(paymentVoucherEntity.getItems() != null && !paymentVoucherEntity.getItems().isEmpty()) {
+            for (int i = 0; i < paymentVoucherEntity.getItems().size(); i++) {
+                paymentVoucherEntity.getItems().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
+                result = detailsPaymentVoucherMapper.registrarDetailsPaymentVoucher(paymentVoucherEntity.getItems().get(i));
                 if(result == 0){
-                    throw new RuntimeException("No se pudo registrar el campo adicional");
+                    throw new RuntimeException("No se pudo registrar los items");
+                }
+            }
+        }
+
+        if(paymentVoucherEntity.getGuiasRelacionadas() != null && !paymentVoucherEntity.getGuiasRelacionadas().isEmpty()) {
+            for (int i = 0; i < paymentVoucherEntity.getGuiasRelacionadas().size(); i++) {
+                paymentVoucherEntity.getGuiasRelacionadas().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
+                result = guiaPaymentVoucherMapper.saveGuiaPayment(paymentVoucherEntity.getGuiasRelacionadas().get(i));
+                if(result == 0){
+                    throw new RuntimeException("No se pudo registrar la guia relacionada");
                 }
             }
         }

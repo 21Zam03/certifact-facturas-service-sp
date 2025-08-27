@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SubidaRegistroArchivoDto {
+public class RegisterFileUploadDto {
 
     private Integer id;
     private String bucket;
@@ -17,5 +17,9 @@ public class SubidaRegistroArchivoDto {
     private String nombreGenerado;
     private Integer codCompany;
     private String estado;
+    private Boolean isOld;
+    private String uuid;
+    private String extensiones;
+    private String rucCompany;
 
 }

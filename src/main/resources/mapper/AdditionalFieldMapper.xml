@@ -8,4 +8,10 @@
         INSERT INTO aditional_field_payment_voucher (id, nombre_campo, valor_campo, id_payment_voucher, type_field_id)
         VALUES (nextval('aditional_field_payment_voucher_seq'), #{nombreCampo}, #{valorCampo}, #{typeFieldId}, #{idPaymentVoucher})
     </insert>
+    <select id="findAditionalFieldIdByValorCampo" parameterType="String">
+        SELECT a.type_field_id FROM aditional_field_payment_voucher WHERE a.valor_campo = #{valor}
+    </select>
+    <delete id="deleteAditionalFieldPaymentById" parameterType="Long">
+        DELETE FROM aditional_field_payment_voucher WHERE id = #{id}
+    </delete>
 </mapper>

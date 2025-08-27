@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Builder
 public class Anticipo {
 
-    private Long id;
+    private Long idAnticipoPayment;
     private Long idPaymentVoucher;
     //private String identificadorPago;
     private String serieAnticipo;

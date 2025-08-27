@@ -14,5 +14,7 @@ public class CampoAdicional {
     private Integer id;
     private String nombreCampo;
     private String valorCampo;
+    private Integer typeFieldId;
+    private Long idPaymentVoucher;
 
 }

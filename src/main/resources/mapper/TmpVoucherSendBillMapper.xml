@@ -24,4 +24,13 @@
             tmp_voucher_send_bill (id_tmp_send_bill, id_payment_voucher, estado, name_document, uuid_saved, tipo_comprobante)
         VALUES (nextval('tmp_send_bill_seq'), #{idPaymentVoucher}, #{estado}, #{nombreDocumento}, #{uuidSaved}, #{tipoComprobante})
     </insert>
+    <update id="updateStatusVoucherTmp" parameterType="map">
+        UPDATE tmp_voucher_send_bill
+            SET estado = #{estado}
+        WHERE id_tmp_send_bill = #{id}
+    </update>
+    <delete id="deleteTmpVoucherById" parameterType="Long">
+        DELETE FROM tmp_voucher_send_bill
+        WHERE id_tmp_send_bill = #{id}
+    </delete>
 </mapper>

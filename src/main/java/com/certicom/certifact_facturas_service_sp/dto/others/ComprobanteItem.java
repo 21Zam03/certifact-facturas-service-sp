@@ -15,6 +15,9 @@ public class ComprobanteItem {
 
     private static final long serialVersionUID = 1L;
 
+    private Long idComprobanteDetalle;
+    private Long idPaymentVoucher;
+
     private Integer numeroItem;
     private String codigoUnidadMedida;
 
@@ -77,4 +80,5 @@ public class ComprobanteItem {
     private String marca;
     private String adicional;
 
+    private String estado;
 }

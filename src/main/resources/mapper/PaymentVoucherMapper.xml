@@ -140,11 +140,50 @@
             denominacion_receptor, direccion_receptor, email_receptor, total_oper_gravada, sumatoria_igv, monto_imp_total_venta, tipo_operacion, fecha_emision_date, fecha_registro,
              identificador_documento, codigo_hash, detraccion, estado, estado_anterior, estado_sunat, hora_emision, mensaje_respuesta, ubl_version, user_name, user_name_modify, uuid,
              oficina_id, tipo_transaccion, monto_pendiente)
-        VALUES (nextval('comprobante_pago_seq'), #{rucEmisor}, #{tipoComprobante}, #{serie}, #{numero}, #{fechaEmision}, #{codigoMoneda}, #{fechaVencimiento}, #{tipoDocIdentReceptor},
-        #{numDocIdentReceptor}, #{denominacionReceptor}, #{direccionReceptor}, #{emailReceptor}, #{totalValorVentaOperacionGravada}, #{sumatoriaIGV}, #{montoImporteTotalVenta},
-        #{tipoOperacion}, #{fechaEmisionDate}, #{fechaRegistro, javaType=java.sql.Timestamp, jdbcType=TIMESTAMP}, #{identificadorDocumento}, #{codigoHash}, #{detraccion}, #{estado},
-        #{estadoAnterior}, #{estadoSunat}, #{horaEmision}, #{mensajeRespuesta}, #{ublVersion}, #{userName}, #{userNameModify}, #{uuid}, #{oficinaId}, #{tipoTransaccion}, #{montoPendiente})
+        VALUES (nextval('comprobante_pago_seq'), #{rucEmisor}, #{tipoComprobante}, #{serie}, #{numero}, #{fechaEmision}, #{codigoMoneda}, #{fechaVencimiento}, #{tipoDocumentoReceptor},
+        #{numeroDocumentoReceptor}, #{denominacionReceptor}, #{direccionReceptor}, #{emailReceptor}, #{totalValorVentaGravada}, #{totalIgv}, #{importeTotalVenta},
+        #{codigoTipoOperacion}, #{fechaEmisionDate}, #{fechaRegistro, javaType=java.sql.Timestamp, jdbcType=TIMESTAMP}, #{identificadorDocumento}, #{codigoHash}, #{detraccion}, #{estado},
+        #{estadoAnterior}, #{estadoSunat}, #{horaEmision}, #{mensajeRespuesta}, #{ublVersion}, #{userName}, #{userNameModificacion}, #{uuid}, #{oficinaId}, #{tipoTransaccion}, #{montoPendiente})
     </insert>
+
+    <update id="updatePaymentVoucher"
+            parameterType="com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherDto">
+        UPDATE payment_voucher
+        SET ruc_emisor              = #{rucEmisor},
+            tipo_comprobante        = #{tipoComprobante},
+            serie                   = #{serie},
+            numero                  = #{numero},
+            fecha_emision           = #{fechaEmision},
+            codigo_moneda           = #{codigoMoneda},
+            fecha_vencimiento       = #{fechaVencimiento},
+            tip_doc_ident_receptor  = #{tipoDocumentoReceptor},
+            num_doc_ident_receptor  = #{numeroDocumentoReceptor},
+            denominacion_receptor   = #{denominacionReceptor},
+            direccion_receptor      = #{direccionReceptor},
+            email_receptor          = #{emailReceptor},
+            total_oper_gravada      = #{totalValorVentaGravada},
+            sumatoria_igv           = #{totalIgv},
+            monto_imp_total_venta   = #{importeTotalVenta},
+            tipo_operacion          = #{codigoTipoOperacion},
+            fecha_emision_date      = #{fechaEmisionDate},
+            fecha_registro          = #{fechaRegistro, javaType=java.sql.Timestamp, jdbcType=TIMESTAMP},
+            identificador_documento = #{identificadorDocumento},
+            codigo_hash             = #{codigoHash},
+            detraccion              = #{detraccion},
+            estado                  = #{estado},
+            estado_anterior         = #{estadoAnterior},
+            estado_sunat            = #{estadoSunat},
+            hora_emision            = #{horaEmision},
+            mensaje_respuesta       = #{mensajeRespuesta},
+            ubl_version             = #{ublVersion},
+            user_name               = #{userName},
+            user_name_modify        = #{userNameModificacion},
+            uuid                    = #{uuid},
+            oficina_id              = #{oficinaId},
+            tipo_transaccion        = #{tipoTransaccion},
+            monto_pendiente         = #{montoPendiente}
+        WHERE id_payment_voucher = #{idPaymentVoucher}
+    </update>
 
     <select id="getPaymentVoucherById" parameterType="long" resultType="com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity">
         select p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash from payment_voucher p
@@ -175,8 +214,8 @@
             WHERE p.id_payment_voucher = #{id}
     </update>
     <select id="findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity">
-        SELECT p.id_paymente_voucher
-            FROM payment_voucher
+        SELECT p.id_payment_voucher, p.estado_sunat, p.estado
+            FROM payment_voucher p
         WHERE p.ruc_emisor = #{ruc} AND
               p.tipo_comprobante = #{tipo} AND
               p.serie = #{serie} AND

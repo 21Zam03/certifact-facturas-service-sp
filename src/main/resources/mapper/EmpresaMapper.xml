@@ -37,4 +37,12 @@
         FROM company c
         WHERE c.ruc = #{ruc}
     </select>
+    <select id="findOseByRucInter" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.dto.model.OseDto">
+        SELECT o.oses_id AS id,
+               o.url_facturas AS urlFacturas,
+               o.url_guias AS urlGuias
+        FROM company c
+                 INNER JOIN oses o ON o.oses_id = c.ose_id
+        WHERE c.ruc = #{ruc}
+    </select>
 </mapper>

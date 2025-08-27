@@ -5,7 +5,7 @@
 
 <mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.SubidaRegistroArchivoMapper">
     <insert id="registrarSubidaArchivo"
-            parameterType="com.certicom.certifact_facturas_service_sp.dto.model.SubidaRegistroArchivoDto"
+            parameterType="com.certicom.certifact_facturas_service_sp.dto.model.RegisterFileUploadDto"
             useGeneratedKeys="true" keyProperty="id" keyColumn="id_register_file_send">
         INSERT INTO register_file_upload (id_register_file_send, bucket, nombre_generado, nombre_archivo, cod_company, estado)
         VALUES (nextval('file_upload_seq'), #{bucket}, #{nombreGenerado}, #{nombreOriginal}, #{codCompany}, #{estado})
@@ -17,5 +17,25 @@
         *
         FROM register_file_upload
         WHERE id_register_file_send = #{id}
+    </select>
+    <select id="findFirst1ByPaymentVoucherIdPaymentVoucherAndTipoArchivoAndEstadoArchivoOrderByOrdenDesc">
+        SELECT pv.id_payment_voucher AS id,
+               u.is_old AS isOld,
+               u.bucket,
+               u.nombre_generado AS nombreGenerado,
+               u.ruc_company AS rucCompany,
+               u.uuid,
+               u.extension,
+               pvf.tipo_archivo AS tipo
+        FROM register_file_upload u
+                 INNER JOIN payment_voucher_file pvf
+                            ON pvf.id_register_file_send = u.id_register_file_send
+                 INNER JOIN payment_voucher pv
+                            ON pv.id_payment_voucher = pvf.id_payment_voucher
+        WHERE pv.id_payment_voucher = #{id}
+          AND pvf.tipo_archivo = #{tipo}
+          AND estado_archivo = #{estado}
+        ORDER BY u.id_register_file_send DESC
+            LIMIT 1
     </select>
 </mapper>

@@ -1,6 +1,7 @@
 package com.certicom.certifact_facturas_service_sp.service.impl;
 
 import com.certicom.certifact_facturas_service_sp.dto.model.EmpresaDto;
+import com.certicom.certifact_facturas_service_sp.dto.model.OseDto;
 import com.certicom.certifact_facturas_service_sp.dto.model.UsuarioInterDto;
 import com.certicom.certifact_facturas_service_sp.exceptions.ExcepcionNegocio;
 import com.certicom.certifact_facturas_service_sp.mapper.EmpresaMapper;
@@ -44,6 +45,11 @@ public class EmpresaServiceImpl implements EmpresaService {
             throw new ExcepcionNegocio("idUsuario is null");
         }
         return empresa;
+    }
+
+    @Override
+    public OseDto findOseByRucInter(String ruc) {
+        return empresaMapper.findOseByRucInter(ruc);
     }
 
 }

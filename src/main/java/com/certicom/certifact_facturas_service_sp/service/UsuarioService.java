@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 public interface UsuarioService {
 
-    UsuarioInterDto obtenerUsuario(@PathVariable Long idUsuario);
+    UsuarioInterDto obtenerUsuario(Long idUsuario);
+    UsuarioInterDto findUserByUsername(String username);
 
 }

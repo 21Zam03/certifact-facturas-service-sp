@@ -36,4 +36,26 @@ public class TmpVoucherSendBillServiceImpl implements TmpVoucherSendBillService 
         return result;
     }
 
+    @Override
+    public int updateStatusVoucherTmp(Long identificador, String estado) {
+        int result = 0;
+        try {
+            result = tmpVoucherSendBillMapper.updateStatusVoucherTmp(identificador, estado);
+        } catch (Exception e) {
+            log.error("ERROR en tmpVoucherSendBillServiceImpl[updateStatusVoucherTmp]: {}", e.getMessage());
+        }
+        return result;
+    }
+
+    @Override
+    public int deleteTmpVoucherById(Long id) {
+        int result = 0;
+        try {
+            result = tmpVoucherSendBillMapper.deleteTmpVoucherById(id);
+        } catch (Exception e) {
+            log.error("ERROR en tmpVoucherSendBillServiceImpl[deleteTmpVoucherById]: {}", e.getMessage());
+        }
+        return result;
+    }
+
 }

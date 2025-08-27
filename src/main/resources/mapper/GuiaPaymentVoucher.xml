@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.GuiaPaymentVoucherMapper">
+    <insert id="saveGuiaPayment" parameterType="com.certicom.certifact_facturas_service_sp.dto.others.GuiaRelacionada">
+        INSERT INTO guia_payment_voucher(id_guia_payment, codigo_tipo_guia, serie_numero_guia, id_payment_voucher)
+        VALUES (nextval('idx_cuotas_id_payment_voucher'), #{codigoTipoGuia}, #{serieNumeroGuia}, #{idPaymentVoucher})
+    </insert>
+    <delete id="deleteGuiaPaymentById" parameterType="Long">
+        DELETE FROM guia_payment_voucher WHERE id_guia_payment = #{id}
+    </delete>
+</mapper>

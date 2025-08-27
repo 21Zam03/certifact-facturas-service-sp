@@ -8,4 +8,7 @@
         INSERT INTO anticipo_payment_voucher (id_anticipo_payment, monto_anticipo, numero_anticipo, serie_anticipo, tipo_doc_anticipo, id_payment_voucher)
         values (nextval('anticipo_payment_voucher_seq'), #{montoAnticipo}, #{numeroAnticipo}, #{serieAnticipo}, #{tipoDocAnticipo}, #{idPaymentVoucher})
     </insert>
+    <delete id="deleteAnticipoById" parameterType="Long">
+        DELETE FROM anticipo_payment_voucher WHERE id_anticipo_payment = #{id}
+    </delete>
 </mapper>

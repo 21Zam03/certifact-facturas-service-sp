@@ -8,4 +8,7 @@
         INSERT INTO payment_cuotas (id_cuotas, numero, monto, fecha, id_payment_voucher)
         VALUES (nextval('idx_cuotas_id_payment_voucher'), #{numero}, #{monto}, #{fecha}, #{idPaymentVoucher})
     </insert>
+    <delete id="deletePaymentCuotasById" parameterType="Long">
+        DELETE FROM payment_cuotas WHERE id_cuotas = #{id}
+    </delete>
 </mapper>

@@ -32,4 +32,9 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuario;
     }
 
+    @Override
+    public UsuarioInterDto findUserByUsername(String username) {
+        return usuarioMapper.findUserByUsername(username);
+    }
+
 }

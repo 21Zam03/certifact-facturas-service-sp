@@ -3,7 +3,6 @@ package com.certicom.certifact_facturas_service_sp.controller;
 import com.certicom.certifact_facturas_service_sp.dto.model.*;
 import com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity;
 import com.certicom.certifact_facturas_service_sp.entity.SubidaRegistroArchivoEntity;
-import com.certicom.certifact_facturas_service_sp.entity.TmpVoucherSendBillEntity;
 import com.certicom.certifact_facturas_service_sp.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +21,8 @@ public class PaymentVoucherController {
     public static final String API_PATH = "/api/invoice-sp";
 
     private final PaymentVoucherService paymentVoucherService;
-    private final EmpresaService empresaService;
     private final OficinaService oficinaService;
     private final SubidaRegistroArchivoService subidaRegistroArchivoService;
-    private final UsuarioService usuarioService;
-    private final TmpVoucherSendBillService tmpVoucherSendBillService;
 
     /*COMPROBANTE, PAYMENT VOUCHER*/
 
@@ -122,9 +118,9 @@ public class PaymentVoucherController {
     }
 
     @PostMapping("/payment-voucher")
-    public ResponseEntity<PaymentVoucherEntity> savePaymentVoucher(@RequestBody PaymentVoucherEntity paymentVoucherEntity) {
-        log.info("COMPROBANTE: {}", paymentVoucherEntity);
-        return new ResponseEntity<>(paymentVoucherService.registrarComprobante(paymentVoucherEntity), HttpStatus.CREATED);
+    public ResponseEntity<PaymentVoucherEntity> savePaymentVoucher(@RequestBody PaymentVoucherDto paymentVoucherDto) {
+        log.info("COMPROBANTE: {}", paymentVoucherDto);
+        return new ResponseEntity<>(paymentVoucherService.registrarComprobante(paymentVoucherDto), HttpStatus.CREATED);
         //return new ResponseEntity<>(new ComprobanteEntity(), HttpStatus.CREATED);
     }
 
@@ -153,29 +149,6 @@ public class PaymentVoucherController {
         );
     }
 
-    /*USUARIO, USER*/
-
-    @GetMapping("/user/{idUsuario}")
-    public ResponseEntity<?> obtenerUsuario(@PathVariable Long idUsuario) {
-        //log.info("UserController - obtenerUsuario - [idUsuario={}]", idUsuario);
-        UsuarioInterDto usuario = usuarioService.obtenerUsuario(idUsuario);
-        //log.info("UserController - obtenerUsuario - [usuario={}]", usuario.toString());
-        return  new ResponseEntity<>(usuario, HttpStatus.OK);
-    }
-
-
-    /*EMPRESA, COMPANY*/
-
-    @GetMapping("/company/state")
-    private ResponseEntity<String> obtenerEstadoEmpresaPorRuc(@RequestParam String rucEmisor) {
-        return new ResponseEntity<>(empresaService.obtenerEstadoEmpresaPorRuc(rucEmisor), HttpStatus.OK);
-    }
-
-    @GetMapping("/company/{ruc}")
-    private ResponseEntity<EmpresaDto> obtenerEmpresaPorRuc(@PathVariable String ruc) {
-        return new ResponseEntity<>(empresaService.obtenerEmpresaRuc(ruc), HttpStatus.OK);
-    }
-
     /*OFICINA, OFFICE*/
 
     @GetMapping("/office")
@@ -188,18 +161,8 @@ public class PaymentVoucherController {
     /*ARCHIVO, FILE */
 
     @PostMapping("/register-file-upload")
-    private ResponseEntity<SubidaRegistroArchivoEntity> registrarArchivo(@RequestBody SubidaRegistroArchivoDto subidaRegistroArchivoDto) {
-        return new ResponseEntity<>(subidaRegistroArchivoService.regitrarSubidaArchivo(subidaRegistroArchivoDto), HttpStatus.CREATED);
-    }
-
-    @GetMapping("/tmpVoucher/{id}")
-    private ResponseEntity<TmpVoucherSendBillEntity> findTmpVoucherByIdPaymentVoucher(@PathVariable Long id) {
-        return new ResponseEntity<>(tmpVoucherSendBillService.findTmpVoucherByIdPaymentVoucher(id),HttpStatus.OK);
-    }
-
-    @PostMapping("/tmpVoucher")
-    private ResponseEntity<?> saveTmpVoucher(@RequestBody TmpVoucherSendBillEntity tmpVoucherSendBillEntity) {
-        return new ResponseEntity<>(tmpVoucherSendBillService.saveTmpVoucher(tmpVoucherSendBillEntity),HttpStatus.OK);
+    private ResponseEntity<SubidaRegistroArchivoEntity> registrarArchivo(@RequestBody RegisterFileUploadDto registerFileUploadDto) {
+        return new ResponseEntity<>(subidaRegistroArchivoService.regitrarSubidaArchivo(registerFileUploadDto), HttpStatus.CREATED);
     }
 
 }
