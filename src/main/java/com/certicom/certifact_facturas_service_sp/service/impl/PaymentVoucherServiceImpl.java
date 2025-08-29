@@ -13,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,7 +21,7 @@ import java.util.List;
 public class PaymentVoucherServiceImpl implements PaymentVoucherService {
 
     private final PaymentVoucherMapper paymentVoucherMapper;
-    private final ComprobanteArchivoMapper comprobanteArchivoMapper;
+    private final PaymentVoucherFileMapper paymentVoucherFileMapper;
     private final AnticipoMapper anticipoMapper;
     private final CampoAdicionalMapper campoAdicionalMapper;
     private final AdditionalFieldMapper additionalFieldMapper;
@@ -116,11 +114,11 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
 
         //Proximamente registrar archivos desde aqui y no desde la capa de ng
 
-        for (int i =0; i<paymentVoucherEntity.getPaymentVoucherFileEntityList().size();i++) {
-            paymentVoucherEntity.getPaymentVoucherFileEntityList().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
+        for (int i =0; i<paymentVoucherEntity.getPaymentVoucherFileList().size();i++) {
+            paymentVoucherEntity.getPaymentVoucherFileList().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
             //Por ahora dejarlo asi, pero se tiene que integrar el metodo de inserccion de archivos a la base de datos en este mismo metodo [registrarComprobante]
             //paymentVoucherEntity.getComprobanteArchivoEntityList().get(i).setIdRegisterFileSend();
-            result = comprobanteArchivoMapper.registrarComprobanteArchivo(paymentVoucherEntity.getPaymentVoucherFileEntityList().get(i));
+            result = paymentVoucherFileMapper.save(paymentVoucherEntity.getPaymentVoucherFileList().get(i));
             if(result == 0){
                 throw new RuntimeException("No se pudo registrar el comprobante archivo");
             }

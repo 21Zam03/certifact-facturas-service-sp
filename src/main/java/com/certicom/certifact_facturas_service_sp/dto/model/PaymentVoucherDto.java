@@ -1,7 +1,6 @@
 package com.certicom.certifact_facturas_service_sp.dto.model;
 
 import com.certicom.certifact_facturas_service_sp.dto.others.*;
-import com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherFileEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -109,6 +108,6 @@ public class PaymentVoucherDto {
     private String Uuid;
     private Date fechaEmisionDate;
 
-    private List<PaymentVoucherFileDto> paymentVoucherFileEntityList;
+    private List<PaymentVoucherFile> paymentVoucherFileList;
 
 }

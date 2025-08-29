@@ -3,8 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.ComprobanteArchivoMapper">
-    <insert id="registrarComprobanteArchivo" parameterType="com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherFileEntity">
+<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.PaymentVoucherFileMapper">
+    <insert id="save" parameterType="com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherFileEntity">
         INSERT INTO payment_voucher_file (id, estado_archivo, orden, tipo_archivo, id_payment_voucher, id_register_file_send)
         values (nextval('file_comprobante_pago_seq'), #{estadoArchivo}, #{orden}, #{tipoArchivo}, #{idPaymentVoucher}, #{idRegisterFileSend})
     </insert>
