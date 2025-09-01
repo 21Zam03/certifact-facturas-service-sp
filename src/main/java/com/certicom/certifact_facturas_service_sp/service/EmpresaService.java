@@ -1,8 +1,7 @@
 package com.certicom.certifact_facturas_service_sp.service;
 
-import com.certicom.certifact_facturas_service_sp.dto.model.EmpresaDto;
-import com.certicom.certifact_facturas_service_sp.dto.model.OseDto;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.certicom.certifact_facturas_service_sp.model.EmpresaDto;
+import com.certicom.certifact_facturas_service_sp.model.OseDto;
 
 public interface EmpresaService {
 

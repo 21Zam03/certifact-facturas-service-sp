@@ -1,6 +1,6 @@
 package com.certicom.certifact_facturas_service_sp.service.impl;
 
-import com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherFile;
+import com.certicom.certifact_facturas_service_sp.model.PaymentVoucherFile;
 import com.certicom.certifact_facturas_service_sp.mapper.PaymentVoucherFileMapper;
 import com.certicom.certifact_facturas_service_sp.service.PaymentVoucherFileService;
 import lombok.RequiredArgsConstructor;

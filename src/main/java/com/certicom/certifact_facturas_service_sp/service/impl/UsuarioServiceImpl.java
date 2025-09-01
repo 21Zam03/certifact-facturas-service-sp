@@ -1,8 +1,8 @@
 package com.certicom.certifact_facturas_service_sp.service.impl;
 
-import com.certicom.certifact_facturas_service_sp.dto.model.UsuarioInterDto;
+import com.certicom.certifact_facturas_service_sp.model.User;
 import com.certicom.certifact_facturas_service_sp.exceptions.ExcepcionNegocio;
-import com.certicom.certifact_facturas_service_sp.mapper.UsuarioMapper;
+import com.certicom.certifact_facturas_service_sp.mapper.UserMapper;
 import com.certicom.certifact_facturas_service_sp.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,15 +13,15 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UsuarioServiceImpl implements UsuarioService {
 
-    private final UsuarioMapper usuarioMapper;
+    private final UserMapper userMapper;
 
     @Override
-    public UsuarioInterDto obtenerUsuario(Long idUsuario) {
+    public User findUserById(Long idUsuario) {
         //log.info("UsuarioServiceImpl - obtenerUsuario - [idUsuario= {}]", idUsuario);
-        UsuarioInterDto usuario = null;
+        User usuario = null;
         if (idUsuario != null) {
             try {
-                usuario =  usuarioMapper.obtenerUsuarioPorId(idUsuario);
+                usuario =  userMapper.findUserById(idUsuario);
             } catch (Exception e) {
                 log.error("ERROR: {}", e.getMessage());
             }
@@ -33,8 +33,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioInterDto findUserByUsername(String username) {
-        return usuarioMapper.findUserByUsername(username);
+    public User findUserByUsername(String username) {
+        return userMapper.findUserByUsername(username);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.certicom.certifact_facturas_service_sp.dto.model;
+package com.certicom.certifact_facturas_service_sp.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

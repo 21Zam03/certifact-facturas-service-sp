@@ -11,7 +11,7 @@
     </select>
     <select id="obtenerEmpresaPorRuc"
             parameterType="string"
-            resultType="com.certicom.certifact_facturas_service_sp.dto.model.EmpresaDto">
+            resultType="com.certicom.certifact_facturas_service_sp.model.EmpresaDto">
         SELECT
             c.razon_social AS razon,
             c.nombre_comercial AS nombreComer,
@@ -37,7 +37,7 @@
         FROM company c
         WHERE c.ruc = #{ruc}
     </select>
-    <select id="findOseByRucInter" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.dto.model.OseDto">
+    <select id="findOseByRucInter" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.model.OseDto">
         SELECT o.oses_id AS id,
                o.url_facturas AS urlFacturas,
                o.url_guias AS urlGuias

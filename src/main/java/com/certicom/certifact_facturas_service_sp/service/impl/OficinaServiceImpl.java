@@ -1,6 +1,6 @@
 package com.certicom.certifact_facturas_service_sp.service.impl;
 
-import com.certicom.certifact_facturas_service_sp.dto.model.OficinaDto;
+import com.certicom.certifact_facturas_service_sp.model.OficinaDto;
 import com.certicom.certifact_facturas_service_sp.mapper.OficinaMapper;
 import com.certicom.certifact_facturas_service_sp.service.OficinaService;
 import lombok.RequiredArgsConstructor;

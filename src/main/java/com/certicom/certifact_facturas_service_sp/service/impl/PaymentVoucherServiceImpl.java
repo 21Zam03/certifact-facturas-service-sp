@@ -1,8 +1,9 @@
 package com.certicom.certifact_facturas_service_sp.service.impl;
 
 import com.certicom.certifact_facturas_service_sp.converter.PaymentVoucherConverter;
-import com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteFiltroDto;
-import com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherDto;
+import com.certicom.certifact_facturas_service_sp.dto.others.PaymentVoucherDto;
+import com.certicom.certifact_facturas_service_sp.dto.others.PaymentVoucherFilterDto;
+import com.certicom.certifact_facturas_service_sp.model.PaymentVoucher;
 import com.certicom.certifact_facturas_service_sp.dto.others.ComprobanteItem;
 import com.certicom.certifact_facturas_service_sp.entity.*;
 import com.certicom.certifact_facturas_service_sp.mapper.*;
@@ -30,13 +31,12 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     private final GuiaPaymentVoucherMapper guiaPaymentVoucherMapper;
 
     @Override
-    public List<PaymentVoucherDto> listarComprobantesConFiltro(
+    public List<PaymentVoucherDto> listPaymentVoucherWithFilter(
             String rucEmisor, String filtroDesde, String filtroHasta,
             String filtroTipoComprobante, String filtroRuc, String filtroSerie, Integer filtroNumero,
             Integer idOficina, String estadoSunat, Integer pageNumber, Integer perPage
     ) {
-
-        ComprobanteFiltroDto filtro = ComprobanteFiltroDto.builder()
+        PaymentVoucherFilterDto filtro = PaymentVoucherFilterDto.builder()
                 .rucEmisor(rucEmisor)
                 .filtroDesde(UtilDate.stringToDate(filtroDesde, "dd-MM-yyyy"))
                 .filtroHasta(UtilDate.stringToDate(filtroHasta, "dd-MM-yyyy"))
@@ -49,16 +49,16 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
                 .numPagina(pageNumber)
                 .porPagina(perPage)
                 .build();
-        return paymentVoucherMapper.listarComprobantesConFiltro(filtro);
+        return paymentVoucherMapper.listPaymentVoucherWithFilter(filtro);
     }
 
     @Override
-    public Integer contarComprobantes(
+    public Integer countPaymentVoucher(
             String rucEmisor, String filtroDesde, String filtroHasta,
             String filtroTipoComprobante, String filtroRuc, String filtroSerie, Integer filtroNumero,
             Integer idOficina, String estadoSunat, Integer pageNumber, Integer perPage
     ) {
-        ComprobanteFiltroDto filtro = ComprobanteFiltroDto.builder()
+        PaymentVoucherFilterDto filtro = PaymentVoucherFilterDto.builder()
                 .rucEmisor(rucEmisor)
                 .filtroDesde(UtilDate.stringToDate(filtroDesde, "dd-MM-yyyy"))
                 .filtroHasta(UtilDate.stringToDate(filtroHasta, "dd-MM-yyyy"))
@@ -71,15 +71,15 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
                 .numPagina(pageNumber)
                 .porPagina(perPage)
                 .build();
-        return paymentVoucherMapper.contarComprobantesConFiltro(filtro);
+        return paymentVoucherMapper.countPaymentVoucher(filtro);
     }
 
     @Override
-    public List<PaymentVoucherDto> obtenerTotalSolesGeneral(
+    public List<PaymentVoucher> getTotalSoles(
             String rucEmisor, String filtroDesde, String filtroHasta, String filtroTipoComprobante, String filtroRuc, String filtroSerie,
             Integer filtroNumero, Integer idOficina, String estadoSunat, Integer pageNumber, Integer perPage
     ) {
-        ComprobanteFiltroDto filtro = ComprobanteFiltroDto.builder()
+        PaymentVoucherFilterDto filtro = PaymentVoucherFilterDto.builder()
                 .rucEmisor(rucEmisor)
                 .filtroDesde(UtilDate.stringToDate(filtroDesde, "dd-MM-yyyy"))
                 .filtroHasta(UtilDate.stringToDate(filtroHasta, "dd-MM-yyyy"))
@@ -92,89 +92,89 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
                 .numPagina(pageNumber)
                 .porPagina(perPage)
                 .build();
-        return paymentVoucherMapper.obtenerTotalSolesGeneralConFiltro(filtro);
+        return paymentVoucherMapper.getTotalSoles(filtro);
     }
 
     @Transactional
     @Override
-    public PaymentVoucherEntity registrarComprobante(PaymentVoucherDto paymentVoucherEntity) {
+    public PaymentVoucher savePaymentVoucher(PaymentVoucher paymentVoucher) {
         //paymentVoucherEntity.setFechaRegistro(new Timestamp(System.currentTimeMillis()));
         //paymentVoucherEntity.setFechaEmisionDate(new Date());
         int result;
-        if(paymentVoucherEntity.getIdPaymentVoucher()!=null) {
-            result = paymentVoucherMapper.updatePaymentVoucher(paymentVoucherEntity);
+        if(paymentVoucher.getIdPaymentVoucher()!=null) {
+            result = paymentVoucherMapper.updatePaymentVoucher(paymentVoucher);
         } else {
-            result = paymentVoucherMapper.registrarComprobante(paymentVoucherEntity);
+            result = paymentVoucherMapper.savePaymentVoucher(paymentVoucher);
         }
         if(result == 0){
             throw new RuntimeException("No se pudo registrar el comprobante");
         }
         log.info("Resultado: {}", result);
-        log.info("ID: {}", paymentVoucherEntity.getIdPaymentVoucher());
+        log.info("ID: {}", paymentVoucher.getIdPaymentVoucher());
 
         //Proximamente registrar archivos desde aqui y no desde la capa de ng
 
-        for (int i =0; i<paymentVoucherEntity.getPaymentVoucherFileList().size();i++) {
-            paymentVoucherEntity.getPaymentVoucherFileList().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
+        for (int i =0; i<paymentVoucher.getPaymentVoucherFileList().size();i++) {
+            paymentVoucher.getPaymentVoucherFileList().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
             //Por ahora dejarlo asi, pero se tiene que integrar el metodo de inserccion de archivos a la base de datos en este mismo metodo [registrarComprobante]
             //paymentVoucherEntity.getComprobanteArchivoEntityList().get(i).setIdRegisterFileSend();
-            result = paymentVoucherFileMapper.save(paymentVoucherEntity.getPaymentVoucherFileList().get(i));
+            result = paymentVoucherFileMapper.save(paymentVoucher.getPaymentVoucherFileList().get(i));
             if(result == 0){
                 throw new RuntimeException("No se pudo registrar el comprobante archivo");
             }
         }
 
-        if (paymentVoucherEntity.getAnticipos() != null && !paymentVoucherEntity.getAnticipos().isEmpty()) {
-            for (int i = 0; i < paymentVoucherEntity.getAnticipos().size(); i++) {
-                paymentVoucherEntity.getAnticipos().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
-                result = anticipoMapper.registrarAnticipo(paymentVoucherEntity.getAnticipos().get(i));
+        if (paymentVoucher.getAnticipos() != null && !paymentVoucher.getAnticipos().isEmpty()) {
+            for (int i = 0; i < paymentVoucher.getAnticipos().size(); i++) {
+                paymentVoucher.getAnticipos().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+                result = anticipoMapper.registrarAnticipo(paymentVoucher.getAnticipos().get(i));
                 if(result == 0){
                     throw new RuntimeException("No se pudo registrar el anticipo");
                 }
             }
         }
 
-        if(paymentVoucherEntity.getCamposAdicionales()!= null && !paymentVoucherEntity.getCamposAdicionales().isEmpty()) {
-            for (int i = 0; i < paymentVoucherEntity.getCamposAdicionales().size(); i++) {
-                paymentVoucherEntity.getCamposAdicionales().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
-                result = additionalFieldMapper.registrarCampoAdicionalComprobante(paymentVoucherEntity.getCamposAdicionales().get(i));
+        if(paymentVoucher.getCamposAdicionales()!= null && !paymentVoucher.getCamposAdicionales().isEmpty()) {
+            for (int i = 0; i < paymentVoucher.getCamposAdicionales().size(); i++) {
+                paymentVoucher.getCamposAdicionales().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+                result = additionalFieldMapper.registrarCampoAdicionalComprobante(paymentVoucher.getCamposAdicionales().get(i));
                 if(result == 0){
                     throw new RuntimeException("No se pudo registrar el campo adicional");
                 }
             }
         }
 
-        if (paymentVoucherEntity.getCuotas() != null && !paymentVoucherEntity.getCuotas().isEmpty()) {
-            for (int i=0; i<paymentVoucherEntity.getCuotas().size(); i++) {
-                paymentVoucherEntity.getCuotas().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
-                result = cuotasPaymentVoucherMapper.registrarCuotaPaymentVoucher(paymentVoucherEntity.getCuotas().get(i));
+        if (paymentVoucher.getCuotas() != null && !paymentVoucher.getCuotas().isEmpty()) {
+            for (int i=0; i<paymentVoucher.getCuotas().size(); i++) {
+                paymentVoucher.getCuotas().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+                result = cuotasPaymentVoucherMapper.registrarCuotaPaymentVoucher(paymentVoucher.getCuotas().get(i));
                 if(result == 0){
                     throw new RuntimeException("No se pudo registrar la cuota");
                 }
             }
         }
 
-        if(paymentVoucherEntity.getItems() != null && !paymentVoucherEntity.getItems().isEmpty()) {
-            for (int i = 0; i < paymentVoucherEntity.getItems().size(); i++) {
-                paymentVoucherEntity.getItems().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
-                result = detailsPaymentVoucherMapper.registrarDetailsPaymentVoucher(paymentVoucherEntity.getItems().get(i));
+        if(paymentVoucher.getItems() != null && !paymentVoucher.getItems().isEmpty()) {
+            for (int i = 0; i < paymentVoucher.getItems().size(); i++) {
+                paymentVoucher.getItems().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+                result = detailsPaymentVoucherMapper.registrarDetailsPaymentVoucher(paymentVoucher.getItems().get(i));
                 if(result == 0){
                     throw new RuntimeException("No se pudo registrar los items");
                 }
             }
         }
 
-        if(paymentVoucherEntity.getGuiasRelacionadas() != null && !paymentVoucherEntity.getGuiasRelacionadas().isEmpty()) {
-            for (int i = 0; i < paymentVoucherEntity.getGuiasRelacionadas().size(); i++) {
-                paymentVoucherEntity.getGuiasRelacionadas().get(i).setIdPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher());
-                result = guiaPaymentVoucherMapper.saveGuiaPayment(paymentVoucherEntity.getGuiasRelacionadas().get(i));
+        if(paymentVoucher.getGuiasRelacionadas() != null && !paymentVoucher.getGuiasRelacionadas().isEmpty()) {
+            for (int i = 0; i < paymentVoucher.getGuiasRelacionadas().size(); i++) {
+                paymentVoucher.getGuiasRelacionadas().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+                result = guiaPaymentVoucherMapper.saveGuiaPayment(paymentVoucher.getGuiasRelacionadas().get(i));
                 if(result == 0){
                     throw new RuntimeException("No se pudo registrar la guia relacionada");
                 }
             }
         }
 
-        PaymentVoucherEntity entity = paymentVoucherMapper.getPaymentVoucherById(paymentVoucherEntity.getIdPaymentVoucher());
+        PaymentVoucher entity = paymentVoucherMapper.getPaymentVoucherById(paymentVoucher.getIdPaymentVoucher());
         if(entity == null){
             throw new RuntimeException("Error al obtener comprobante");
         }
@@ -182,7 +182,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     }
 
     @Override
-    public PaymentVoucherEntity findPaymentVoucherById(Long id) {
+    public PaymentVoucher findPaymentVoucherById(Long id) {
         return paymentVoucherMapper.getPaymentVoucherById(id);
     }
 
@@ -192,7 +192,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     }
 
     @Override
-    public PaymentVoucherEntity getPaymentVoucherByIdentificadorDocumento(String identificadorDocumento) {
+    public PaymentVoucher getPaymentVoucherByIdentificadorDocumento(String identificadorDocumento) {
         return paymentVoucherMapper.getPaymentVoucherByIdentificadorDocumento(identificadorDocumento);
     }
 
@@ -207,17 +207,17 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     }
 
     @Override
-    public PaymentVoucherDto findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(String rucEmisor, String tipoComprobante, String serie, Integer numero) {
-        PaymentVoucherDto paymentVoucherDto = paymentVoucherMapper.
+    public PaymentVoucher findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(String rucEmisor, String tipoComprobante, String serie, Integer numero) {
+        PaymentVoucher paymentVoucher = paymentVoucherMapper.
                 findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(rucEmisor, tipoComprobante, serie, numero);
-        List<ComprobanteItem> items = detailsPaymentVoucherMapper.findByIdPaymentVoucher(paymentVoucherDto.getIdPaymentVoucher());
+        List<ComprobanteItem> items = detailsPaymentVoucherMapper.findByIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
         System.out.println("ITEMS: "+items);
-        paymentVoucherDto.setItems(items);
-        return paymentVoucherDto;
+        paymentVoucher.setItems(items);
+        return paymentVoucher;
     }
 
     @Override
-    public PaymentVoucherDto findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento(
+    public PaymentVoucher findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento(
             String finalRucEmisor, String tipoComprobante, String serieDocumento, Integer numeroDocumento) {
         try {
             PaymentVoucherEntity paymentVoucherEntity = paymentVoucherMapper.findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento(

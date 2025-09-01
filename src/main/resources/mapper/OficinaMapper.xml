@@ -6,7 +6,7 @@
 <mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.OficinaMapper">
     <select id="obtenerOficinaPorEmpresaIdYSerieYTipoComprobante"
             parameterType="map"
-            resultType="com.certicom.certifact_facturas_service_sp.dto.model.OficinaDto">
+            resultType="com.certicom.certifact_facturas_service_sp.model.OficinaDto">
         SELECT bo.id
         FROM branch_offices bo
         INNER JOIN series s ON s.oficina_id = bo.id

@@ -1,8 +1,7 @@
 package com.certicom.certifact_facturas_service_sp.service.impl;
 
-import com.certicom.certifact_facturas_service_sp.dto.model.EmpresaDto;
-import com.certicom.certifact_facturas_service_sp.dto.model.OseDto;
-import com.certicom.certifact_facturas_service_sp.dto.model.UsuarioInterDto;
+import com.certicom.certifact_facturas_service_sp.model.EmpresaDto;
+import com.certicom.certifact_facturas_service_sp.model.OseDto;
 import com.certicom.certifact_facturas_service_sp.exceptions.ExcepcionNegocio;
 import com.certicom.certifact_facturas_service_sp.mapper.EmpresaMapper;
 import com.certicom.certifact_facturas_service_sp.service.EmpresaService;

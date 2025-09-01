@@ -3,10 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.UsuarioMapper">
-    <select id="obtenerUsuarioPorId"
+<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.UserMapper">
+    <select id="findUserById"
             parameterType="java.lang.Long"
-            resultType="com.certicom.certifact_facturas_service_sp.dto.model.UsuarioInterDto">
+            resultType="com.certicom.certifact_facturas_service_sp.model.User">
         SELECT
             u.id_user AS idUsuario,
             u.oficina_id AS idOficina,
@@ -22,7 +22,7 @@
         WHERE id_user = #{id}
     </select>
 
-    <select id="findUserByUsername" parameterType="java.lang.String" resultType="com.certicom.certifact_facturas_service_sp.dto.model.UsuarioInterDto">
+    <select id="findUserByUsername" parameterType="java.lang.String" resultType="com.certicom.certifact_facturas_service_sp.model.User">
         SELECT
         u.id_user AS idUsuario,
         u.oficina_id AS idOficina,

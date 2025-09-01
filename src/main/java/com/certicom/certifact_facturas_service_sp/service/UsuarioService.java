@@ -1,11 +1,10 @@
 package com.certicom.certifact_facturas_service_sp.service;
 
-import com.certicom.certifact_facturas_service_sp.dto.model.UsuarioInterDto;
-import org.springframework.web.bind.annotation.PathVariable;
+import com.certicom.certifact_facturas_service_sp.model.User;
 
 public interface UsuarioService {
 
-    UsuarioInterDto obtenerUsuario(Long idUsuario);
-    UsuarioInterDto findUserByUsername(String username);
+    User findUserById(Long idUsuario);
+    User findUserByUsername(String username);
 
 }

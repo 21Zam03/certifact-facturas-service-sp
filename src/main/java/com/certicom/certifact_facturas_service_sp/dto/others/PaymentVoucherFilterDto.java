@@ -1,4 +1,4 @@
-package com.certicom.certifact_facturas_service_sp.dto.model;
+package com.certicom.certifact_facturas_service_sp.dto.others;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ComprobanteFiltroDto {
+public class PaymentVoucherFilterDto {
 
     private String rucEmisor;
     private Date filtroDesde;

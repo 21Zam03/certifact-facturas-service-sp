@@ -1,4 +1,4 @@
-package com.certicom.certifact_facturas_service_sp.dto.model;
+package com.certicom.certifact_facturas_service_sp.model;
 
 import com.certicom.certifact_facturas_service_sp.dto.others.*;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PaymentVoucherDto {
+public class PaymentVoucher {
 
     private Long idPaymentVoucher;
 

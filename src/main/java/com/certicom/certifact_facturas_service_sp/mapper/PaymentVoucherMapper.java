@@ -1,33 +1,33 @@
 package com.certicom.certifact_facturas_service_sp.mapper;
 
-import com.certicom.certifact_facturas_service_sp.dto.model.ComprobanteFiltroDto;
-import com.certicom.certifact_facturas_service_sp.dto.model.PaymentVoucherDto;
+import com.certicom.certifact_facturas_service_sp.dto.others.PaymentVoucherDto;
+import com.certicom.certifact_facturas_service_sp.dto.others.PaymentVoucherFilterDto;
+import com.certicom.certifact_facturas_service_sp.model.PaymentVoucher;
 import com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @Mapper
 public interface PaymentVoucherMapper {
 
-    List<PaymentVoucherDto> listarComprobantesConFiltro(@Param("filtro") ComprobanteFiltroDto comprobanteFiltroDto);
+    List<PaymentVoucherDto> listPaymentVoucherWithFilter(@Param("filtro") PaymentVoucherFilterDto paymentVoucherFilterDto);
 
-    Integer contarComprobantesConFiltro(@Param("filtro") ComprobanteFiltroDto comprobanteFiltroDto);
+    Integer countPaymentVoucher(@Param("filtro") PaymentVoucherFilterDto paymentVoucherFilterDto);
 
-    List<PaymentVoucherDto> obtenerTotalSolesGeneralConFiltro(@Param("filtro") ComprobanteFiltroDto comprobanteFiltroDto);
+    List<PaymentVoucher> getTotalSoles(@Param("filtro") PaymentVoucherFilterDto paymentVoucherFilterDto);
 
-    int registrarComprobante(PaymentVoucherDto paymentVoucherDto);
+    int savePaymentVoucher(PaymentVoucher paymentVoucher);
 
-    int updatePaymentVoucher(PaymentVoucherDto paymentVoucherDto);
+    int updatePaymentVoucher(PaymentVoucher paymentVoucher);
 
-    PaymentVoucherEntity getPaymentVoucherById(@Param("id") Long idPaymentVoucher);
+    PaymentVoucher getPaymentVoucherById(@Param("id") Long idPaymentVoucher);
 
     Integer findFirst1ByTipoComprobanteAndSerieAndRucEmisorOrderByNumeroDesc(
             @Param("tipo") String tipoComprobante, @Param("serie") String serie, @Param("ruc") String ruc);
 
-    public PaymentVoucherEntity getPaymentVoucherByIdentificadorDocumento(@Param("idDocument") String identificadorDocumento);
+    public PaymentVoucher getPaymentVoucherByIdentificadorDocumento(@Param("idDocument") String identificadorDocumento);
 
     int updateStatePaymentVoucher1(@Param("id") Long idPaymentVoucher, @Param("codigo") String codigo,
                                    @Param("message") String messageResponse, @Param("codes") String codesResponse);
@@ -36,7 +36,7 @@ public interface PaymentVoucherMapper {
             @Param("id") Long idPaymentVoucher, @Param("codigo") String codigo, @Param("esunat") String estadoEnSunat,
             @Param("message") String messageResponse, @Param("codes") String codesResponse);
 
-    PaymentVoucherDto findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
+    PaymentVoucher findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
             @Param("ruc") String rucEmisor, @Param("tipo") String tipoComprobante, @Param("serie") String serie, @Param("numero") Integer numero
     );
 

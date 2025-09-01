@@ -1,6 +1,6 @@
 package com.certicom.certifact_facturas_service_sp.service.impl;
 
-import com.certicom.certifact_facturas_service_sp.dto.model.RegisterFileUploadDto;
+import com.certicom.certifact_facturas_service_sp.model.RegisterFileUploadDto;
 import com.certicom.certifact_facturas_service_sp.entity.SubidaRegistroArchivoEntity;
 import com.certicom.certifact_facturas_service_sp.exceptions.ServicioException;
 import com.certicom.certifact_facturas_service_sp.mapper.SubidaRegistroArchivoMapper;

@@ -1,7 +1,7 @@
 package com.certicom.certifact_facturas_service_sp.controller;
 
-import com.certicom.certifact_facturas_service_sp.dto.model.EmpresaDto;
-import com.certicom.certifact_facturas_service_sp.dto.model.OseDto;
+import com.certicom.certifact_facturas_service_sp.model.EmpresaDto;
+import com.certicom.certifact_facturas_service_sp.model.OseDto;
 import com.certicom.certifact_facturas_service_sp.service.EmpresaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
