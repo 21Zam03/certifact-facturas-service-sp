@@ -6,12 +6,12 @@
 <mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.AdditionalFieldMapper">
     <insert id="registrarCampoAdicionalComprobante" parameterType="com.certicom.certifact_facturas_service_sp.dto.others.CampoAdicional">
         INSERT INTO aditional_field_payment_voucher (id, nombre_campo, valor_campo, id_payment_voucher, type_field_id)
-        VALUES (nextval('aditional_field_payment_voucher_seq'), #{nombreCampo}, #{valorCampo}, #{typeFieldId}, #{idPaymentVoucher})
+        VALUES (nextval('aditional_field_payment_voucher_seq'), #{nombreCampo}, #{valorCampo}, #{idPaymentVoucher}, #{typeFieldId})
     </insert>
-    <select id="findAditionalFieldIdByValorCampo" parameterType="String">
-        SELECT a.type_field_id FROM aditional_field_payment_voucher WHERE a.valor_campo = #{valor}
-    </select>
     <delete id="deleteAditionalFieldPaymentById" parameterType="Long">
         DELETE FROM aditional_field_payment_voucher WHERE id = #{id}
     </delete>
+    <select id="listAditionalFieldByIdPaymentVoucher" parameterType="Long">
+        SELECT id, nombre_campo, valor_campo, id_payment_voucher, type_field_id FROM aditional_field_payment_voucher WHERE id_payment_voucher = #{id}
+    </select>
 </mapper>

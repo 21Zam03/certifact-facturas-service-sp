@@ -3,12 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.AdditionalFieldMapper">
+<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.CuotasPaymentVoucherMapper">
     <insert id="registrarCuotaPaymentVoucher" parameterType="com.certicom.certifact_facturas_service_sp.entity.CuotasPaymentVoucherEntity">
         INSERT INTO payment_cuotas (id_cuotas, numero, monto, fecha, id_payment_voucher)
-        VALUES (nextval('idx_cuotas_id_payment_voucher'), #{numero}, #{monto}, #{fecha}, #{idPaymentVoucher})
+        VALUES (nextval('payment_cuotas_id_cuotas_seq'), #{numero}, #{monto}, #{fecha}, #{idPaymentVoucher})
     </insert>
     <delete id="deletePaymentCuotasById" parameterType="Long">
         DELETE FROM payment_cuotas WHERE id_cuotas = #{id}
     </delete>
+    <select id="listCuotasByIdPaymentVoucher" parameterType="Long">
+        SELECT id_cuotas, numero, monto, fecha, id_payment_voucher FROM payment_cuotas WHERE id_payment_voucher = #{id}
+    </select>
 </mapper>

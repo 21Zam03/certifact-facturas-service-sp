@@ -15,10 +15,10 @@ public class Anticipo {
 
     private Long idAnticipoPayment;
     private Long idPaymentVoucher;
-    //private String identificadorPago;
+    private String identificadorPago;
     private String serieAnticipo;
     private Integer numeroAnticipo;
-    private String tipoDocumentoAnticipo;
-    private BigDecimal montoAnticipado;
+    private String tipoDocAnticipo;
+    private BigDecimal montoAnticipo;
 
 }

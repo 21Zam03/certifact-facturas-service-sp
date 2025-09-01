@@ -1,11 +1,10 @@
 package com.certicom.certifact_facturas_service_sp.controller;
 
 import com.certicom.certifact_facturas_service_sp.dto.others.PaymentVoucherDto;
-import com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity;
 import com.certicom.certifact_facturas_service_sp.entity.SubidaRegistroArchivoEntity;
 import com.certicom.certifact_facturas_service_sp.model.OficinaDto;
 import com.certicom.certifact_facturas_service_sp.model.PaymentVoucher;
-import com.certicom.certifact_facturas_service_sp.model.RegisterFileUploadDto;
+import com.certicom.certifact_facturas_service_sp.model.RegisterFileUpload;
 import com.certicom.certifact_facturas_service_sp.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -161,8 +160,8 @@ public class PaymentVoucherController {
     /*ARCHIVO, FILE */
 
     @PostMapping("/register-file-upload")
-    private ResponseEntity<SubidaRegistroArchivoEntity> registrarArchivo(@RequestBody RegisterFileUploadDto registerFileUploadDto) {
-        return new ResponseEntity<>(subidaRegistroArchivoService.regitrarSubidaArchivo(registerFileUploadDto), HttpStatus.CREATED);
+    private ResponseEntity<SubidaRegistroArchivoEntity> registrarArchivo(@RequestBody RegisterFileUpload registerFileUpload) {
+        return new ResponseEntity<>(subidaRegistroArchivoService.regitrarSubidaArchivo(registerFileUpload), HttpStatus.CREATED);
     }
 
 }

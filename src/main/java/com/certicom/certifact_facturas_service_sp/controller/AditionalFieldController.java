@@ -16,11 +16,6 @@ public class AditionalFieldController {
 
     private final AditionalFieldService aditionalFieldService;
 
-    @GetMapping
-    public ResponseEntity<Integer> findAditionalFieldIdByValorCampo(@RequestParam String nombreCampo) {
-        return new ResponseEntity<>(aditionalFieldService.findAditionalFieldIdByValorCampo(nombreCampo), HttpStatus.OK);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Integer> deleteAditionalFieldPaymentById(@PathVariable("id") Long aditionalPaymentId) {
         return new ResponseEntity<>(aditionalFieldService.deleteAditionalFieldPaymentById(aditionalPaymentId), HttpStatus.OK);

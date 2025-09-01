@@ -11,4 +11,8 @@
     <delete id="deleteAnticipoById" parameterType="Long">
         DELETE FROM anticipo_payment_voucher WHERE id_anticipo_payment = #{id}
     </delete>
+    <select id="listAnticiposByIdPaymentVoucher" parameterType="Long">
+        SELECT id_anticipo_payment, monto_anticipo, numero_anticipo, serie_anticipo, tipo_doc_anticipo, id_payment_voucher
+        FROM anticipo_payment_voucher WHERE Id_anticipo_payment = #{id}
+    </select>
 </mapper>

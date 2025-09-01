@@ -1,6 +1,6 @@
 package com.certicom.certifact_facturas_service_sp.controller;
 
-import com.certicom.certifact_facturas_service_sp.model.RegisterFileUploadDto;
+import com.certicom.certifact_facturas_service_sp.model.RegisterFileUpload;
 import com.certicom.certifact_facturas_service_sp.entity.SubidaRegistroArchivoEntity;
 import com.certicom.certifact_facturas_service_sp.service.SubidaRegistroArchivoService;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +18,12 @@ public class RegisterFileUploadController {
     private final SubidaRegistroArchivoService subidaRegistroArchivoService;
 
     @PostMapping
-    private ResponseEntity<SubidaRegistroArchivoEntity> registrarArchivo(@RequestBody RegisterFileUploadDto registerFileUploadDto) {
-        return new ResponseEntity<>(subidaRegistroArchivoService.regitrarSubidaArchivo(registerFileUploadDto), HttpStatus.CREATED);
+    private ResponseEntity<SubidaRegistroArchivoEntity> registrarArchivo(@RequestBody RegisterFileUpload registerFileUpload) {
+        return new ResponseEntity<>(subidaRegistroArchivoService.regitrarSubidaArchivo(registerFileUpload), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<RegisterFileUploadDto> findFirst1ByPaymentVoucherIdPaymentVoucherAndTipoArchivoAndEstadoArchivoOrderByOrdenDesc
+    public ResponseEntity<RegisterFileUpload> findFirst1ByPaymentVoucherIdPaymentVoucherAndTipoArchivoAndEstadoArchivoOrderByOrdenDesc
             (@RequestParam Long idPayment, @RequestParam String tipoArchivo, @RequestParam String estadoArchivo) {
         return new ResponseEntity<>(
                 subidaRegistroArchivoService.findFirst1ByPaymentVoucherIdPaymentVoucherAndTipoArchivoAndEstadoArchivoOrderByOrdenDesc(idPayment, tipoArchivo, estadoArchivo),
@@ -31,6 +31,9 @@ public class RegisterFileUploadController {
         );
     }
 
-
+    @GetMapping("/id&uuid&tipo")
+    public ResponseEntity<RegisterFileUpload> findByIdPaymentVoucherAndUuidTipo(@RequestParam Long id, @RequestParam String uuid, @RequestParam String tipo) {
+        return new ResponseEntity<>(subidaRegistroArchivoService.findByIdPaymentVoucherAndUuidTipo(id, uuid, tipo), HttpStatus.OK);
+    }
 
 }

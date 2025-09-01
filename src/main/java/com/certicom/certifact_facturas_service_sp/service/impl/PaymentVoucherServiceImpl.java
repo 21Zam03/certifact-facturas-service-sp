@@ -1,10 +1,8 @@
 package com.certicom.certifact_facturas_service_sp.service.impl;
 
 import com.certicom.certifact_facturas_service_sp.converter.PaymentVoucherConverter;
-import com.certicom.certifact_facturas_service_sp.dto.others.PaymentVoucherDto;
-import com.certicom.certifact_facturas_service_sp.dto.others.PaymentVoucherFilterDto;
+import com.certicom.certifact_facturas_service_sp.dto.others.*;
 import com.certicom.certifact_facturas_service_sp.model.PaymentVoucher;
-import com.certicom.certifact_facturas_service_sp.dto.others.ComprobanteItem;
 import com.certicom.certifact_facturas_service_sp.entity.*;
 import com.certicom.certifact_facturas_service_sp.mapper.*;
 import com.certicom.certifact_facturas_service_sp.service.PaymentVoucherService;
@@ -24,11 +22,12 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     private final PaymentVoucherMapper paymentVoucherMapper;
     private final PaymentVoucherFileMapper paymentVoucherFileMapper;
     private final AnticipoMapper anticipoMapper;
-    private final CampoAdicionalMapper campoAdicionalMapper;
+    private final TypeFieldMapper typeFieldMapper;
     private final AdditionalFieldMapper additionalFieldMapper;
     private final CuotasPaymentVoucherMapper cuotasPaymentVoucherMapper;
     private final DetailsPaymentVoucherMapper detailsPaymentVoucherMapper;
     private final GuiaPaymentVoucherMapper guiaPaymentVoucherMapper;
+
 
     @Override
     public List<PaymentVoucherDto> listPaymentVoucherWithFilter(
@@ -137,6 +136,8 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         if(paymentVoucher.getCamposAdicionales()!= null && !paymentVoucher.getCamposAdicionales().isEmpty()) {
             for (int i = 0; i < paymentVoucher.getCamposAdicionales().size(); i++) {
                 paymentVoucher.getCamposAdicionales().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+                Integer id = typeFieldMapper.getIdByName(paymentVoucher.getCamposAdicionales().get(i).getNombreCampo());
+                paymentVoucher.getCamposAdicionales().get(i).setTypeFieldId(id);
                 result = additionalFieldMapper.registrarCampoAdicionalComprobante(paymentVoucher.getCamposAdicionales().get(i));
                 if(result == 0){
                     throw new RuntimeException("No se pudo registrar el campo adicional");
@@ -146,6 +147,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
 
         if (paymentVoucher.getCuotas() != null && !paymentVoucher.getCuotas().isEmpty()) {
             for (int i=0; i<paymentVoucher.getCuotas().size(); i++) {
+                //paymentVoucher.getCuotas().get(i).setNumero(i+1);
                 paymentVoucher.getCuotas().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
                 result = cuotasPaymentVoucherMapper.registrarCuotaPaymentVoucher(paymentVoucher.getCuotas().get(i));
                 if(result == 0){
@@ -211,8 +213,17 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         PaymentVoucher paymentVoucher = paymentVoucherMapper.
                 findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(rucEmisor, tipoComprobante, serie, numero);
         List<ComprobanteItem> items = detailsPaymentVoucherMapper.findByIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
-        System.out.println("ITEMS: "+items);
+        List<CampoAdicional> aditionalFields = additionalFieldMapper.listAditionalFieldByIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+        List<Anticipo> anticipos = anticipoMapper.listAnticiposByIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+        List<ComprobanteCuota> cuotas = cuotasPaymentVoucherMapper.listCuotasByIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+        List<GuiaRelacionada> guiasRelacionadas = guiaPaymentVoucherMapper.listGuiasByIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+
+        System.out.println("ITEMS: "+aditionalFields);
         paymentVoucher.setItems(items);
+        paymentVoucher.setCamposAdicionales(aditionalFields);
+        paymentVoucher.setAnticipos(anticipos);
+        paymentVoucher.setCuotas(cuotas);
+        paymentVoucher.setGuiasRelacionadas(guiasRelacionadas);
         return paymentVoucher;
     }
 

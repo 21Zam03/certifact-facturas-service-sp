@@ -12,12 +12,8 @@ public class AditionalFieldPaymentService implements AditionalFieldService {
     private final AdditionalFieldMapper additionalFieldMapper;
 
     @Override
-    public int findAditionalFieldIdByValorCampo(String valorCampo) {
-        return additionalFieldMapper.findAditionalFieldIdByValorCampo(valorCampo);
-    }
-
-    @Override
     public int deleteAditionalFieldPaymentById(Long aditionalFieldId) {
         return additionalFieldMapper.deleteAditionalFieldPaymentById(aditionalFieldId);
     }
+
 }

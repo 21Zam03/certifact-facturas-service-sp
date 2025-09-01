@@ -3,15 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.SubidaRegistroArchivoMapper">
+<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.RegisterFileUploadMapper">
     <insert id="registrarSubidaArchivo"
-            parameterType="com.certicom.certifact_facturas_service_sp.model.RegisterFileUploadDto"
-            useGeneratedKeys="true" keyProperty="id" keyColumn="id_register_file_send">
+            parameterType="com.certicom.certifact_facturas_service_sp.model.RegisterFileUpload"
+            useGeneratedKeys="true" keyProperty="idRegisterFileSend" keyColumn="id_register_file_send">
         INSERT INTO register_file_upload (id_register_file_send, bucket, nombre_generado, nombre_archivo, cod_company, estado)
         VALUES (nextval('file_upload_seq'), #{bucket}, #{nombreGenerado}, #{nombreOriginal}, #{codCompany}, #{estado})
     </insert>
     <select id="obtenerSubidaArchivoPorId"
-            parameterType="java.lang.Integer"
+            parameterType="java.lang.Long"
             resultType="com.certicom.certifact_facturas_service_sp.entity.SubidaRegistroArchivoEntity">
         SELECT
         *
@@ -37,5 +37,26 @@
           AND estado_archivo = #{estado}
         ORDER BY u.id_register_file_send DESC
             LIMIT 1
+    </select>
+    <select id="findByIdPaymentVoucherAndUuidTipo">
+        SELECT
+            pv.id_payment_voucher AS id,
+            u.is_old AS isOld,
+            u.bucket,
+            u.nombre_generado AS nombreGenerado,
+            u.ruc_company AS rucCompany,
+            u.uuid,
+            u.extension,
+            pvf.tipo_archivo AS tipo
+        FROM register_file_upload u
+            INNER JOIN payment_voucher_file pvf
+            ON pvf.id_register_file_send = u.id_register_file_send
+            INNER JOIN payment_voucher pv
+            ON pv.id_payment_voucher = pvf.id_payment_voucher
+        WHERE pv.id_payment_voucher = #{id}
+            AND pv.uuid = #{uuid}
+            AND pvf.tipo_archivo = #{tipo}
+        ORDER BY u.id_register_file_send DESC
+        LIMIT 1
     </select>
 </mapper>
