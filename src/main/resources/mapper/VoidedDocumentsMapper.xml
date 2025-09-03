@@ -8,4 +8,11 @@
         SELECT COALESCE(max(v.correl_generac_dia), 0) from voided_documents v WHERE v.ruc_emisor = #{ruc}
         and v.fecha_generacion_baja = #{fecha}
     </select>
+    <select id="save" resultType="Integer">
+        INSERT INTO voided_documents (id_document_voided, code_response, correl_generac_dia, description_response, estado, estado_documento, fecha_baja_docs,
+        fecha_generacion_resumen, fecha_modificacion, id_document, ruc_emisor, ticket_sunat, user_name, user_name_modify, intentos_get_status)
+        VALUES (nextval('documents_voided_seqpk'), #{codigoRespuesta}, #{correlativoGeneracionDia}, #{descripcionRespuesta}, #{estado}, #{estadoComprobante},
+        #{fechaBajaDocs}, #{fechaGeneracionResumen}, #{fechaModificacion}, #{idDocument}, #{rucEmisor}, #{ticketSunat}, #{userName}, #{userNameModify},
+        #{intentosGetStatus})
+    </select>
 </mapper>

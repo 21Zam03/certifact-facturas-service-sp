@@ -107,7 +107,7 @@ public class PaymentVoucherController {
         return new ResponseEntity<>(paymentVoucherService.getPaymentVoucherByIdentificadorDocumento(idDocumento), HttpStatus.OK);
     }
 
-    @GetMapping("/payment-voucher/number")
+    @GetMapping("/number")
     public ResponseEntity<Integer> obtenerSiguienteNumeracionPorTipoComprobanteYSerieYRucEmisor(
             @RequestParam String tipoComprobante, @RequestParam String serie, @RequestParam String ruc
     ) {
@@ -117,13 +117,13 @@ public class PaymentVoucherController {
         );
     }
 
-    @PostMapping("/payment-voucher")
+    @PostMapping
     public ResponseEntity<PaymentVoucher> savePaymentVoucher(@RequestBody PaymentVoucher paymentVoucher) {
         log.info("COMPROBANTE: {}", paymentVoucher);
         return new ResponseEntity<>(paymentVoucherService.savePaymentVoucher(paymentVoucher), HttpStatus.CREATED);
     }
 
-    @GetMapping("/payment-voucher/parameters")
+    @GetMapping("/parameters")
     public ResponseEntity<PaymentVoucher> findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
             @RequestParam String rucEmisor, @RequestParam String tipoComprobante,
             @RequestParam String serie, @RequestParam Integer numero) {
@@ -133,12 +133,12 @@ public class PaymentVoucherController {
                 ), HttpStatus.OK);
     }
 
-    @GetMapping("/payment-voucher{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<PaymentVoucher> findPaymentVoucherById(@PathVariable(name = "id") Long idPaymentVoucher) {
         return new ResponseEntity<>(paymentVoucherService.findPaymentVoucherById(idPaymentVoucher), HttpStatus.OK);
     }
 
-    @GetMapping("/payment-voucher/parameters-dto")
+    @GetMapping("/parameters-dto")
     public ResponseEntity<PaymentVoucher> findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento
             (@RequestParam String finalRucEmisor, @RequestParam String tipoComprobante,
              @RequestParam String serieDocumento, @RequestParam Integer numeroDocumento) {
@@ -146,15 +146,6 @@ public class PaymentVoucherController {
                 paymentVoucherService.findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento(finalRucEmisor, tipoComprobante, serieDocumento, numeroDocumento),
                 HttpStatus.OK
         );
-    }
-
-    /*OFICINA, OFFICE*/
-
-    @GetMapping("/office")
-    private ResponseEntity<OficinaDto> obtenerOficina(
-            @RequestParam Integer empresaId, @RequestParam String serie, @RequestParam String tipoComprobante
-    ) {
-        return new ResponseEntity<>(oficinaService.obtenerOficinaPorEmpresaIdYSerieYTipoComprobante(empresaId, serie, tipoComprobante), HttpStatus.OK);
     }
 
     /*ARCHIVO, FILE */

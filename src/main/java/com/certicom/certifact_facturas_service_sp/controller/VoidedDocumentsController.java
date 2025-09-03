@@ -1,13 +1,11 @@
 package com.certicom.certifact_facturas_service_sp.controller;
 
+import com.certicom.certifact_facturas_service_sp.model.VoidedDocuments;
 import com.certicom.certifact_facturas_service_sp.service.VoidedDocumentsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(VoidedDocumentsController.API_PATH)
@@ -20,6 +18,11 @@ public class VoidedDocumentsController {
     @GetMapping("/correlativo")
     public ResponseEntity<Integer> getCorrelativoGeneracionByDiaInVoidedDocuments(@RequestParam String ruc, @RequestParam String fechaGeneracionBaja) {
         return new ResponseEntity<>(voidedDocumentsService.getCorrelativoGeneracionByDiaInVoidedDocuments(ruc, fechaGeneracionBaja), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> save(@RequestBody VoidedDocuments voidedDocuments) {
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 
 }
