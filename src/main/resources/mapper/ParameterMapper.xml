@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.ParameterMapper">
+    <select id="findByName"
+            parameterType="String"
+            resultType="com.certicom.certifact_facturas_service_sp.model.Parameter">
+        SELECT id_parameter, name, status, value FROM parameter where name = #{name}
+    </select>
+</mapper>

@@ -20,13 +20,13 @@ import java.util.List;
 @Slf4j
 public class PaymentVoucherController {
 
-    public static final String API_PATH = "/api/invoice-sp";
+    public static final String API_PATH = "/api/payment-voucher";
 
     private final PaymentVoucherService paymentVoucherService;
     private final OficinaService oficinaService;
     private final SubidaRegistroArchivoService subidaRegistroArchivoService;
 
-    @GetMapping("/payment-voucher")
+    @GetMapping
     public ResponseEntity<?> listPaymentVoucherWithFilter(
             @RequestParam(name = "rucEmisor", required = true) String rucEmisor,
             @RequestParam(name = "filtroDesde", required = true) String filtroDesde,
@@ -48,7 +48,7 @@ public class PaymentVoucherController {
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-    @GetMapping("/payment-voucher/count-total")
+    @GetMapping("/count-total")
     public ResponseEntity<?> countPaymentVoucher(
             @RequestParam(name = "rucEmisor", required = true) String rucEmisor,
             @RequestParam(name = "filtroDesde", required = true) String filtroDesde,
@@ -67,7 +67,7 @@ public class PaymentVoucherController {
        return new ResponseEntity<>(cantidad, HttpStatus.OK);
     }
 
-    @GetMapping("/payment-voucher/cash-total")
+    @GetMapping("/cash-total")
     public ResponseEntity<?> getTotalSoles(
             @RequestParam(name = "rucEmisor", required = true) String rucEmisor,
             @RequestParam(name = "filtroDesde", required = true) String filtroDesde,
@@ -86,7 +86,7 @@ public class PaymentVoucherController {
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-    @PutMapping("/payment-voucher/state-1")
+    @PutMapping("/state-1")
     public ResponseEntity<Integer> updateStatePaymentVoucher(
             @RequestParam Long idPaymentVoucher, @RequestParam String codigo, @RequestParam String messageResponse,
             @RequestParam String codesResponse
@@ -94,7 +94,7 @@ public class PaymentVoucherController {
         return new ResponseEntity<>(paymentVoucherService.updateStatePaymentVoucher(idPaymentVoucher, codigo, messageResponse, codesResponse), HttpStatus.OK);
     }
 
-    @PutMapping("/payment-voucher/state-2")
+    @PutMapping("/state-2")
     public ResponseEntity<?> updateStatePaymentVoucher(
             @RequestParam Long idPaymentVoucher, @RequestParam String codigo, @RequestParam String estadoEnSunat,
             @RequestParam String messageResponse, @RequestParam String codesResponse
@@ -102,9 +102,9 @@ public class PaymentVoucherController {
         return new ResponseEntity<>(paymentVoucherService.updateStatePaymentVoucher(idPaymentVoucher, codigo, estadoEnSunat, messageResponse, codesResponse), HttpStatus.OK);
     }
 
-    @GetMapping("/payment-voucher/id-document")
-    public ResponseEntity<PaymentVoucher> getPaymentVoucherByIdentificadorDocumento(@RequestParam String identificadorDocumento) {
-        return new ResponseEntity<>(paymentVoucherService.getPaymentVoucherByIdentificadorDocumento(identificadorDocumento), HttpStatus.OK);
+    @GetMapping("/id-document")
+    public ResponseEntity<PaymentVoucher> getPaymentVoucherByIdentificadorDocumento(@RequestParam String idDocumento) {
+        return new ResponseEntity<>(paymentVoucherService.getPaymentVoucherByIdentificadorDocumento(idDocumento), HttpStatus.OK);
     }
 
     @GetMapping("/payment-voucher/number")

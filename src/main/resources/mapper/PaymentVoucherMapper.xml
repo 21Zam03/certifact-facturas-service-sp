@@ -195,7 +195,7 @@
         ORDER BY p.numero DESC LIMIT 1
     </select>
     <select id="getPaymentVoucherByIdentificadorDocumento" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucher">
-        SELECT p.fecha_emision, p.fecha_registro, p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash FROM payment_voucher p
+        SELECT p.fecha_emision, p.fecha_registro, p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.estado FROM payment_voucher p
         WHERE p.identificador_documento = #{idDocument}
     </select>
     <insert id="updateStatePaymentVoucher1" parameterType="map">
