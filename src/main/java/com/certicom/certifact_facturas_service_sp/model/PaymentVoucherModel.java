@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PaymentVoucher {
+public class PaymentVoucherModel {
 
     private Long idPaymentVoucher;
 
@@ -108,6 +108,6 @@ public class PaymentVoucher {
     private String Uuid;
     private Date fechaEmisionDate;
 
-    private List<PaymentVoucherFile> paymentVoucherFileList;
+    private List<PaymentVoucherFileModel> paymentVoucherFileModelList;
 
 }

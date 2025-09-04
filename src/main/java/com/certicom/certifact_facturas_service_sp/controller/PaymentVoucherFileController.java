@@ -1,6 +1,6 @@
 package com.certicom.certifact_facturas_service_sp.controller;
 
-import com.certicom.certifact_facturas_service_sp.model.PaymentVoucherFile;
+import com.certicom.certifact_facturas_service_sp.model.PaymentVoucherFileModel;
 import com.certicom.certifact_facturas_service_sp.service.PaymentVoucherFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,8 +20,8 @@ public class PaymentVoucherFileController {
     private final PaymentVoucherFileService paymentVoucherFileService;
 
     @PostMapping
-    private ResponseEntity<Integer> save(@RequestBody PaymentVoucherFile paymentVoucherFile) {
-        return new ResponseEntity<>(paymentVoucherFileService.save(paymentVoucherFile), HttpStatus.OK);
+    private ResponseEntity<Integer> save(@RequestBody PaymentVoucherFileModel paymentVoucherFileModel) {
+        return new ResponseEntity<>(paymentVoucherFileService.save(paymentVoucherFileModel), HttpStatus.OK);
     }
 
 }

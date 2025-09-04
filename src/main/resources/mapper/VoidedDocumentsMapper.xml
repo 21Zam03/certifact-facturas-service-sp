@@ -11,9 +11,9 @@
     <insert id="save" parameterType="com.certicom.certifact_facturas_service_sp.model.VoidedDocuments"
             useGeneratedKeys="true" keyProperty="idDocumentVoided" keyColumn="id_document_voided">
         INSERT INTO voided_documents (id_document_voided, code_response, correl_generac_dia, description_response, estado, estado_documento, fecha_baja_docs,
-        fecha_generacion_resumen, fecha_modificacion, id_document, ruc_emisor, ticket_sunat, user_name, user_name_modify, intentos_get_status)
-        VALUES (nextval('documents_voided_seqpk'), #{codigoRespuesta}, #{correlativoGeneracionDia}, #{descripcionRespuesta}, #{estado}, #{estadoComprobante},
-        #{fechaBajaDocs}, #{fechaGeneracionResumen}, #{fechaModificacion}, #{idDocument}, #{rucEmisor}, #{ticketSunat}, #{userName}, #{userNameModify},
+        fecha_generacion_baja, fecha_generacion_resumen, fecha_modificacion, id_document, ruc_emisor, ticket_sunat, user_name, user_name_modify, intentos_get_status)
+        VALUES (nextval('documents_voided_seq'), #{codigoRespuesta}, #{correlativoGeneracionDia}, #{descripcionRespuesta}, #{estado}, #{estadoComprobante},
+        #{fechaBajaDocs}, #{fechaGeneracionBaja}, #{fechaGeneracionResumen}, #{fechaModificacion}, #{idDocument}, #{rucEmisor}, #{ticketSunat}, #{userName}, #{userNameModify},
         #{intentosGetStatus})
     </insert>
     <update id="update">

@@ -1,20 +1,20 @@
 package com.certicom.certifact_facturas_service_sp.converter;
 
-import com.certicom.certifact_facturas_service_sp.model.PaymentVoucher;
+import com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel;
 import com.certicom.certifact_facturas_service_sp.entity.ComprobanteEntity;
 import com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity;
 
 public class PaymentVoucherConverter {
 
-    public static ComprobanteEntity toEntity(PaymentVoucher paymentVoucherInterDto) {
+    public static ComprobanteEntity toEntity(PaymentVoucherModel paymentVoucherModelInterDto) {
         return ComprobanteEntity.builder()
-                .serie(paymentVoucherInterDto.getSerie())
-                .numero(paymentVoucherInterDto.getNumero())
+                .serie(paymentVoucherModelInterDto.getSerie())
+                .numero(paymentVoucherModelInterDto.getNumero())
                 .build();
     }
 
-    public static PaymentVoucher entityToDto(PaymentVoucherEntity paymentVoucherEntity) {
-        return PaymentVoucher.builder()
+    public static PaymentVoucherModel entityToDto(PaymentVoucherEntity paymentVoucherEntity) {
+        return PaymentVoucherModel.builder()
                 .idPaymentVoucher(paymentVoucherEntity.getIdPaymentVoucher())
                 .rucEmisor(paymentVoucherEntity.getRucEmisor())
                 .tipoComprobante(paymentVoucherEntity.getTipoComprobante())

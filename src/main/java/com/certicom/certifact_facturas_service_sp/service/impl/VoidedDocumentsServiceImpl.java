@@ -25,16 +25,17 @@ public class VoidedDocumentsServiceImpl implements VoidedDocumentsService {
     @Transactional
     @Override
     public VoidedDocuments save(VoidedDocuments voidedDocuments) {
+
         int result;
         if(voidedDocuments.getIdDocumentVoided()!=null) {
-            result = voidedDocumentsMapper.save(voidedDocuments);
-        } else {
             result = voidedDocumentsMapper.update(voidedDocuments);
+        } else {
+            result = voidedDocumentsMapper.save(voidedDocuments);
         }
         if(result == 0) {
             throw new RuntimeException("No se pudo registrar el comprobante");
         }
-
+        System.out.println("ID CREATED: "+voidedDocuments.getIdDocumentVoided());
         for (int i=0; i<voidedDocuments.getDetailBajaDocumentos().size(); i++) {
             voidedDocuments.getDetailBajaDocumentos().get(i).setIdDocsVoided(voidedDocuments.getIdDocumentVoided());
             result = detailsDocsVoidedMapper.save(voidedDocuments.getDetailBajaDocumentos().get(i));
@@ -44,14 +45,16 @@ public class VoidedDocumentsServiceImpl implements VoidedDocumentsService {
         }
 
         for (int i=0; i<voidedDocuments.getVoidedFiles().size(); i++) {
-            voidedDocuments.getVoidedFiles().get(i).setIdRegisterFileSend(voidedDocuments.getIdDocumentVoided());
+            System.out.println("VOIDED FILE"+ voidedDocuments.getVoidedFiles().get(i));
+            voidedDocuments.getVoidedFiles().get(i).setIdDocumentVoided(voidedDocuments.getIdDocumentVoided());
             result = voidedFileMapper.save(voidedDocuments.getVoidedFiles().get(i));
             if (result == 0) {
-                throw new RuntimeException("No se pudo registrar el anticipo");
+                throw new RuntimeException("No se pudo registrar el voided file");
             }
         }
 
         VoidedDocuments voided = voidedDocumentsMapper.findVoidedDocumentsById(voidedDocuments.getIdDocumentVoided());
+        System.out.println("VOIDED: "+voided);
         if(voided == null) {
             throw new RuntimeException("Error al obtener documento anulado");
         }

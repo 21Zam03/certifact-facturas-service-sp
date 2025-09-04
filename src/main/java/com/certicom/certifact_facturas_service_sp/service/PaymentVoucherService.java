@@ -1,8 +1,7 @@
 package com.certicom.certifact_facturas_service_sp.service;
 
 import com.certicom.certifact_facturas_service_sp.dto.others.PaymentVoucherDto;
-import com.certicom.certifact_facturas_service_sp.model.PaymentVoucher;
-import com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity;
+import com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -21,19 +20,19 @@ public interface PaymentVoucherService {
             Integer idOficina, String estadoSunat, Integer pageNumber, Integer perPage
     );
 
-    List<PaymentVoucher> getTotalSoles(
+    List<PaymentVoucherModel> getTotalSoles(
             String rucEmisor, String filtroDesde, String filtroHasta,
             String filtroTipoComprobante, String filtroRuc, String filtroSerie, Integer filtroNumero,
             Integer idOficina, String estadoSunat, Integer pageNumber, Integer perPage
     );
 
-    PaymentVoucher savePaymentVoucher(PaymentVoucher paymentVoucher);
+    PaymentVoucherModel savePaymentVoucher(PaymentVoucherModel paymentVoucherModel);
 
-    PaymentVoucher findPaymentVoucherById(Long id);
+    PaymentVoucherModel findPaymentVoucherById(Long id);
 
     Integer findFirst1ByTipoComprobanteAndSerieAndRucEmisorOrderByNumeroDesc(String tipoComprobante, String serie, String ruc);
 
-    PaymentVoucher getPaymentVoucherByIdentificadorDocumento(String identificadorDocumento);
+    PaymentVoucherModel getPaymentVoucherByIdentificadorDocumento(String identificadorDocumento);
 
     int updateStatePaymentVoucher(Long idPaymentVoucher, String codigo, String messageResponse, String codesResponse);
 
@@ -41,11 +40,11 @@ public interface PaymentVoucherService {
 
     int updateStatePaymentVoucher(List<String> identificadorComprobantes, String estadoPendienteAnulacion, String usuario, Timestamp fechaModificacion);
 
-    PaymentVoucher findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
+    PaymentVoucherModel findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
             String rucEmisor, String tipoComprobante, String serie, Integer numero
     );
 
-    PaymentVoucher findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento(
+    PaymentVoucherModel findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento(
             String finalRucEmisor, String tipoComprobante, String serieDocumento, Integer numeroDocumento
     );
 

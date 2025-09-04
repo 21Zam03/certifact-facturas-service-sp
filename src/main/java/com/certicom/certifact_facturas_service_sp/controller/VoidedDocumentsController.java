@@ -22,7 +22,7 @@ public class VoidedDocumentsController {
 
     @PostMapping
     public ResponseEntity<?> save(@RequestBody VoidedDocuments voidedDocuments) {
-        return new ResponseEntity<>("", HttpStatus.OK);
+        return new ResponseEntity<>(voidedDocumentsService.save(voidedDocuments), HttpStatus.OK);
     }
 
 }

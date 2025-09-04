@@ -95,7 +95,7 @@
 
     <select id="getTotalSoles"
             parameterType="com.certicom.certifact_facturas_service_sp.dto.others.PaymentVoucherFilterDto"
-            resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucher">
+            resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
         SELECT p.codigo_moneda AS codigoMoneda,
         COALESCE(
         SUM(
@@ -133,7 +133,7 @@
     </select>
 
     <insert id="savePaymentVoucher"
-            parameterType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucher"
+            parameterType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel"
             useGeneratedKeys="true" keyProperty="idPaymentVoucher" keyColumn="id_payment_voucher">
         INSERT INTO payment_voucher
             (id_payment_voucher, ruc_emisor, tipo_comprobante, serie, numero, fecha_emision, codigo_moneda, fecha_vencimiento, tip_doc_ident_receptor, num_doc_ident_receptor,
@@ -147,7 +147,7 @@
     </insert>
 
     <update id="updatePaymentVoucher"
-            parameterType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucher">
+            parameterType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
         UPDATE payment_voucher
         SET ruc_emisor              = #{rucEmisor},
             tipo_comprobante        = #{tipoComprobante},
@@ -185,7 +185,7 @@
         WHERE id_payment_voucher = #{idPaymentVoucher}
     </update>
 
-    <select id="getPaymentVoucherById" parameterType="long" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucher">
+    <select id="getPaymentVoucherById" parameterType="long" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
         select p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash from payment_voucher p
         where p.id_payment_voucher = #{id}
     </select>
@@ -194,7 +194,7 @@
         WHERE p.tipo_comprobante = #{tipo} AND p.serie = #{serie} AND p.ruc_emisor = #{ruc}
         ORDER BY p.numero DESC LIMIT 1
     </select>
-    <select id="getPaymentVoucherByIdentificadorDocumento" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucher">
+    <select id="getPaymentVoucherByIdentificadorDocumento" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
         SELECT p.fecha_emision, p.fecha_registro, p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.estado FROM payment_voucher p
         WHERE p.identificador_documento = #{idDocument}
     </select>
@@ -224,7 +224,7 @@
                 #{id}
             </foreach>
     </update>
-    <select id="findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucher">
+    <select id="findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
         SELECT p.id_payment_voucher, p.estado_sunat, p.estado
             FROM payment_voucher p
         WHERE p.ruc_emisor = #{ruc} AND

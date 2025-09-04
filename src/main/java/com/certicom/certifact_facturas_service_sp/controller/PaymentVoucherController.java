@@ -2,8 +2,7 @@ package com.certicom.certifact_facturas_service_sp.controller;
 
 import com.certicom.certifact_facturas_service_sp.dto.others.PaymentVoucherDto;
 import com.certicom.certifact_facturas_service_sp.entity.SubidaRegistroArchivoEntity;
-import com.certicom.certifact_facturas_service_sp.model.OficinaDto;
-import com.certicom.certifact_facturas_service_sp.model.PaymentVoucher;
+import com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel;
 import com.certicom.certifact_facturas_service_sp.model.RegisterFileUpload;
 import com.certicom.certifact_facturas_service_sp.service.*;
 import lombok.RequiredArgsConstructor;
@@ -82,7 +81,7 @@ public class PaymentVoucherController {
             @RequestParam(name = "pageNumber", required = true) Integer pageNumber,
             @RequestParam(name = "perPage", required = true) Integer perPage
     ) {
-        List<PaymentVoucher> data = paymentVoucherService.getTotalSoles(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc, filtroSerie, filtroNumero,
+        List<PaymentVoucherModel> data = paymentVoucherService.getTotalSoles(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc, filtroSerie, filtroNumero,
                 idOficina, estadoSunat, pageNumber, perPage);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -112,7 +111,7 @@ public class PaymentVoucherController {
     }
 
     @GetMapping("/id-document")
-    public ResponseEntity<PaymentVoucher> getPaymentVoucherByIdentificadorDocumento(@RequestParam String idDocumento) {
+    public ResponseEntity<PaymentVoucherModel> getPaymentVoucherByIdentificadorDocumento(@RequestParam String idDocumento) {
         return new ResponseEntity<>(paymentVoucherService.getPaymentVoucherByIdentificadorDocumento(idDocumento), HttpStatus.OK);
     }
 
@@ -127,13 +126,13 @@ public class PaymentVoucherController {
     }
 
     @PostMapping
-    public ResponseEntity<PaymentVoucher> savePaymentVoucher(@RequestBody PaymentVoucher paymentVoucher) {
-        log.info("COMPROBANTE: {}", paymentVoucher);
-        return new ResponseEntity<>(paymentVoucherService.savePaymentVoucher(paymentVoucher), HttpStatus.CREATED);
+    public ResponseEntity<PaymentVoucherModel> savePaymentVoucher(@RequestBody PaymentVoucherModel paymentVoucherModel) {
+        log.info("COMPROBANTE: {}", paymentVoucherModel);
+        return new ResponseEntity<>(paymentVoucherService.savePaymentVoucher(paymentVoucherModel), HttpStatus.CREATED);
     }
 
     @GetMapping("/parameters")
-    public ResponseEntity<PaymentVoucher> findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
+    public ResponseEntity<PaymentVoucherModel> findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
             @RequestParam String rucEmisor, @RequestParam String tipoComprobante,
             @RequestParam String serie, @RequestParam Integer numero) {
         return new ResponseEntity<>(
@@ -143,12 +142,12 @@ public class PaymentVoucherController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PaymentVoucher> findPaymentVoucherById(@PathVariable(name = "id") Long idPaymentVoucher) {
+    public ResponseEntity<PaymentVoucherModel> findPaymentVoucherById(@PathVariable(name = "id") Long idPaymentVoucher) {
         return new ResponseEntity<>(paymentVoucherService.findPaymentVoucherById(idPaymentVoucher), HttpStatus.OK);
     }
 
     @GetMapping("/parameters-dto")
-    public ResponseEntity<PaymentVoucher> findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento
+    public ResponseEntity<PaymentVoucherModel> findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento
             (@RequestParam String finalRucEmisor, @RequestParam String tipoComprobante,
              @RequestParam String serieDocumento, @RequestParam Integer numeroDocumento) {
         return new ResponseEntity<>(
