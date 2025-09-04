@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -206,6 +207,11 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     @Override
     public int updateStatePaymentVoucher(Long idPaymentVoucher, String codigo, String estadoEnSunat, String messageResponse, String codesResponse) {
         return paymentVoucherMapper.updateStatePaymentVoucher2(idPaymentVoucher, codigo, estadoEnSunat, messageResponse, codesResponse);
+    }
+
+    @Override
+    public int updateStatePaymentVoucher(List<String> identificadorComprobantes, String estadoPendienteAnulacion, String usuario, Timestamp fechaModificacion) {
+        return paymentVoucherMapper.updateStatePaymentVoucher3(identificadorComprobantes, estadoPendienteAnulacion, usuario, fechaModificacion);
     }
 
     @Override

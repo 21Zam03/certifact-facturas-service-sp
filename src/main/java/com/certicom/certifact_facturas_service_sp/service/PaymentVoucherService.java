@@ -4,6 +4,7 @@ import com.certicom.certifact_facturas_service_sp.dto.others.PaymentVoucherDto;
 import com.certicom.certifact_facturas_service_sp.model.PaymentVoucher;
 import com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface PaymentVoucherService {
@@ -37,6 +38,8 @@ public interface PaymentVoucherService {
     int updateStatePaymentVoucher(Long idPaymentVoucher, String codigo, String messageResponse, String codesResponse);
 
     int updateStatePaymentVoucher(Long idPaymentVoucher, String codigo, String estadoEnSunat, String messageResponse, String codesResponse);
+
+    int updateStatePaymentVoucher(List<String> identificadorComprobantes, String estadoPendienteAnulacion, String usuario, Timestamp fechaModificacion);
 
     PaymentVoucher findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
             String rucEmisor, String tipoComprobante, String serie, Integer numero

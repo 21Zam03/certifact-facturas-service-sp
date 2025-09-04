@@ -198,13 +198,13 @@
         SELECT p.fecha_emision, p.fecha_registro, p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.estado FROM payment_voucher p
         WHERE p.identificador_documento = #{idDocument}
     </select>
-    <insert id="updateStatePaymentVoucher1" parameterType="map">
+    <update id="updateStatePaymentVoucher1" parameterType="map">
         UPDATE payment_voucher
             SET estado = #{codigo},
                 mensaje_respuesta = #{message},
                 codigo_respuesta_sunat = #{codes},
             WHERE id_payment_voucher = #{id}
-    </insert>
+    </update>
     <update id="updateStatePaymentVoucher2" parameterType="map">
         UPDATE payment_voucher
             SET estado = #{codigo},
@@ -212,6 +212,17 @@
                 mensaje_respuesta = #{message},
                 codigo_respuesta_sunat = #{codes}
             WHERE id_payment_voucher = #{id}
+    </update>
+    <update id="updateStatePaymentVoucher3" parameterType="map">
+        UPDATE payment_voucher
+            set estado_anterior = estado,
+                estado = #{estadoPendienteAnulacion},
+                user_name_modify = #{usuario},
+                fecha_modificacion = #{fechaModificacion}
+            WHERE identificador_documento in
+            <foreach item="id" collection="identificadorComprobantes" open="(" separator="," close=")">
+                #{id}
+            </foreach>
     </update>
     <select id="findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucher">
         SELECT p.id_payment_voucher, p.estado_sunat, p.estado

@@ -55,7 +55,6 @@ public class VoidedDocumentsServiceImpl implements VoidedDocumentsService {
         if(voided == null) {
             throw new RuntimeException("Error al obtener documento anulado");
         }
-
         return voided;
     }
 

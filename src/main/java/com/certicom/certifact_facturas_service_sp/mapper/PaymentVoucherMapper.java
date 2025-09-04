@@ -6,7 +6,9 @@ import com.certicom.certifact_facturas_service_sp.model.PaymentVoucher;
 import com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -35,6 +37,10 @@ public interface PaymentVoucherMapper {
     int updateStatePaymentVoucher2(
             @Param("id") Long idPaymentVoucher, @Param("codigo") String codigo, @Param("esunat") String estadoEnSunat,
             @Param("message") String messageResponse, @Param("codes") String codesResponse);
+
+    int updateStatePaymentVoucher3(
+            List<String> identificadorComprobantes, String estadoPendienteAnulacion,
+            String usuario, Timestamp fechaModificacion);
 
     PaymentVoucher findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero(
             @Param("ruc") String rucEmisor, @Param("tipo") String tipoComprobante, @Param("serie") String serie, @Param("numero") Integer numero

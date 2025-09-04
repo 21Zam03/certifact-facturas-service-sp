@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.VoidedFileMapper">
-    <insert id="save">
-        INSERT INTO voided_file ()
-        values ()
+    <insert id="save" parameterType="com.certicom.certifact_facturas_service_sp.model.VoidedFile">
+        INSERT INTO voided_file (id, estado_archivo, orden, tipo_archivo, id_register_file_send, id_document_voided)
+        values (nextval('file_voided_pago_seq'), #{estadoArchivo}, #{orden}, #{tipoArchivo}, #{idRegisterFileSend}, #{idDocumentVoided})
     </insert>
 </mapper>

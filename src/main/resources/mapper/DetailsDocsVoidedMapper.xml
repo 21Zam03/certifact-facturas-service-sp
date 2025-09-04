@@ -4,8 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.certicom.certifact_facturas_service_sp.mapper.DetailsDocsVoidedMapper">
-    <insert id="save" >
-        INSERT INTO detail_docs_voided ()
-        values ()
+    <insert id="save" parameterType="com.certicom.certifact_facturas_service_sp.model.DetailsDocsVoided">
+        INSERT INTO detail_docs_voided (
+            id_detail_docs_voided, estado, motivo_baja, numero_documento, numero_item, serie_documento, tipo_comprobante,
+            id_docs_voided
+        )
+        values (nextval('detail_voided_seq'), #{estado}, #{motivoBaja}, #{numeroDocumento}, #{numeroItem}, #{serieDocumento}, #{tipoComprobante},
+                #{idDocsVoided})
     </insert>
 </mapper>

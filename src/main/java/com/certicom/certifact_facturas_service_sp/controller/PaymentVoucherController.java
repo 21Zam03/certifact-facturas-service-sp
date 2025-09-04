@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
@@ -100,6 +101,14 @@ public class PaymentVoucherController {
             @RequestParam String messageResponse, @RequestParam String codesResponse
     ) {
         return new ResponseEntity<>(paymentVoucherService.updateStatePaymentVoucher(idPaymentVoucher, codigo, estadoEnSunat, messageResponse, codesResponse), HttpStatus.OK);
+    }
+
+    @PutMapping("/state-3")
+    public ResponseEntity<?> updateStatePaymentVoucher(
+            @RequestParam List<String> identificadorComprobantes, @RequestParam String estadoPendienteAnulacion,
+            @RequestParam String usuario, @RequestParam Timestamp fechaModificacion
+    ) {
+        return new ResponseEntity<>(paymentVoucherService.updateStatePaymentVoucher(identificadorComprobantes, estadoPendienteAnulacion, usuario, fechaModificacion), HttpStatus.OK);
     }
 
     @GetMapping("/id-document")
