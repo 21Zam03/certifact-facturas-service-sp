@@ -2,6 +2,7 @@ package com.certicom.certifact_facturas_service_sp.service.impl;
 
 import com.certicom.certifact_facturas_service_sp.converter.PaymentVoucherConverter;
 import com.certicom.certifact_facturas_service_sp.dto.others.*;
+import com.certicom.certifact_facturas_service_sp.model.PaymentVoucherFileModel;
 import com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel;
 import com.certicom.certifact_facturas_service_sp.entity.*;
 import com.certicom.certifact_facturas_service_sp.mapper.*;
@@ -114,12 +115,16 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         log.info("ID: {}", paymentVoucherModel.getIdPaymentVoucher());
 
         //Proximamente registrar archivos desde aqui y no desde la capa de ng
-
+        System.out.println("LISTA: "+paymentVoucherModel.getPaymentVoucherFileModelList());
         for (int i = 0; i< paymentVoucherModel.getPaymentVoucherFileModelList().size(); i++) {
             paymentVoucherModel.getPaymentVoucherFileModelList().get(i).setIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
             //Por ahora dejarlo asi, pero se tiene que integrar el metodo de inserccion de archivos a la base de datos en este mismo metodo [registrarComprobante]
             //paymentVoucherEntity.getComprobanteArchivoEntityList().get(i).setIdRegisterFileSend();
-            result = paymentVoucherFileMapper.save(paymentVoucherModel.getPaymentVoucherFileModelList().get(i));
+            if(paymentVoucherModel.getPaymentVoucherFileModelList().get(i).getId()==null) {
+                result = paymentVoucherFileMapper.save(paymentVoucherModel.getPaymentVoucherFileModelList().get(i));
+            } else {
+                result = paymentVoucherFileMapper.update(paymentVoucherModel.getPaymentVoucherFileModelList().get(i));
+            }
             if(result == 0){
                 throw new RuntimeException("No se pudo registrar el comprobante archivo");
             }
@@ -225,13 +230,14 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         List<Anticipo> anticipos = anticipoMapper.listAnticiposByIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
         List<ComprobanteCuota> cuotas = cuotasPaymentVoucherMapper.listCuotasByIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
         List<GuiaRelacionada> guiasRelacionadas = guiaPaymentVoucherMapper.listGuiasByIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+        List<PaymentVoucherFileModel> files = paymentVoucherFileMapper.listPaymentVoucherFiles(paymentVoucherModel.getIdPaymentVoucher());
 
-        System.out.println("ITEMS: "+aditionalFields);
         paymentVoucherModel.setItems(items);
         paymentVoucherModel.setCamposAdicionales(aditionalFields);
         paymentVoucherModel.setAnticipos(anticipos);
         paymentVoucherModel.setCuotas(cuotas);
         paymentVoucherModel.setGuiasRelacionadas(guiasRelacionadas);
+        paymentVoucherModel.setPaymentVoucherFileModelList(files);
         return paymentVoucherModel;
     }
 

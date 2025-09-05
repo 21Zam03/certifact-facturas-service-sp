@@ -225,12 +225,15 @@
             </foreach>
     </update>
     <select id="findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
-        SELECT p.id_payment_voucher, p.estado_sunat, p.estado
-            FROM payment_voucher p
-        WHERE p.ruc_emisor = #{ruc} AND
-              p.tipo_comprobante = #{tipo} AND
-              p.serie = #{serie} AND
-              p.numero = #{numero}
+        SELECT id_payment_voucher, ruc_emisor, tipo_comprobante, serie, numero, fecha_emision, codigo_moneda, fecha_vencimiento, tip_doc_ident_receptor, num_doc_ident_receptor,
+               denominacion_receptor, direccion_receptor, email_receptor, total_oper_gravada, sumatoria_igv, monto_imp_total_venta, tipo_operacion, fecha_emision_date, fecha_registro,
+               identificador_documento, codigo_hash, detraccion, estado, estado_anterior, estado_sunat, hora_emision, mensaje_respuesta, ubl_version, user_name, user_name_modify, uuid,
+               oficina_id, tipo_transaccion, monto_pendiente
+            FROM payment_voucher
+        WHERE ruc_emisor = #{ruc} AND
+              tipo_comprobante = #{tipo} AND
+              serie = #{serie} AND
+              numero = #{numero}
     </select>
     <select id="findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento"
             parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.entity.PaymentVoucherEntity">

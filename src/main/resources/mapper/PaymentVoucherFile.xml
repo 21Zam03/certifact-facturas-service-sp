@@ -8,4 +8,16 @@
         INSERT INTO payment_voucher_file (id, estado_archivo, orden, tipo_archivo, id_payment_voucher, id_register_file_send)
         values (nextval('file_comprobante_pago_seq'), #{estadoArchivo}, #{orden}, #{tipoArchivo}, #{idPaymentVoucher}, #{idRegisterFileSend})
     </insert>
+    <select id="listPaymentVoucherFiles" parameterType="Long">
+        SELECT id, estado_archivo, orden, tipo_archivo, id_payment_voucher, id_register_file_send FROM payment_voucher_file WHERE id_payment_voucher = #{id}
+    </select>
+    <update id="update">
+        UPDATE payment_voucher_file
+        set estado_archivo = #{estadoArchivo},
+            orden = #{orden},
+            tipo_archivo = #{tipoArchivo},
+            id_payment_voucher = #{idPaymentVoucher},
+            id_register_file_send = #{idRegisterFileSend}
+        WHERE id = #{id}
+    </update>
 </mapper>
