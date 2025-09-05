@@ -104,7 +104,6 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         int result;
         if(paymentVoucherModel.getIdPaymentVoucher()!=null) {
             result = paymentVoucherMapper.updatePaymentVoucher(paymentVoucherModel);
-            System.out.println("UPDATE");
         } else {
             result = paymentVoucherMapper.savePaymentVoucher(paymentVoucherModel);
         }
@@ -119,7 +118,6 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         for (int i = 0; i< paymentVoucherModel.getPaymentVoucherFileModelList().size(); i++) {
             paymentVoucherModel.getPaymentVoucherFileModelList().get(i).setIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
             //Por ahora dejarlo asi, pero se tiene que integrar el metodo de inserccion de archivos a la base de datos en este mismo metodo [registrarComprobante]
-            //paymentVoucherEntity.getComprobanteArchivoEntityList().get(i).setIdRegisterFileSend();
             if(paymentVoucherModel.getPaymentVoucherFileModelList().get(i).getId()==null) {
                 result = paymentVoucherFileMapper.save(paymentVoucherModel.getPaymentVoucherFileModelList().get(i));
             } else {

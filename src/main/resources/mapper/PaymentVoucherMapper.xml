@@ -202,7 +202,7 @@
         UPDATE payment_voucher
             SET estado = #{codigo},
                 mensaje_respuesta = #{message},
-                codigo_respuesta_sunat = #{codes},
+                codigo_respuesta_sunat = #{codes}
             WHERE id_payment_voucher = #{id}
     </update>
     <update id="updateStatePaymentVoucher2" parameterType="map">
