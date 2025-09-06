@@ -1,9 +1,6 @@
 package com.certicom.certifact_facturas_service_sp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -12,6 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class VoidedDocuments {
 
     private Long idDocumentVoided;
@@ -32,6 +30,6 @@ public class VoidedDocuments {
     private Integer intentosGetStatus;
 
     private List<DetailsDocsVoided> detailBajaDocumentos;
-    private List<VoidedFile> voidedFiles;
+    private List<VoidedFile> voidedFileModelList;
 
 }

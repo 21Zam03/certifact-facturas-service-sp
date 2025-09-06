@@ -25,7 +25,7 @@ public class VoidedDocumentsServiceImpl implements VoidedDocumentsService {
     @Transactional
     @Override
     public VoidedDocuments save(VoidedDocuments voidedDocuments) {
-
+        System.out.println("voided document: " + voidedDocuments);
         int result;
         if(voidedDocuments.getIdDocumentVoided()!=null) {
             result = voidedDocumentsMapper.update(voidedDocuments);
@@ -44,10 +44,9 @@ public class VoidedDocumentsServiceImpl implements VoidedDocumentsService {
             }
         }
 
-        for (int i=0; i<voidedDocuments.getVoidedFiles().size(); i++) {
-            System.out.println("VOIDED FILE"+ voidedDocuments.getVoidedFiles().get(i));
-            voidedDocuments.getVoidedFiles().get(i).setIdDocumentVoided(voidedDocuments.getIdDocumentVoided());
-            result = voidedFileMapper.save(voidedDocuments.getVoidedFiles().get(i));
+        for (int i=0; i<voidedDocuments.getVoidedFileModelList().size(); i++) {
+            voidedDocuments.getVoidedFileModelList().get(i).setIdDocumentVoided(voidedDocuments.getIdDocumentVoided());
+            result = voidedFileMapper.save(voidedDocuments.getVoidedFileModelList().get(i));
             if (result == 0) {
                 throw new RuntimeException("No se pudo registrar el voided file");
             }
