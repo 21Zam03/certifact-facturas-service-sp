@@ -1,10 +1,7 @@
 package com.certicom.certifact_facturas_service_sp.model;
 
 import com.certicom.certifact_facturas_service_sp.dto.others.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -15,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class PaymentVoucherModel {
 
     private Long idPaymentVoucher;

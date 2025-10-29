@@ -83,6 +83,7 @@ public class PaymentVoucherController {
     ) {
         List<PaymentVoucherModel> data = paymentVoucherService.getTotalSoles(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc, filtroSerie, filtroNumero,
                 idOficina, estadoSunat, pageNumber, perPage);
+        System.out.println("DATA:"+ data);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
@@ -154,6 +155,46 @@ public class PaymentVoucherController {
                 paymentVoucherService.findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento(finalRucEmisor, tipoComprobante, serieDocumento, numeroDocumento),
                 HttpStatus.OK
         );
+    }
+
+    @GetMapping("/lastnumber")
+    public ResponseEntity<Integer> getUltimoNumeroForNumeracion(
+            @RequestParam String tipoDocumento, @RequestParam String serie, @RequestParam String ruc
+    ) {
+        return new ResponseEntity<>(
+                paymentVoucherService.getUltimoNumeroForNumeracion(tipoDocumento, serie, ruc), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/anticipo")
+    public ResponseEntity<List<PaymentVoucherModel>> findAllByTipoComprobanteInAndNumDocIdentReceptorAndRucEmisorAndTipoOperacionAndEstadoOrderByNumDocIdentReceptor(
+            @RequestParam List<String> tipoComprobante,
+            @RequestParam String numDocIdentReceptor,
+            @RequestParam String rucEmisor,
+            @RequestParam String tipoOperacion,
+            @RequestParam String estado
+    ) {
+        return new ResponseEntity<>(
+            paymentVoucherService.findAllByTipoComprobanteInAndNumDocIdentReceptorAndRucEmisorAndTipoOperacionAndEstadoOrderByNumDocIdentReceptor(
+                    tipoComprobante,
+                    numDocIdentReceptor,
+                    rucEmisor,
+                    tipoOperacion,
+                    estado), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/credito")
+    public ResponseEntity<List<PaymentVoucherModel>> getPaymentVocuherByCredito(
+            @RequestParam String numDocIdentReceptor,
+            @RequestParam String rucEmisor
+    ) {
+        return new ResponseEntity<>(paymentVoucherService.getPaymentVocuherByCredito(numDocIdentReceptor, rucEmisor), HttpStatus.OK);
+    }
+
+    @GetMapping("/statusSunat")
+    public ResponseEntity<List<PaymentVoucherModel>> findAllPaymentVoucherForByIds(@RequestParam List<Long> ids) {
+        return new ResponseEntity<>(paymentVoucherService.findByIdPaymentVoucherInterList(ids), HttpStatus.OK);
     }
 
     /*ARCHIVO, FILE */

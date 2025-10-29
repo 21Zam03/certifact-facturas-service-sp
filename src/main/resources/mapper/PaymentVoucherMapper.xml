@@ -57,7 +57,6 @@
         ORDER BY p.fecha_emision_date DESC, p.numero DESC
         OFFSET #{filtro.numPagina} LIMIT #{filtro.porPagina}
     </select>
-
     <select id="countPaymentVoucher"
             parameterType="com.certicom.certifact_facturas_service_sp.dto.others.PaymentVoucherFilterDto"
             resultType="java.lang.Integer">
@@ -92,7 +91,6 @@
             </if>
         </where>
     </select>
-
     <select id="getTotalSoles"
             parameterType="com.certicom.certifact_facturas_service_sp.dto.others.PaymentVoucherFilterDto"
             resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
@@ -104,13 +102,13 @@
         ELSE p.monto_imp_total_venta
         END
         ), 0
-        ) AS montoImporteTotalVenta
+        ) AS importeTotalVenta
         FROM payment_voucher p
         WHERE p.ruc_emisor = #{filtro.rucEmisor}
         AND p.fecha_emision_date BETWEEN #{filtro.filtroDesde} AND #{filtro.filtroHasta}
 
         <if test="filtro.filtroTipoComprobante != null">
-            AND p.tipo_comprobante LIKE #{s}
+            AND p.tipo_comprobante LIKE #{filtro.filtroTipoComprobante}
         </if>
         <if test="filtro.filtroRuc != null">
             AND p.num_doc_ident_receptor LIKE #{filtro.filtroRuc}
@@ -131,7 +129,6 @@
         AND p.estado != '05'
         GROUP BY p.codigo_moneda
     </select>
-
     <insert id="savePaymentVoucher"
             parameterType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel"
             useGeneratedKeys="true" keyProperty="idPaymentVoucher" keyColumn="id_payment_voucher">
@@ -145,7 +142,6 @@
         #{codigoTipoOperacion}, #{fechaEmisionDate}, #{fechaRegistro, javaType=java.sql.Timestamp, jdbcType=TIMESTAMP}, #{identificadorDocumento}, #{codigoHash}, #{detraccion}, #{estado},
         #{estadoAnterior}, #{estadoSunat}, #{horaEmision}, #{mensajeRespuesta}, #{ublVersion}, #{userName}, #{userNameModificacion}, #{uuid}, #{oficinaId}, #{tipoTransaccion}, #{montoPendiente})
     </insert>
-
     <update id="updatePaymentVoucher"
             parameterType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
         UPDATE payment_voucher
@@ -184,7 +180,6 @@
             monto_pendiente         = #{montoPendiente}
         WHERE id_payment_voucher = #{idPaymentVoucher}
     </update>
-
     <select id="getPaymentVoucherById" parameterType="long" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
         select p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.tipo_comprobante from payment_voucher p
         where p.id_payment_voucher = #{id}
@@ -274,6 +269,46 @@
             monto_pendiente          AS montoPendiente
         FROM payment_voucher
         WHERE ruc_emisor = #{ruc} AND tipo_comprobante = #{tipo} AND serie = #{serie} AND numero = #{numero}
+    </select>
+    <select id="getUltimoNumero" parameterType="map" resultType="Integer">
+        SELECT numero FROM payment_voucher
+        WHERE ruc_emisor = #{ruc} AND tipo_comprobante = #{tipo} AND serie = #{serie} ORDER BY numero DESC LIMIT 1
+    </select>
+    <select id="findAnticipos" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
+        SELECT * FROM payment_voucher WHERE 1 = 1
+        <if test="tipoComprobante != null and tipoComprobante.size > 0">
+            AND tipo_comprobante IN
+            <foreach collection="tipoComprobante" item="tipo" open="(" separator="," close=")">
+                #{tipo}
+            </foreach>
+        </if>
+        <if test="numDocIdentReceptor != null">
+            AND num_doc_ident_receptor = #{numDocIdentReceptor}
+        </if>
+        <if test="rucEmisor != null">
+            AND ruc_emisor = #{rucEmisor}
+        </if>
+        <if test="tipoOperacion != null">
+            AND tipo_operacion = #{tipoOperacion}
+        </if>
+        <if test="estado != null">
+            AND estado = #{estado}
+        </if>
+        ORDER BY num_doc_ident_receptor ASC
+    </select>
+    <select id="findCreditos" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
+        SELECT pv.* FROM payment_voucher pv
+            INNER JOIN (select id_payment_voucher_reference as reference,MAX(n_cuota) as max_n_cuota from payment_voucher where
+                tipo_comprobante='01'
+                and tipo_transaccion=2 group by id_payment_voucher_reference having id_payment_voucher_reference is not null) maximos
+            on pv.id_payment_voucher_reference=maximos.reference and pv.n_cuota=maximos.max_n_cuota
+            where pv.ruc_emisor= #{rucEmisor} and pv.num_doc_ident_receptor= #{numDocIdentReceptor} and pv.monto_pendiente>0
+            and tipo_comprobante='01' and tipo_transaccion=2
+    </select>
+    <select id="findByIdPaymentVoucherInterList" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
+        SELECT p.id_payment_voucher as idPaymentVoucher, p.estado,p.estado_sunat as estadoSunat
+            FROM payment_voucher p
+        WHERE p.id_payment_voucher in ( #{ids} )
     </select>
 </mapper>
 

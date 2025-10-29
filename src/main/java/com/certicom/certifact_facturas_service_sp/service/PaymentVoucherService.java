@@ -2,6 +2,7 @@ package com.certicom.certifact_facturas_service_sp.service;
 
 import com.certicom.certifact_facturas_service_sp.dto.others.PaymentVoucherDto;
 import com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -47,5 +48,19 @@ public interface PaymentVoucherService {
     PaymentVoucherModel findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento(
             String finalRucEmisor, String tipoComprobante, String serieDocumento, Integer numeroDocumento
     );
+
+    Integer getUltimoNumeroForNumeracion(String tipoDocumento, String serie, String ruc);
+
+    List<PaymentVoucherModel> findAllByTipoComprobanteInAndNumDocIdentReceptorAndRucEmisorAndTipoOperacionAndEstadoOrderByNumDocIdentReceptor(
+        List<String> tipoComprobante,
+        String numDocIdentReceptor,
+        String rucEmisor,
+        String tipoOperacion,
+        String estado
+    );
+
+    List<PaymentVoucherModel> getPaymentVocuherByCredito(String numDocIdentReceptor, String rucEmisor);
+
+    List<PaymentVoucherModel> findByIdPaymentVoucherInterList(List<Long> ids);
 
 }

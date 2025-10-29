@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 public class EmpresaDto {
 
     private Integer Id;
-
     private String ruc;
     private Boolean viewCode;
     private String razon;

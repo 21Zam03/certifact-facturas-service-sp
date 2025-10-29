@@ -37,4 +37,5 @@ public class PaymentVoucherConverter {
                 .estadoSunat(paymentVoucherEntity.getEstadoSunat())
                 .build();
     }
+
 }

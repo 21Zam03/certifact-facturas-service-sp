@@ -10,10 +10,12 @@ import com.certicom.certifact_facturas_service_sp.service.PaymentVoucherService;
 import com.certicom.certifact_facturas_service_sp.util.UtilDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -113,11 +115,10 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         log.info("Resultado: {}", result);
         log.info("ID: {}", paymentVoucherModel.getIdPaymentVoucher());
 
-        //Proximamente registrar archivos desde aqui y no desde la capa de ng
         System.out.println("LISTA: "+paymentVoucherModel.getPaymentVoucherFileModelList());
         for (int i = 0; i< paymentVoucherModel.getPaymentVoucherFileModelList().size(); i++) {
             paymentVoucherModel.getPaymentVoucherFileModelList().get(i).setIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
-            //Por ahora dejarlo asi, pero se tiene que integrar el metodo de inserccion de archivos a la base de datos en este mismo metodo [registrarComprobante]
+
             if(paymentVoucherModel.getPaymentVoucherFileModelList().get(i).getId()==null) {
                 result = paymentVoucherFileMapper.save(paymentVoucherModel.getPaymentVoucherFileModelList().get(i));
             } else {
@@ -241,7 +242,8 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
 
     @Override
     public PaymentVoucherModel findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento(
-            String finalRucEmisor, String tipoComprobante, String serieDocumento, Integer numeroDocumento) {
+            String finalRucEmisor, String tipoComprobante, String serieDocumento, Integer numeroDocumento
+    ) {
         try {
             PaymentVoucherEntity paymentVoucherEntity = paymentVoucherMapper.findPaymentVoucherByRucAndTipoComprobanteAndSerieDocumentoAndNumeroDocumento(
                     finalRucEmisor, tipoComprobante, serieDocumento, numeroDocumento
@@ -253,6 +255,36 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
             log.info("ERROR: {}", e.getMessage());
         }
         return null;
+    }
+
+    @Override
+    public Integer getUltimoNumeroForNumeracion(String tipoDocumento, String serie, String ruc) {
+        try {
+            return paymentVoucherMapper.getUltimoNumero(tipoDocumento, serie, ruc);
+        } catch (Exception e ) {
+            throw new RuntimeException("ERROR: "+e.getMessage());
+        }
+    }
+
+    @Override
+    public List<PaymentVoucherModel> findAllByTipoComprobanteInAndNumDocIdentReceptorAndRucEmisorAndTipoOperacionAndEstadoOrderByNumDocIdentReceptor(
+            List<String> tipoComprobante, String numDocIdentReceptor, String rucEmisor, String tipoOperacion, String estado) {
+        List<PaymentVoucherModel> list = paymentVoucherMapper.findAnticipos(tipoComprobante, numDocIdentReceptor, rucEmisor, tipoOperacion, estado);
+        for (PaymentVoucherModel paymentVoucherModel : list) {
+            List<Anticipo> anticipos = anticipoMapper.listAnticiposByIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+            paymentVoucherModel.setAnticipos(anticipos);
+        }
+        return list;
+    }
+
+    @Override
+    public List<PaymentVoucherModel> getPaymentVocuherByCredito(String numDocIdentReceptor, String rucEmisor) {
+        return paymentVoucherMapper.findCreditos(numDocIdentReceptor, rucEmisor);
+    }
+
+    @Override
+    public List<PaymentVoucherModel> findByIdPaymentVoucherInterList(List<Long> ids) {
+        return paymentVoucherMapper.findByIdPaymentVoucherInterList(ids);
     }
 
 }

@@ -35,4 +35,5 @@ public class PaymentVoucherDto {
     private String uuid;
     private String mensajeRespuesta;
     private Boolean pagado;
+
 }

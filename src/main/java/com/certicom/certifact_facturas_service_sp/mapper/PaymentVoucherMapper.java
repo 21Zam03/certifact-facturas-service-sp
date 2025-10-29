@@ -50,4 +50,27 @@ public interface PaymentVoucherMapper {
             @Param("numero") Integer numeroDocumento
     );
 
+    Integer getUltimoNumero(
+            @Param("tipo") String tipoComprobante,
+            @Param("serie") String serieDocumento,
+            @Param("ruc") String finalRucEmisor
+    );
+
+    List<PaymentVoucherModel> findAnticipos(
+            @Param("tipoComprobante") List<String> tipoComprobante,
+            @Param("numDocIdentReceptor") String numDocIdentReceptor,
+            @Param("rucEmisor") String rucEmisor,
+            @Param("tipoOperacion") String tipoOperacion,
+            @Param("estado") String estado
+    );
+
+    List<PaymentVoucherModel> findCreditos(
+            @Param("numDocIdentReceptor") String numDocIdentReceptor,
+            @Param("rucEmisor") String rucEmisor
+    );
+
+    List<PaymentVoucherModel> findByIdPaymentVoucherInterList(
+            @Param("ids") List<Long> ids
+    );
+
 }
