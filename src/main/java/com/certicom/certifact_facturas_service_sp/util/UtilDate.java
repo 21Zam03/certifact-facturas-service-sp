@@ -1,6 +1,6 @@
 package com.certicom.certifact_facturas_service_sp.util;
 
-import com.certicom.certifact_facturas_service_sp.exceptions.ExcepcionInterno;
+import com.certicom.certifact_facturas_service_sp.exceptions.ServiceException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -35,7 +35,7 @@ public class UtilDate {
             Date date1 = new SimpleDateFormat(format).parse(sDate1);
             return date1;
         } catch (ParseException e) {
-            throw new ExcepcionInterno("Error en formato de fecha " + sDate1);
+            throw new ServiceException("Error en formato de fecha " + sDate1);
         }
     }
 

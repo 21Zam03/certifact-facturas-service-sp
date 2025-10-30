@@ -23,7 +23,6 @@ public class PaymentVoucherController {
     public static final String API_PATH = "/api/payment-voucher";
 
     private final PaymentVoucherService paymentVoucherService;
-    private final OficinaService oficinaService;
     private final SubidaRegistroArchivoService subidaRegistroArchivoService;
 
     @GetMapping

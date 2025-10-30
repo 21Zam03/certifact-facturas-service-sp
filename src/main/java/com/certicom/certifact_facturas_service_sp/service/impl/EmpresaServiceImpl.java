@@ -1,8 +1,8 @@
 package com.certicom.certifact_facturas_service_sp.service.impl;
 
+import com.certicom.certifact_facturas_service_sp.exceptions.ServiceException;
 import com.certicom.certifact_facturas_service_sp.model.EmpresaDto;
 import com.certicom.certifact_facturas_service_sp.model.OseDto;
-import com.certicom.certifact_facturas_service_sp.exceptions.ExcepcionNegocio;
 import com.certicom.certifact_facturas_service_sp.mapper.EmpresaMapper;
 import com.certicom.certifact_facturas_service_sp.service.EmpresaService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class EmpresaServiceImpl implements EmpresaService {
                 log.error("ERROR: {}", e.getMessage());
             }
         } else {
-            throw new ExcepcionNegocio("rucEmisor is null");
+            throw new ServiceException("rucEmisor is null");
         }
         return estado;
     }
@@ -41,7 +41,7 @@ public class EmpresaServiceImpl implements EmpresaService {
                 log.error("ERROR: {}", e.getMessage());
             }
         } else {
-            throw new ExcepcionNegocio("idUsuario is null");
+            throw new ServiceException("idUsuario is null");
         }
         return empresa;
     }

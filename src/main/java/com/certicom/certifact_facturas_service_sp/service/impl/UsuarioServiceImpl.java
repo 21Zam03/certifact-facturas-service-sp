@@ -1,7 +1,7 @@
 package com.certicom.certifact_facturas_service_sp.service.impl;
 
+import com.certicom.certifact_facturas_service_sp.exceptions.ServiceException;
 import com.certicom.certifact_facturas_service_sp.model.User;
-import com.certicom.certifact_facturas_service_sp.exceptions.ExcepcionNegocio;
 import com.certicom.certifact_facturas_service_sp.mapper.UserMapper;
 import com.certicom.certifact_facturas_service_sp.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 log.error("ERROR: {}", e.getMessage());
             }
         } else {
-            throw new ExcepcionNegocio("idUsuario is null");
+            throw new ServiceException("idUsuario is null");
         }
         //log.info("UsuarioServiceImpl - usuario={}", usuario == null ? "null" : usuario.toString());
         return usuario;
