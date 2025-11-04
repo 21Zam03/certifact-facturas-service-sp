@@ -1,0 +1,30 @@
+<configuration>
+    <!-- Appender para imprimir en consola en formato JSON -->
+    <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <!-- Timestamp -->
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <!-- Nivel de log (INFO, ERROR, etc.) -->
+                <logLevel/>
+                <!-- Nombre del hilo -->
+                <threadName />
+                <!-- Logger (clase que escribe el log) -->
+                <loggerName />
+                <!-- Mensaje del log -->
+                <message />
+                <!-- Variables de contexto (útil para trazas distribuidas) -->
+                <mdc />
+                <!-- Stacktrace en caso de error -->
+                <stackTrace />
+            </providers>
+        </encoder>
+    </appender>
+
+    <!-- Configuración del nivel de logs -->
+    <root level="INFO">
+        <appender-ref ref="JSON_CONSOLE"/>
+    </root>
+</configuration>

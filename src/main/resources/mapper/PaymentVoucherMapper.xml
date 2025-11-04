@@ -310,5 +310,6 @@
             FROM payment_voucher p
         WHERE p.id_payment_voucher in ( #{ids} )
     </select>
+
 </mapper>
 

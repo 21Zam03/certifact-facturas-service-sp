@@ -1,5 +1,6 @@
 package com.certicom.certifact_facturas_service_sp.controller;
 
+import com.certicom.certifact_facturas_service_sp.dto.others.UserDto;
 import com.certicom.certifact_facturas_service_sp.model.User;
 import com.certicom.certifact_facturas_service_sp.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -15,18 +16,22 @@ public class UserController {
     public static final String API_PATH = "/api/user";
     private final UsuarioService usuarioService;
 
-    @GetMapping("/idUser")
-    public ResponseEntity<?> findUserById(@RequestParam Long idUser) {
-        //log.info("UserController - obtenerUsuario - [idUsuario={}]", idUsuario);
-        User usuario = usuarioService.findUserById(idUser);
-        //log.info("UserController - obtenerUsuario - [usuario={}]", usuario.toString());
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        UserDto usuario = usuarioService.findUserById(id);
+        return new ResponseEntity<>(usuario, HttpStatus.OK);
+    }
+
+    @GetMapping("/byUsername")
+    public ResponseEntity<?> getByUsername(@RequestParam String username) {
+        UserDto usuario = usuarioService.findUserByUsername(username);
         return  new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 
-    @GetMapping("/username")
-    public ResponseEntity<?> findUserByUsername(@RequestParam String username) {
-        User usuario = usuarioService.findUserByUsername(username);
-        return  new ResponseEntity<>(usuario, HttpStatus.OK);
+    @GetMapping("/{id}/username")
+    public ResponseEntity<?> getUsernameById(@PathVariable Long id) {
+        String username = usuarioService.findUsernameById(id);
+        return new ResponseEntity<>(username, HttpStatus.OK);
     }
 
 }

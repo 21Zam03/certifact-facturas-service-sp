@@ -1,13 +1,13 @@
 package com.certicom.certifact_facturas_service_sp.mapper;
 
-import com.certicom.certifact_facturas_service_sp.model.User;
+import com.certicom.certifact_facturas_service_sp.model.UserModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Mapper
-public interface UserMapper {
+public interface UserMapper extends BaseMapper<UserModel, Long> {
 
-    User findUserById(@PathVariable("idUsuario") Long idUsuario);
-    User findUserByUsername(@PathVariable("username") String username);
+    UserModel findByUsername(@PathVariable("username") String username);
+    String findUsernameById(@PathVariable("id") Long idUsuario);
 
 }
