@@ -2,7 +2,6 @@ package com.certicom.certifact_facturas_service_sp.service;
 
 import com.certicom.certifact_facturas_service_sp.dto.others.PaymentVoucherDto;
 import com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Timestamp;
 import java.util.List;
