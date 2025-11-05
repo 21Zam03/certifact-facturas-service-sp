@@ -16,9 +16,9 @@ public class CompanyController {
     public final static String API_PATH = "/api/company";
     private final EmpresaService empresaService;
 
-    @GetMapping("/state")
-    private ResponseEntity<String> obtenerEstadoEmpresaPorRuc(@RequestParam String rucEmisor) {
-        return new ResponseEntity<>(empresaService.obtenerEstadoEmpresaPorRuc(rucEmisor), HttpStatus.OK);
+    @GetMapping("/{ruc}/state")
+    private ResponseEntity<String> obtenerEstadoEmpresaPorRuc(@PathVariable String ruc) {
+        return new ResponseEntity<>(empresaService.obtenerEstadoEmpresaPorRuc(ruc), HttpStatus.OK);
     }
 
     @GetMapping("/{ruc}")

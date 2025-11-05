@@ -16,7 +16,6 @@ public class DataFilter implements Filter {
     public static final String X_RUC_CLIENT = "X-RUC-Client";
     public static final String X_ID_USER = "X-ID-User";
 
-
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         long startTime = System.currentTimeMillis();

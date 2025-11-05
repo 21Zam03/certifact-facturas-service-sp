@@ -25,7 +25,7 @@ public class UserController {
     @GetMapping("/byUsername")
     public ResponseEntity<?> getByUsername(@RequestParam String username) {
         UserDto usuario = usuarioService.findUserByUsername(username);
-        return  new ResponseEntity<>(usuario, HttpStatus.OK);
+        return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 
     @GetMapping("/{id}/username")

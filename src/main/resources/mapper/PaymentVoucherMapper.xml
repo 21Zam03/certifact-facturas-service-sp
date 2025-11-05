@@ -181,7 +181,7 @@
         WHERE id_payment_voucher = #{idPaymentVoucher}
     </update>
     <select id="getPaymentVoucherById" parameterType="long" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
-        select p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.tipo_comprobante from payment_voucher p
+        select p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.tipo_comprobante, p.ruc_emisor from payment_voucher p
         where p.id_payment_voucher = #{id}
     </select>
     <select id="findFirst1ByTipoComprobanteAndSerieAndRucEmisorOrderByNumeroDesc" parameterType="map" resultType="Integer">
