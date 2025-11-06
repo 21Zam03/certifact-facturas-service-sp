@@ -27,4 +27,7 @@ public class UserModel {
     private LocalDateTime dateLastSeenNotifications;
     private Boolean viewCompra;
 
+    //Adicional
+    private String ruc;
+
 }

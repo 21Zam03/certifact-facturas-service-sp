@@ -15,6 +15,7 @@ public class UserConverter {
                 .dni(userModel.getDni())
                 .estado(userModel.getEstado())
                 .activo(userModel.getEnabled())
+                .ruc(userModel.getRuc())
                 .build();
     }
 

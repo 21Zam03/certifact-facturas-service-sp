@@ -1,13 +1,7 @@
 spring:
   application:
-    name: certifact-facturas-service-sp
-  datasource:
-    url: ##
-    username: ##
-    password: ##
-    driver-class-name: org.postgresql.Driver
-mybatis:
-  mapper-locations: classpath:mapper/**/*.xml
-  type-aliases-package: com.certicom.certifact_facturas_service_sp.entity
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    name: factura-service-sp
+  profiles:
+    active: dev
+  config:
+    import: "optional:configserver:http://localhost:8888"

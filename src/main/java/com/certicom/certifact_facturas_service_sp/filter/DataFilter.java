@@ -13,8 +13,8 @@ import java.io.IOException;
 @Component
 public class DataFilter implements Filter {
 
-    public static final String X_RUC_CLIENT = "X-RUC-Client";
-    public static final String X_ID_USER = "X-ID-User";
+    public static final String X_RUC_CLIENT = "X-User-Ruc";
+    public static final String X_ID_USER = "X-User-Id";
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -25,11 +25,11 @@ public class DataFilter implements Filter {
         String id = request.getHeader(X_ID_USER);
 
         if (ruc != null) {
-            MDC.put("ruc", ruc);
+            MDC.put("x_user_ruc", ruc);
         }
 
         if (id != null) {
-            MDC.put("id", id);
+            MDC.put("x_user_id", id);
         }
 
         try {
