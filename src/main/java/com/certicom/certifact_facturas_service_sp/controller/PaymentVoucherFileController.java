@@ -5,10 +5,7 @@ import com.certicom.certifact_facturas_service_sp.service.PaymentVoucherFileServ
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(PaymentVoucherFileController.API_PATH)
@@ -22,6 +19,12 @@ public class PaymentVoucherFileController {
     @PostMapping
     private ResponseEntity<Integer> save(@RequestBody PaymentVoucherFileModel paymentVoucherFileModel) {
         return new ResponseEntity<>(paymentVoucherFileService.save(paymentVoucherFileModel), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/idregisterfilesend")
+    private ResponseEntity<Long> findActiveXMLIdRegisterFileSendByIdPaymentVoucher(@PathVariable("id") Long idRegisterFileSend) {
+        return new ResponseEntity<>(
+                paymentVoucherFileService.findActiveXMLIdRegisterFileSendByIdPaymentVoucher(idRegisterFileSend), HttpStatus.OK);
     }
 
 }

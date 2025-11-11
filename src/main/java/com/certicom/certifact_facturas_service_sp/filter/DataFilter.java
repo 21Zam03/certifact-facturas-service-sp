@@ -33,9 +33,9 @@ public class DataFilter implements Filter {
         }
 
         try {
-            LogHelper.infoLog(LogTitle.INFO.getType(), LogMessages.currentMethod(), "Incoming request ["+request.getMethod()+" "+request.getRequestURI()+"]");
+            LogHelper.infoLog(LogMessages.currentMethod(), "Incoming request ["+request.getMethod()+" "+request.getRequestURI()+"]");
             filterChain.doFilter(servletRequest, servletResponse);
-            LogHelper.infoLog(LogTitle.INFO.getType(), LogMessages.currentMethod(), "Completed request: duration="+(System.currentTimeMillis() - startTime)+"ms");
+            LogHelper.infoLog(LogMessages.currentMethod(), "Completed request: duration="+(System.currentTimeMillis() - startTime)+"ms");
         } finally {
             MDC.clear();
         }

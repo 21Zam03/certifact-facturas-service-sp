@@ -12,23 +12,20 @@ public class LogHelper {
         return LoggerFactory.getLogger(className);
     }
 
-    public static void warnLog(String title, String currentMethod, String detail) {
+    public static void warnLog(String currentMethod, String detail) {
         getLogger().warn(LogTemplates.WARN_LOG_TEMPLATE,
-                title,
                 currentMethod,
                 detail);
     }
 
-    public static void infoLog(String title, String currentMethod, String detail) {
+    public static void infoLog(String currentMethod, String detail) {
         getLogger().info(LogTemplates.INFO_LOG_TEMPLATE,
-                title,
                 currentMethod,
                 detail);
     }
 
-    public static void errorLog(String title, String currentMethod, String detail, Throwable e) {
+    public static void errorLog(String currentMethod, String detail, Throwable e) {
         getLogger().error(LogTemplates.ERROR_LOG_TEMPLATE,
-                title,
                 currentMethod,
                 detail,
                 e);

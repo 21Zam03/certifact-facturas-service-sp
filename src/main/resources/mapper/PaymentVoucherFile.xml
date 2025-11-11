@@ -20,4 +20,8 @@
             id_register_file_send = #{idRegisterFileSend}
         WHERE id = #{id}
     </update>
+    <select id="findActiveXMLIdRegisterFileSendByIdPaymentVoucher" parameterType="Long">
+        SELECT id_register_file_send FROM payment_voucher_file WHERE id_payment_voucher = #{id} AND tipo_archivo = 'XML'
+        AND estado_archivo = 'ACTIVO'
+    </select>
 </mapper>

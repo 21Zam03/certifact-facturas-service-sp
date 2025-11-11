@@ -12,5 +12,6 @@ public interface PaymentVoucherFileMapper {
     int save(PaymentVoucherFileModel paymentVoucherFileModel);
     List<PaymentVoucherFileModel> listPaymentVoucherFiles(@Param("id") Long idPaymentVoucher);
     int update(PaymentVoucherFileModel paymentVoucherFileModel);
+    Long findActiveXMLIdRegisterFileSendByIdPaymentVoucher(@Param("id") Long idPaymentVoucher);
 
 }
