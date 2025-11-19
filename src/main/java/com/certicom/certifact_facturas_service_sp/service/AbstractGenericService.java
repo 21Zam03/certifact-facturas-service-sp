@@ -1,6 +1,5 @@
 package com.certicom.certifact_facturas_service_sp.service;
 
-import com.certicom.certifact_facturas_service_sp.enums.LogTitle;
 import com.certicom.certifact_facturas_service_sp.exceptions.ServiceException;
 import com.certicom.certifact_facturas_service_sp.mapper.BaseMapper;
 import com.certicom.certifact_facturas_service_sp.util.LogHelper;
