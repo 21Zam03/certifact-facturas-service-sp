@@ -62,4 +62,7 @@ public interface PaymentVoucherService {
 
     List<PaymentVoucherModel> findByIdPaymentVoucherInterList(List<Long> ids);
 
+    int updateComprobantesByBajaDocumentos(List<String> identificadoresComprobantes, String usuario, Timestamp fechaModificacion);
+    int updateComprobantesOnResumenError(List<String> identificadoresComprobantes, String usuario, Timestamp fechaModificacion);
+
 }

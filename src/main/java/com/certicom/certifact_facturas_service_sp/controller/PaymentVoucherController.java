@@ -197,6 +197,22 @@ public class PaymentVoucherController {
         return new ResponseEntity<>(paymentVoucherService.findByIdPaymentVoucherInterList(ids), HttpStatus.OK);
     }
 
+    @PutMapping("/baja-documentos")
+    ResponseEntity<?> updateComprobantesByBajaDocumentos(
+            @RequestParam List<String> identificadoresComprobantes,
+            @RequestParam String usuario,
+            @RequestParam Timestamp fechaModificacion) {
+        return new ResponseEntity<>(paymentVoucherService.updateComprobantesByBajaDocumentos(identificadoresComprobantes, usuario, fechaModificacion), HttpStatus.OK);
+    }
+
+    @PutMapping("/resumen-error")
+    ResponseEntity<?> updateComprobantesOnResumenError(
+            List<String> identificadoresComprobantes,
+            String usuario,
+            Timestamp fechaModificacion) {
+        return new ResponseEntity<>(paymentVoucherService.updateComprobantesOnResumenError(identificadoresComprobantes, usuario, fechaModificacion), HttpStatus.OK);
+    }
+
     /*ARCHIVO, FILE */
 
     @PostMapping("/register-file-upload")

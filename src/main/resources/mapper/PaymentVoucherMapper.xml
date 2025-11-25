@@ -311,5 +311,30 @@
         WHERE p.id_payment_voucher in ( #{ids} )
     </select>
 
+    <update id="updateComprobantesByBajaDocumentos" parameterType="map">
+        UPDATE payment_voucher
+        SET
+        estado = '08',
+        estado_sunat = 'ANULA',
+        user_name_modify = #{usuario},
+        fecha_modificacion = #{fechaModificacion}
+        WHERE identificador_documento IN
+        <foreach item="id" collection="identificadorComprobantes" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="updateComprobantesOnResumenError" parameterType="map">
+        UPDATE payment_voucher
+        SET
+        estado = '01',
+        estado_sunat = 'N_ENV',
+        user_name_modify = #{usuario},
+        fecha_modificacion = #{fechaModificacion}
+        WHERE identificador_documento IN
+        <foreach item="id" collection="identificadorComprobantes" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 </mapper>
 

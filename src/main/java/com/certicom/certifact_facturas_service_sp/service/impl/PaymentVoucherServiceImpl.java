@@ -287,4 +287,18 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         return paymentVoucherMapper.findByIdPaymentVoucherInterList(ids);
     }
 
+    @Override
+    public int updateComprobantesByBajaDocumentos(List<String> identificadoresComprobantes, String usuario, Timestamp fechaModificacion) {
+        int result = paymentVoucherMapper.updateComprobantesByBajaDocumentos(identificadoresComprobantes, usuario, fechaModificacion);
+        if(result == 0) {
+            throw new RuntimeException("No se pudo actualizar los comprobantes");
+        }
+        return result;
+    }
+
+    @Override
+    public int updateComprobantesOnResumenError(List<String> identificadoresComprobantes, String usuario, Timestamp fechaModificacion) {
+        return paymentVoucherMapper.updateComprobantesOnResumenError(identificadoresComprobantes, usuario, fechaModificacion);
+    }
+
 }

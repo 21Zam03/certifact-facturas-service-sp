@@ -11,7 +11,6 @@ public interface VoidedDocumentsService {
     VoidedDocuments save(VoidedDocuments voidedDocuments);
     VoidedDocuments findByTicket(String ticket);
     String findEstadoByTicket(String ticket);
-    int updateComprobantesByBajaDocumentos(List<String> identificadoresComprobantes, String usuario, Timestamp fechaModificacion);
-    int updateComprobantesOnResumenError(List<String> identificadoresComprobantes, String usuario, Timestamp fechaModificacion);
+    VoidedDocuments update(VoidedDocuments voidedDocuments);
 
 }

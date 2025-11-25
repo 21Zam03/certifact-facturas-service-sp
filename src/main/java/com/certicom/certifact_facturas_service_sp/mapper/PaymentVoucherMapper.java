@@ -73,4 +73,7 @@ public interface PaymentVoucherMapper {
             @Param("ids") List<Long> ids
     );
 
+    int updateComprobantesByBajaDocumentos(List<String> identificadorComprobantes, String usuario, Timestamp fechaModificacion);
+    int updateComprobantesOnResumenError(List<String> identificadorComprobantes, String usuario, Timestamp fechaModificacion);
+
 }

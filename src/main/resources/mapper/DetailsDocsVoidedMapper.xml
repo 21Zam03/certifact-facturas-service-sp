@@ -12,4 +12,19 @@
         values (nextval('detail_voided_seq'), #{estado}, #{motivoBaja}, #{numeroDocumento}, #{numeroItem}, #{serieDocumento}, #{tipoComprobante},
                 #{idDocsVoided})
     </insert>
+
+    <select id="findByIdDocsVoided" parameterType="java.lang.Long"
+            resultType="com.certicom.certifact_facturas_service_sp.model.DetailsDocsVoided">
+        SELECT
+            id_detail_docs_voided as idDetailDocsSummary,
+            estado,
+            motivo_baja,
+            numero_documento,
+            numero_item,
+            serie_documento,
+            tipo_comprobante,
+            id_docs_voided
+        FROM detail_docs_voided
+        WHERE id_docs_voided = #{idDocsVoided}
+    </select>
 </mapper>
