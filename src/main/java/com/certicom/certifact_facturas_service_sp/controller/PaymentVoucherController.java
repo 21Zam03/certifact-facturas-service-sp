@@ -44,6 +44,7 @@ public class PaymentVoucherController {
                 filtroTipoComprobante, filtroRuc, filtroSerie, filtroNumero, idOficina, estadoSunat, pageNumber, perPage);
         List<PaymentVoucherDto> data = paymentVoucherService.listPaymentVoucherWithFilter(rucEmisor, filtroDesde, filtroHasta, filtroTipoComprobante, filtroRuc,
                 filtroSerie, filtroNumero, idOficina, estadoSunat, pageNumber, perPage);
+        System.out.println("LISTA PAYMENT_VOUCHER: "+data);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 

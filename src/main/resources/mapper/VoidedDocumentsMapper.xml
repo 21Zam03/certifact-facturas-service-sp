@@ -16,11 +16,78 @@
         #{fechaBajaDocs}, #{fechaGeneracionBaja}, #{fechaGeneracionResumen}, #{fechaModificacion}, #{idDocument}, #{rucEmisor}, #{ticketSunat}, #{userName}, #{userNameModify},
         #{intentosGetStatus})
     </insert>
-    <update id="update">
+    <update id="update" parameterType="com.certicom.certifact_facturas_service_sp.model.VoidedDocuments">
+        UPDATE voided_documents
+        SET
+            code_response = #{codigoRespuesta},
+            correl_generac_dia = #{correlativoGeneracionDia},
+            description_response = #{descripcionRespuesta},
+            estado = #{estado},
+            estado_documento = #{estadoComprobante},
+            fecha_baja_docs = #{fechaBajaDocs},
+            fecha_generacion_baja = #{fechaGeneracionBaja},
+            fecha_generacion_resumen = #{fechaGeneracionResumen},
+            fecha_modificacion = #{fechaModificacion},
+            id_document = #{idDocument},
+            ruc_emisor = #{rucEmisor},
+            ticket_sunat = #{ticketSunat},
+            user_name = #{userName},
+            user_name_modify = #{userNameModify},
+            intentos_get_status = #{intentosGetStatus}
+        WHERE id_document_voided = #{idDocumentVoided}
     </update>
     <select id="findVoidedDocumentsById" parameterType="Long" resultType="com.certicom.certifact_facturas_service_sp.model.VoidedDocuments">
         SELECT id_document_voided, code_response, correl_generac_dia, description_response, estado, estado_documento, fecha_baja_docs,
                fecha_generacion_resumen, fecha_modificacion, id_document, ruc_emisor, ticket_sunat, user_name, user_name_modify, intentos_get_status
         FROM voided_documents WHERE id_document_voided = #{id}
     </select>
+    <select id="findByTicket" resultType="com.certicom.certifact_facturas_service_sp.model.VoidedDocuments">
+        SELECT
+            id_document_voided,
+            code_response as codigoRespuesta,
+            correl_generac_dia as correlativoGeneracionDia,
+            description_response as descripcionRespuesta,
+            estado,
+            estado_documento as estadoComprobante,
+            fecha_baja_docs,
+            fecha_generacion_resumen,
+            fecha_modificacion,
+            id_document,
+            ruc_emisor,
+            ticket_sunat,
+            user_name,
+            user_name_modify,
+            intentos_get_status
+        FROM voided_documents WHERE ticket_sunat = #{ticket}
+    </select>
+
+    <select id="findEstadoByTicket">
+        SELECT estado FROM voided_documents WHERE ticket_sunat = #{numeroTicket}
+    </select>
+
+    <update id="updateComprobantesByBajaDocumentos" parameterType="map">
+        UPDATE payment_voucher
+            SET
+                estado = '08',
+                estado_sunat = 'ANULA',
+                user_name_modify = #{usuario},
+                fecha_modificacion = #{fechaModificacion}
+        WHERE identificador_documento IN
+        <foreach item="id" collection="identificadorComprobantes" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="updateComprobantesOnResumenError" parameterType="map">
+        UPDATE payment_voucher
+        SET
+        estado = '01',
+        estado_sunat = 'N_ENV',
+        user_name_modify = #{usuario},
+        fecha_modificacion = #{fechaModificacion}
+        WHERE identificador_documento IN
+        <foreach item="id" collection="identificadorComprobantes" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 </mapper>

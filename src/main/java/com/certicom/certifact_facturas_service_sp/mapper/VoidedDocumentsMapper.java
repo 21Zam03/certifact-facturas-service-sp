@@ -4,6 +4,9 @@ import com.certicom.certifact_facturas_service_sp.model.VoidedDocuments;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.Timestamp;
+import java.util.List;
+
 @Mapper
 public interface VoidedDocumentsMapper {
 
@@ -11,5 +14,9 @@ public interface VoidedDocumentsMapper {
     int save(VoidedDocuments voidedDocuments);
     int update(VoidedDocuments voidedDocuments);
     VoidedDocuments findVoidedDocumentsById(Long id);
+    VoidedDocuments findByTicket(String ticket);
+    String findEstadoByTicket(String ticket);
+    int updateComprobantesByBajaDocumentos(List<String> identificadoresComprobantes, String usuario, Timestamp fechaModificacion);
+    int updateComprobantesOnResumenError(List<String> identificadoresComprobantes, String usuario, Timestamp fechaModificacion);
 
 }

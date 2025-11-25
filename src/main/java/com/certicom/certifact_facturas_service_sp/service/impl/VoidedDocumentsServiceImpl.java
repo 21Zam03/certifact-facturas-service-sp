@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class VoidedDocumentsServiceImpl implements VoidedDocumentsService {
@@ -36,11 +39,14 @@ public class VoidedDocumentsServiceImpl implements VoidedDocumentsService {
             throw new RuntimeException("No se pudo registrar el comprobante");
         }
         System.out.println("ID CREATED: "+voidedDocuments.getIdDocumentVoided());
-        for (int i=0; i<voidedDocuments.getDetailBajaDocumentos().size(); i++) {
-            voidedDocuments.getDetailBajaDocumentos().get(i).setIdDocsVoided(voidedDocuments.getIdDocumentVoided());
-            result = detailsDocsVoidedMapper.save(voidedDocuments.getDetailBajaDocumentos().get(i));
-            if(result==0) {
-                throw new RuntimeException("No se pudo registrar el voided document");
+
+        if(voidedDocuments.getIdDocumentVoided() == null) {
+            for (int i=0; i<voidedDocuments.getDetailBajaDocumentos().size(); i++) {
+                voidedDocuments.getDetailBajaDocumentos().get(i).setIdDocsVoided(voidedDocuments.getIdDocumentVoided());
+                result = detailsDocsVoidedMapper.save(voidedDocuments.getDetailBajaDocumentos().get(i));
+                if(result==0) {
+                    throw new RuntimeException("No se pudo registrar el voided document");
+                }
             }
         }
 
@@ -58,6 +64,26 @@ public class VoidedDocumentsServiceImpl implements VoidedDocumentsService {
             throw new RuntimeException("Error al obtener documento anulado");
         }
         return voided;
+    }
+
+    @Override
+    public VoidedDocuments findByTicket(String ticket) {
+        return voidedDocumentsMapper.findByTicket(ticket);
+    }
+
+    @Override
+    public String findEstadoByTicket(String ticket) {
+        return voidedDocumentsMapper.findEstadoByTicket(ticket);
+    }
+
+    @Override
+    public int updateComprobantesByBajaDocumentos(List<String> identificadoresComprobantes, String usuario, Timestamp fechaModificacion) {
+        return voidedDocumentsMapper.updateComprobantesByBajaDocumentos(identificadoresComprobantes, usuario, fechaModificacion);
+    }
+
+    @Override
+    public int updateComprobantesOnResumenError(List<String> identificadoresComprobantes, String usuario, Timestamp fechaModificacion) {
+        return voidedDocumentsMapper.updateComprobantesOnResumenError(identificadoresComprobantes, usuario, fechaModificacion);
     }
 
 }
