@@ -134,13 +134,14 @@
             useGeneratedKeys="true" keyProperty="idPaymentVoucher" keyColumn="id_payment_voucher">
         INSERT INTO payment_voucher
             (id_payment_voucher, ruc_emisor, tipo_comprobante, serie, numero, fecha_emision, codigo_moneda, fecha_vencimiento, tip_doc_ident_receptor, num_doc_ident_receptor,
-            denominacion_receptor, direccion_receptor, email_receptor, total_oper_gravada, sumatoria_igv, monto_imp_total_venta, tipo_operacion, fecha_emision_date, fecha_registro,
-             identificador_documento, codigo_hash, detraccion, estado, estado_anterior, estado_sunat, hora_emision, mensaje_respuesta, ubl_version, user_name, user_name_modify, uuid,
-             oficina_id, tipo_transaccion, monto_pendiente)
+            denominacion_receptor, direccion_receptor, email_receptor, total_oper_gravada, total_oper_inafecta, total_oper_exonerada, total_oper_gratuita, total_oper_exportada,
+            sumatoria_igv, monto_imp_total_venta, tipo_operacion, fecha_emision_date, fecha_registro, identificador_documento, codigo_hash, detraccion, estado, estado_anterior,
+            estado_sunat, hora_emision, mensaje_respuesta, ubl_version, user_name, user_name_modify, uuid, oficina_id, tipo_transaccion, monto_pendiente, sum_trib_grat)
         VALUES (nextval('comprobante_pago_seq'), #{rucEmisor}, #{tipoComprobante}, #{serie}, #{numero}, #{fechaEmision}, #{codigoMoneda}, #{fechaVencimiento}, #{tipoDocumentoReceptor},
-        #{numeroDocumentoReceptor}, #{denominacionReceptor}, #{direccionReceptor}, #{emailReceptor}, #{totalValorVentaGravada}, #{totalIgv}, #{importeTotalVenta},
-        #{codigoTipoOperacion}, #{fechaEmisionDate}, #{fechaRegistro, javaType=java.sql.Timestamp, jdbcType=TIMESTAMP}, #{identificadorDocumento}, #{codigoHash}, #{detraccion}, #{estado},
-        #{estadoAnterior}, #{estadoSunat}, #{horaEmision}, #{mensajeRespuesta}, #{ublVersion}, #{userName}, #{userNameModificacion}, #{uuid}, #{oficinaId}, #{tipoTransaccion}, #{montoPendiente})
+        #{numeroDocumentoReceptor}, #{denominacionReceptor}, #{direccionReceptor}, #{emailReceptor}, #{totalValorVentaGravada}, #{totalValorVentaInafecta}, #{totalValorVentaExonerada},
+        #{totalValorVentaGratuita}, #{totalValorVentaExportacion}, #{totalIgv}, #{importeTotalVenta}, #{codigoTipoOperacion}, #{fechaEmisionDate}, #{fechaRegistro, javaType=java.sql.Timestamp, jdbcType=TIMESTAMP},
+        #{identificadorDocumento}, #{codigoHash}, #{detraccion}, #{estado}, #{estadoAnterior}, #{estadoSunat}, #{horaEmision}, #{mensajeRespuesta}, #{ublVersion}, #{userName},
+        #{userNameModificacion}, #{uuid}, #{oficinaId}, #{tipoTransaccion}, #{montoPendiente}, #{totalImpOperGratuita})
     </insert>
     <update id="updatePaymentVoucher"
             parameterType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
