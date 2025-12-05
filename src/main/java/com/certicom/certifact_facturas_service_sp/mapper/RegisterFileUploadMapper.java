@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 @Mapper
-public interface RegisterFileUploadMapper {
+public interface RegisterFileUploadMapper extends BaseMapper<RegisterFileUpload, Long>{
 
     int registrarSubidaArchivo(RegisterFileUpload registerFileUpload);
     public SubidaRegistroArchivoEntity obtenerSubidaArchivoPorId(Long id);

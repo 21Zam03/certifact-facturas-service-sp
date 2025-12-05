@@ -33,5 +33,6 @@ public class EmpresaDto {
     private Integer cantComproDina;
     private BigDecimal idRegisterFileSend;
     private Integer format;
+    private Integer sendTicket;
 
 }

@@ -9,4 +9,6 @@ public interface SubidaRegistroArchivoService {
     public RegisterFileUpload findFirst1ByPaymentVoucherIdPaymentVoucherAndTipoArchivoAndEstadoArchivoOrderByOrdenDesc
             (Long idPayment, String tipoArchivo, String estadoArchivo);
     public RegisterFileUpload findByIdPaymentVoucherAndUuidTipo(Long id, String uuid, String tipo);
+    public RegisterFileUpload findRegisterFileUpload(Long id);
+
 }

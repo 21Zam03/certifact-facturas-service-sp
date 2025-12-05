@@ -4,15 +4,19 @@ import com.certicom.certifact_facturas_service_sp.model.RegisterFileUpload;
 import com.certicom.certifact_facturas_service_sp.entity.SubidaRegistroArchivoEntity;
 import com.certicom.certifact_facturas_service_sp.exceptions.ServiceException;
 import com.certicom.certifact_facturas_service_sp.mapper.RegisterFileUploadMapper;
+import com.certicom.certifact_facturas_service_sp.service.AbstractGenericService;
 import com.certicom.certifact_facturas_service_sp.service.SubidaRegistroArchivoService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-public class SubidaRegistroArchivoServiceImpl implements SubidaRegistroArchivoService {
+public class SubidaRegistroArchivoServiceImpl extends AbstractGenericService<RegisterFileUpload, Long, RegisterFileUploadMapper> implements SubidaRegistroArchivoService {
 
     private final RegisterFileUploadMapper registerFileUploadMapper;
+
+    protected SubidaRegistroArchivoServiceImpl(RegisterFileUploadMapper mapper, RegisterFileUploadMapper registerFileUploadMapper) {
+        super(mapper);
+        this.registerFileUploadMapper = registerFileUploadMapper;
+    }
 
     @Override
     public SubidaRegistroArchivoEntity regitrarSubidaArchivo(RegisterFileUpload registerFileUpload) {
@@ -32,6 +36,11 @@ public class SubidaRegistroArchivoServiceImpl implements SubidaRegistroArchivoSe
     @Override
     public RegisterFileUpload findByIdPaymentVoucherAndUuidTipo(Long id, String uuid, String tipo) {
         return registerFileUploadMapper.findByIdPaymentVoucherAndUuidTipo(id, uuid, tipo);
+    }
+
+    @Override
+    public RegisterFileUpload findRegisterFileUpload(Long id) {
+        return findById(id).get();
     }
 
 }

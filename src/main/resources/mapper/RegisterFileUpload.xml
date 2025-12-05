@@ -59,4 +59,8 @@
         ORDER BY u.id_register_file_send DESC
         LIMIT 1
     </select>
+    <select id="findById">
+        SELECT is_old, bucket, nombre_generado, ruc_company, uuid, extension FROM register_file_upload
+            WHERE id_register_file_send = #{id}
+    </select>
 </mapper>

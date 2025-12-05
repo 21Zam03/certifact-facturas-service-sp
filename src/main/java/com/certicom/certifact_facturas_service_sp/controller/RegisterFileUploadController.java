@@ -36,4 +36,9 @@ public class RegisterFileUploadController {
         return new ResponseEntity<>(subidaRegistroArchivoService.findByIdPaymentVoucherAndUuidTipo(id, uuid, tipo), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<RegisterFileUpload> findById(@PathVariable Long id) {
+        return new ResponseEntity<>(subidaRegistroArchivoService.findRegisterFileUpload(id), HttpStatus.OK);
+    }
+
 }

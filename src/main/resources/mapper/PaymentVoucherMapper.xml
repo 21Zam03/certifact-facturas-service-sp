@@ -182,8 +182,49 @@
         WHERE id_payment_voucher = #{idPaymentVoucher}
     </update>
     <select id="getPaymentVoucherById" parameterType="long" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
-        select p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.tipo_comprobante, p.ruc_emisor from payment_voucher p
-        where p.id_payment_voucher = #{id}
+        select
+            id_payment_voucher,
+            ruc_emisor,
+            tipo_comprobante,
+            serie,
+            numero,
+            fecha_emision,
+            fecha_emision_date,
+            codigo_moneda,
+            fecha_vencimiento,
+            tip_doc_ident_receptor AS tipoDocumentoReceptor,
+            num_doc_ident_receptor AS numeroDocumentoReceptor,
+            denominacion_receptor,
+            direccion_receptor,
+            email_receptor,
+            total_oper_gravada AS totalValorVentaGravada,
+            total_oper_inafecta AS totalValorVentaInafecta,
+            total_oper_exonerada AS totalValorVentaExonerada,
+            total_oper_gratuita AS totalValorVentaGratuita,
+            total_oper_exportada AS totalValorVentaExportacion,
+            sumatoria_igv,
+            monto_imp_total_venta,
+            tipo_operacion,
+            fecha_emision_date,
+            fecha_registro,
+            identificador_documento,
+            codigo_hash,
+            detraccion,
+            estado,
+            estado_anterior,
+            estado_sunat,
+            hora_emision,
+            mensaje_respuesta,
+            ubl_version,
+            user_name,
+            user_name_modify,
+            uuid,
+            oficina_id,
+            tipo_transaccion,
+            monto_pendiente,
+            sum_trib_grat
+            FROM payment_voucher
+        WHERE id_payment_voucher = #{id}
     </select>
     <select id="findFirst1ByTipoComprobanteAndSerieAndRucEmisorOrderByNumeroDesc" parameterType="map" resultType="Integer">
         SELECT p.numero FROM payment_voucher p
@@ -222,7 +263,7 @@
     </update>
     <select id="findPaymentVoucherByRucAndTipoComprobanteAndSerieAndNumero" parameterType="map" resultType="com.certicom.certifact_facturas_service_sp.model.PaymentVoucherModel">
         SELECT id_payment_voucher, ruc_emisor, tipo_comprobante, serie, numero, fecha_emision, codigo_moneda, fecha_vencimiento, tip_doc_ident_receptor, num_doc_ident_receptor,
-               denominacion_receptor, direccion_receptor, email_receptor, total_oper_gravada, sumatoria_igv, monto_imp_total_venta, tipo_operacion, fecha_emision_date, fecha_registro,
+               denominacion_receptor, direccion_receptor, email_receptor, total_oper_gravada AS totalValorVentaGravada, sumatoria_igv, monto_imp_total_venta, tipo_operacion, fecha_emision_date, fecha_registro,
                identificador_documento, codigo_hash, detraccion, estado, estado_anterior, estado_sunat, hora_emision, mensaje_respuesta, ubl_version, user_name, user_name_modify, uuid,
                oficina_id, tipo_transaccion, monto_pendiente
             FROM payment_voucher

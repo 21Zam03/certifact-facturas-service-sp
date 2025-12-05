@@ -192,7 +192,10 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
 
     @Override
     public PaymentVoucherModel findPaymentVoucherById(Long id) {
-        return paymentVoucherMapper.getPaymentVoucherById(id);
+        PaymentVoucherModel paymentVoucherModel = paymentVoucherMapper.getPaymentVoucherById(id);
+        List<PaymentVoucherFileModel> files = paymentVoucherFileMapper.listPaymentVoucherFiles(paymentVoucherModel.getIdPaymentVoucher());
+        paymentVoucherModel.setPaymentVoucherFileModelList(files);
+        return paymentVoucherModel;
     }
 
     @Override

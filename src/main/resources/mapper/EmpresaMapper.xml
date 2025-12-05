@@ -33,7 +33,8 @@
             COALESCE(c.cant_comprobante_dinamico,0) AS cantComproDina,
             c.format,
             c.view_code AS viewCode,
-            c.id_register_file_send AS idRegisterFileSend
+            c.id_register_file_send AS idRegisterFileSend,
+            c.send_ticket
         FROM company c
         WHERE c.ruc = #{ruc}
     </select>
